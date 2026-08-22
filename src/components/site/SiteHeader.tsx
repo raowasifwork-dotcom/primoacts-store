@@ -23,9 +23,13 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
       <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-4 md:px-6">
         <Link to="/" className="flex min-w-0 items-center gap-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-gold/40 font-display text-sm text-gold">
-            PA
-          </span>
+          <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-xl border border-gold/40 shadow-sm shadow-gold/10">
+            <img
+              src="/logo.png"
+              alt="Primo Acts Logo"
+              className="h-full w-full object-cover"
+            />
+          </div>
           <span className="truncate font-display text-lg tracking-[0.18em] uppercase">
             {SITE.name}
           </span>
