@@ -1,0 +1,98 @@
+import { Link } from "@tanstack/react-router";
+import { BookOpen, Download, Home, Info, Mail, Menu, ShoppingBag, Store, X } from "lucide-react";
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/lib/cart";
+import { SITE } from "@/lib/site";
+
+const NAV = [
+  { to: "/", label: "Home", icon: Home },
+  { to: "/store", label: "Store", icon: Store },
+  { to: "/downloads", label: "Downloads", icon: Download },
+  { to: "/characters", label: "Characters", icon: BookOpen },
+  { to: "/about", label: "About", icon: Info },
+  { to: "/contact", label: "Contact", icon: Mail },
+] as const;
+
+export function SiteHeader() {
+  const { count } = useCart();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
+      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-4 md:px-6">
+        <Link to="/" className="flex min-w-0 items-center gap-3">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-gold/40 font-display text-sm text-gold">
+            PA
+          </span>
+          <span className="truncate font-display text-lg tracking-[0.18em] uppercase">
+            {SITE.name}
+          </span>
+        </Link>
+
+        <div className="flex items-center gap-2">
+          <nav className="hidden items-center gap-1 lg:flex">
+            {NAV.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  activeOptions={{ exact: item.to === "/" }}
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  activeProps={{ className: "text-gold" }}
+                >
+                  <Icon className="h-4 w-4" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <Button asChild variant="ghost" size="icon" className="relative shrink-0">
+            <Link to="/cart" aria-label="Cart">
+              <ShoppingBag className="h-5 w-5" />
+              {count > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-gold px-1 text-[11px] font-semibold text-gold-foreground">
+                  {count}
+                </span>
+              )}
+            </Link>
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            aria-label="Menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        </div>
+      </div>
+
+      {open && (
+        <nav className="border-t border-border/60 px-4 pb-4 lg:hidden">
+          {NAV.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 py-3 text-sm text-muted-foreground"
+                activeProps={{ className: "text-gold" }}
+                activeOptions={{ exact: item.to === "/" }}
+              >
+                <Icon className="h-4 w-4" />
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+      )}
+    </header>
+  );
+}
