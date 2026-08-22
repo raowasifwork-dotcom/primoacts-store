@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Mail, Phone } from "lucide-react";
 
-import founderAsset from "@/assets/rao-wasif.jpeg.asset.json";
+import founderAsset from "@/assets/rao-wasif.png";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/lib/site";
 
@@ -31,7 +31,7 @@ function AboutPage() {
         <div className="grid gap-12 md:grid-cols-[minmax(0,360px)_minmax(0,1fr)] md:items-start">
           <div className="glass-panel animate-drift overflow-hidden rounded-3xl p-3">
             <img
-              src={founderAsset.url}
+              src={founderAsset}
               alt={`Portrait of ${SITE.founder}, founder of ${SITE.name}`}
               className="w-full rounded-2xl object-cover"
             />

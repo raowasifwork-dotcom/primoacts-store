@@ -1,5 +1,5 @@
-import shadowrealm1 from "@/assets/shadowrealm-1.png.asset.json";
-import shadowrealm2 from "@/assets/shadowrealm-2.png.asset.json";
+import shadowrealm1 from "@/assets/shadowrealm-1.jpg";
+import shadowrealm2 from "@/assets/shadowrealm-2.jpg";
 
 export type Book = {
   slug: string;
@@ -29,7 +29,7 @@ export const BOOKS: Book[] = [
     price: 14.99,
     formats: ["PDF"],
     pages: 412,
-    cover: shadowrealm1.url,
+    cover: shadowrealm1,
     pdf: "/downloads/shadowrealm-a-darkness-awakens.pdf",
     tagline: "Seven kids. One door that should have stayed shut.",
     description:
@@ -44,7 +44,7 @@ export const BOOKS: Book[] = [
     price: 16.99,
     formats: ["PDF"],
     pages: 458,
-    cover: shadowrealm2.url,
+    cover: shadowrealm2,
     pdf: "/downloads/shadowrealm-2-the-past-truth.pdf",
     tagline: "The town remembers what the children forgot.",
     description:

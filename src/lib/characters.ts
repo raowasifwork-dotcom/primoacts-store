@@ -1,10 +1,10 @@
-import miaCarter from "@/assets/mia-carter.png.asset.json";
-import lucasReed from "@/assets/lucas-reed.png.asset.json";
-import ethanCole from "@/assets/ethan-cole.png.asset.json";
-import noahBrooks from "@/assets/noah-brooks.png.asset.json";
-import avaMiller from "@/assets/ava-miller.png.asset.json";
-import mrHolloway from "@/assets/mr-holloway.png.asset.json";
-import mrsFinch from "@/assets/mrs-finch.png.asset.json";
+import miaCarter from "@/assets/mia-carter.jpg";
+import lucasReed from "@/assets/lucas-reed.jpg";
+import ethanCole from "@/assets/ethan-cole.jpg";
+import noahBrooks from "@/assets/noah-brooks.jpg";
+import avaMiller from "@/assets/ava-miller.jpg";
+import mrHolloway from "@/assets/mr-holloway.jpg";
+import mrsFinch from "@/assets/mrs-finch.jpg";
 
 export type Character = {
   slug: string;
@@ -26,7 +26,7 @@ export const CHARACTERS: Character[] = [
     trait: "Fearless",
     quote: "If it's hiding from us, it's afraid of us.",
     bio: "First through every door and last to admit she's scared. Mia turns panic into momentum, which saves the group as often as it endangers them.",
-    image: miaCarter.url,
+    image: miaCarter,
   },
   {
     slug: "lucas-reed",
@@ -36,7 +36,7 @@ export const CHARACTERS: Character[] = [
     trait: "Quick-witted",
     quote: "I mapped it. Twice. It moved.",
     bio: "Carries a flashlight, three spare batteries and a notebook of everything the adults refuse to write down. The youngest, and the one who notices first.",
-    image: lucasReed.url,
+    image: lucasReed,
   },
   {
     slug: "ethan-cole",
@@ -46,7 +46,7 @@ export const CHARACTERS: Character[] = [
     trait: "Steady",
     quote: "Somebody has to hold the lantern. Might as well be me.",
     bio: "The group's centre of gravity. Ethan's calm isn't the absence of fear — it's a decision he makes again every night.",
-    image: ethanCole.url,
+    image: ethanCole,
   },
   {
     slug: "noah-brooks",
@@ -56,7 +56,7 @@ export const CHARACTERS: Character[] = [
     trait: "Perceptive",
     quote: "It isn't angry. It's grieving. That's worse.",
     bio: "Feels the Shadowrealm before he sees it. Noah reads intent the way others read maps, and it costs him every time.",
-    image: noahBrooks.url,
+    image: noahBrooks,
   },
   {
     slug: "ava-miller",
@@ -66,7 +66,7 @@ export const CHARACTERS: Character[] = [
     trait: "Analytical",
     quote: "Play it backwards. Now tell me that's static.",
     bio: "Headphones always on, decoding frequencies, recordings and lies. Ava trusts data — until the data starts asking her questions.",
-    image: avaMiller.url,
+    image: avaMiller,
   },
   {
     slug: "mr-holloway",
@@ -76,7 +76,7 @@ export const CHARACTERS: Character[] = [
     trait: "Guarded",
     quote: "I've seen this before. I buried the last group that asked.",
     bio: "Hollow Creek's oldest resident and its most reluctant guide. He knows the rules of the Shadowrealm because he helped write them.",
-    image: mrHolloway.url,
+    image: mrHolloway,
   },
   {
     slug: "mrs-finch",
@@ -86,6 +86,6 @@ export const CHARACTERS: Character[] = [
     trait: "Relentless",
     quote: "Sentiment is a luxury. Plans are not.",
     bio: "Precise, unreadable and always three moves ahead. Whether she's protecting the children or the town's secret depends on the day.",
-    image: mrsFinch.url,
+    image: mrsFinch,
   },
 ];
