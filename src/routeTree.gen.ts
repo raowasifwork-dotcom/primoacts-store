@@ -19,6 +19,7 @@ import { Route as DownloadsRouteImport } from './routes/downloads'
 import { Route as StoreRouteImport } from './routes/store'
 import { Route as StoreIndexRouteImport } from './routes/store.index'
 import { Route as StoreSlugRouteImport } from './routes/store.$slug'
+import { Route as AdminRouteImport } from './routes/admin'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -55,6 +56,11 @@ const DownloadsRoute = DownloadsRouteImport.update({
   path: '/downloads',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StoreRoute = StoreRouteImport.update({
   id: '/store',
   path: '/store',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/downloads': typeof DownloadsRoute
+  '/admin': typeof AdminRoute
   '/store': typeof StoreRouteWithChildren
   '/store/$slug': typeof StoreSlugRoute
   '/store/': typeof StoreIndexRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/downloads': typeof DownloadsRoute
+  '/admin': typeof AdminRoute
   '/store/$slug': typeof StoreSlugRoute
   '/store': typeof StoreIndexRoute
 }
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/downloads': typeof DownloadsRoute
+  '/admin': typeof AdminRoute
   '/store': typeof StoreRouteWithChildren
   '/store/$slug': typeof StoreSlugRoute
   '/store/': typeof StoreIndexRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/downloads'
+    | '/admin'
     | '/store'
     | '/store/$slug'
     | '/store/'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/downloads'
+    | '/admin'
     | '/store/$slug'
     | '/store'
   id:
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/downloads'
+    | '/admin'
     | '/store'
     | '/store/$slug'
     | '/store/'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   DownloadsRoute: typeof DownloadsRoute
+  AdminRoute: typeof AdminRoute
   StoreRoute: typeof StoreRouteWithChildren
 }
 
@@ -207,6 +220,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DownloadsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/store': {
       id: '/store'
       path: '/store'
@@ -251,6 +271,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   DownloadsRoute: DownloadsRoute,
+  AdminRoute: AdminRoute,
   StoreRoute: StoreRouteWithChildren,
 }
 export const routeTree = rootRouteImport

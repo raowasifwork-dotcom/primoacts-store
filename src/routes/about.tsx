@@ -83,11 +83,18 @@ function AboutPage() {
               </a>
             </div>
 
-            <Button asChild size="lg" className="mt-10">
-              <Link to="/store">
-                Read the books <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Button asChild size="lg" className="bg-gold hover:bg-gold-light text-black font-semibold rounded-xl">
+                <Link to="/store">
+                  Read the books <ArrowRight className="h-4 w-4 ml-1.5" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-gold/40 text-gold hover:bg-gold/10 rounded-xl">
+                <Link to="/admin">
+                  🔒 Open Admin Portal
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

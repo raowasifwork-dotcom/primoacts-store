@@ -27,6 +27,9 @@ export function SiteFooter() {
             <Link to="/contact" className="hover:text-gold">
               Contact
             </Link>
+            <Link to="/admin" className="hover:text-gold text-xs text-gold/70 pt-1">
+              🔒 Admin Portal
+            </Link>
           </div>
         </div>
 
@@ -46,8 +49,15 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="mx-auto mt-10 max-w-6xl border-t border-border/60 px-4 pt-6 text-xs text-muted-foreground md:px-6">
-        © {new Date().getFullYear()} {SITE.name} · Written by {SITE.founder}. All rights reserved.
+      <div className="mx-auto mt-10 max-w-6xl border-t border-border/60 px-4 pt-6 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-3 md:px-6">
+        <div>
+          © {new Date().getFullYear()} {SITE.name} · Written by {SITE.founder}. All rights reserved.
+        </div>
+        <div>
+          <Link to="/admin" className="text-muted-foreground/60 hover:text-gold text-[11px] transition-colors">
+            Staff / Control Center
+          </Link>
+        </div>
       </div>
     </footer>
   );

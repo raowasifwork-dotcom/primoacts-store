@@ -73,33 +73,51 @@ function BookDetail() {
               {book.description}
             </p>
 
-            <dl className="mt-8 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+            <dl className="mt-8 grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
               <div>
-                <dt className="text-muted-foreground">Genre</dt>
-                <dd className="mt-1">{book.genre}</dd>
+                <dt className="text-muted-foreground text-xs uppercase">Genre</dt>
+                <dd className="mt-1 font-medium">{book.genre}</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground">Pages</dt>
-                <dd className="mt-1">{book.pages}</dd>
+                <dt className="text-muted-foreground text-xs uppercase">Pages</dt>
+                <dd className="mt-1 font-medium">{book.pages}</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground">Formats</dt>
-                <dd className="mt-1">{book.formats.join(" · ")}</dd>
+                <dt className="text-muted-foreground text-xs uppercase">Formats</dt>
+                <dd className="mt-1 font-medium">{book.formats.join(" · ")}</dd>
               </div>
+              {book.releaseDate && (
+                <div>
+                  <dt className="text-gold text-xs uppercase font-semibold">Release Date</dt>
+                  <dd className="mt-1 text-gold font-bold">{book.releaseDate}</dd>
+                </div>
+              )}
             </dl>
+
+            {book.status === "preorder" && (
+              <div className="mt-6 rounded-2xl border border-gold/40 bg-gold/10 p-4 text-xs text-gold flex items-center gap-3">
+                <span className="text-xl">🔥</span>
+                <div>
+                  <p className="font-bold uppercase tracking-wider">Official Pre-Order Edition</p>
+                  <p className="text-muted-foreground text-[11px]">
+                    Expected digital delivery on <strong className="text-white">{book.releaseDate || "Release Date"}</strong>. Pre-order now to secure launch access.
+                  </p>
+                </div>
+              </div>
+            )}
 
             <div className="glass-panel mt-8 rounded-2xl p-5">
               <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                Choose your format
+                Choose your digital format
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {book.formats.map((f) => (
                   <button
                     key={f}
                     onClick={() => setFormat(f)}
-                    className={`rounded-full border px-4 py-1.5 text-xs transition-colors ${
+                    className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors ${
                       format === f
-                        ? "border-gold/60 bg-gold/10 text-gold"
+                        ? "border-gold/60 bg-gold/15 text-gold"
                         : "border-border text-muted-foreground hover:text-foreground"
                     }`}
                   >
@@ -109,13 +127,13 @@ function BookDetail() {
               </div>
 
               <div className="mt-6 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
-                <span className="font-display text-3xl text-gold">
+                <span className="font-display text-3xl text-gold font-bold">
                   {formatPrice(book.price)}
                 </span>
                 <Button
                   size="lg"
                   variant={inCart ? "secondary" : "default"}
-                  className="shrink-0"
+                  className="shrink-0 bg-gold hover:bg-gold-light text-black font-semibold rounded-xl"
                   onClick={() => {
                     if (inCart) return;
                     add({
@@ -130,23 +148,26 @@ function BookDetail() {
                 >
                   {inCart ? (
                     <>
-                      <Check className="h-4 w-4" /> In cart
+                      <Check className="h-4 w-4 mr-1.5" /> In cart
+                    </>
+                  ) : book.status === "preorder" ? (
+                    <>
+                      <Plus className="h-4 w-4 mr-1.5" /> Pre-Order Now
                     </>
                   ) : (
                     <>
-                      <Plus className="h-4 w-4" /> Add to cart
+                      <Plus className="h-4 w-4 mr-1.5" /> Add to cart
                     </>
                   )}
                 </Button>
               </div>
-
-              <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
+            </div>   
+            <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
                 <FileDown className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
                 Download links are emailed after your bank transfer is verified — usually within 12
                 hours.
               </p>
             </div>
-          </div>
         </div>
 
         {related.length > 0 && (

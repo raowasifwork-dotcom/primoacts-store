@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BadgeCheck, Copy, FileDown, Landmark } from "lucide-react";
+import { BadgeCheck, CheckCircle2, Copy, FileDown, Mail, ShieldCheck } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLiveOrders } from "@/lib/admin-store";
 import { formatPrice } from "@/lib/books";
 import { useCart } from "@/lib/cart";
 import { unlockPurchases } from "@/lib/library";
@@ -17,8 +18,7 @@ export const Route = createFileRoute("/checkout")({
       { title: "Checkout — Primo Acts" },
       {
         name: "description",
-        content:
-          "Complete your Primo Acts order by bank transfer and receive your download links after verification.",
+        content: "Complete your Primo Acts digital book order.",
       },
       { property: "og:title", content: "Checkout — Primo Acts" },
       { property: "og:description", content: "Complete your Primo Acts digital book order." },
@@ -30,6 +30,7 @@ export const Route = createFileRoute("/checkout")({
 
 function CheckoutPage() {
   const { items, total, clear } = useCart();
+  const { createOrder } = useLiveOrders();
   const purchasedSlugs = items.map((i) => i.slug);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,30 +41,65 @@ function CheckoutPage() {
     [],
   );
 
+  const handleSubmitOrder = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim()) {
+      toast.error("Please fill in your name and email.");
+      return;
+    }
+
+    // Save order in Admin live orders hub
+    createOrder({
+      reference,
+      customerName: name,
+      customerEmail: email,
+      items: items.map((i) => ({ slug: i.slug, title: i.title, price: i.price })),
+      total,
+    });
+
+    unlockPurchases(purchasedSlugs, reference);
+    setPlaced(reference);
+    clear();
+    toast.success(`Order ${reference} confirmed!`);
+  };
+
   if (placed) {
     return (
       <div className="section-pad">
         <div className="mx-auto max-w-2xl px-4 text-center md:px-6">
-          <BadgeCheck className="mx-auto h-12 w-12 text-gold" />
-          <h1 className="mt-6 text-3xl md:text-4xl">Order received</h1>
-          <p className="mt-4 text-sm text-muted-foreground">
-            Your order reference is{" "}
-            <span className="font-display text-gold">{placed}</span>. Transfer the total to the
-            account below, then email your payment screenshot with this reference to{" "}
-            <a href={`mailto:${SITE.email}`} className="text-gold hover:underline">
-              {SITE.email}
-            </a>
-            . Your PDFs are already unlocked on this device.
+          <BadgeCheck className="mx-auto h-16 w-16 text-gold animate-bounce" />
+          <h1 className="mt-6 text-3xl md:text-4xl font-display uppercase tracking-wide text-white">
+            Order Confirmed
+          </h1>
+          <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+            Thank you, <strong className="text-white">{name || "Reader"}</strong>! Your order reference is{" "}
+            <span className="font-display font-bold text-gold bg-gold/10 px-2 py-0.5 rounded border border-gold/30">
+              {placed}
+            </span>
+            . Your digital book PDFs are unlocked on this device right now.
           </p>
-          <BankDetails />
+
+          <div className="mt-8 rounded-2xl border border-border/60 bg-surface/50 p-6 text-left space-y-3">
+            <p className="text-xs uppercase font-semibold tracking-wider text-gold flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4" /> Instant Digital Delivery
+            </p>
+            <p className="text-xs text-muted-foreground">
+              A copy of your order details has been forwarded to the author ({SITE.founder}). For questions, contact{" "}
+              <a href={`mailto:${SITE.email}`} className="text-gold hover:underline">
+                {SITE.email}
+              </a>
+              .
+            </p>
+          </div>
+
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button asChild>
+            <Button asChild className="bg-gold hover:bg-gold-light text-black font-semibold rounded-xl">
               <Link to="/downloads">
-                <FileDown className="h-4 w-4" /> Download your PDFs
+                <FileDown className="h-4 w-4 mr-1.5" /> Download Your PDFs Now
               </Link>
             </Button>
-            <Button asChild variant="secondary">
-              <Link to="/store">Back to the store</Link>
+            <Button asChild variant="secondary" className="rounded-xl">
+              <Link to="/store">Back to Store</Link>
             </Button>
           </div>
         </div>
@@ -75,11 +111,11 @@ function CheckoutPage() {
     return (
       <div className="section-pad">
         <div className="mx-auto max-w-2xl px-4 text-center md:px-6">
-          <h1 className="text-3xl">Nothing to check out</h1>
+          <h1 className="text-3xl font-display uppercase">Nothing to check out</h1>
           <p className="mt-3 text-sm text-muted-foreground">
             Add a book to your cart to continue.
           </p>
-          <Button asChild className="mt-8">
+          <Button asChild className="mt-8 bg-gold hover:bg-gold-light text-black font-semibold rounded-xl">
             <Link to="/store">Browse the store</Link>
           </Button>
         </div>
@@ -90,57 +126,58 @@ function CheckoutPage() {
   return (
     <div className="section-pad">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <h1 className="text-4xl md:text-5xl">Checkout</h1>
+        <h1 className="text-4xl md:text-5xl font-display uppercase tracking-wide text-white">Checkout</h1>
         <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-          Payment is by bank transfer with manual verification. Enter your details, place the order,
-          then send the transfer using your order reference.
+          Complete your order to instantly receive DRM-free high resolution PDF editions of the Shadowrealm universe.
         </p>
 
         <div className="mt-12 grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">
           <form
             className="glass-panel grid gap-5 rounded-3xl p-6 md:p-8"
-            onSubmit={(e) => {
-              e.preventDefault();
-              unlockPurchases(purchasedSlugs, reference);
-              setPlaced(reference);
-              clear();
-              toast.success(`Order ${reference} placed`);
-            }}
+            onSubmit={handleSubmitOrder}
           >
             <div className="grid gap-2">
-              <Label htmlFor="co-name">Full name</Label>
+              <Label htmlFor="co-name">Your Full Name *</Label>
               <Input
                 id="co-name"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Jane Reader"
+                placeholder="Rao Wasif"
+                className="bg-surface/80 border-border/60"
               />
             </div>
+
             <div className="grid gap-2">
-              <Label htmlFor="co-email">Delivery email</Label>
+              <Label htmlFor="co-email">Delivery Email *</Label>
               <Input
                 id="co-email"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder="reader@example.com"
+                className="bg-surface/80 border-border/60"
               />
               <p className="text-xs text-muted-foreground">
-                Your download links are sent to this address.
+                Your order confirmation and digital library access link will be associated with this address.
               </p>
             </div>
 
-            <BankDetails />
+            <div className="rounded-2xl border border-gold/30 bg-gold/5 p-4 text-xs text-muted-foreground space-y-1">
+              <p className="font-semibold text-gold flex items-center gap-1">
+                <CheckCircle2 className="h-3.5 w-3.5" /> Instant Digital Access
+              </p>
+              <p>Your books unlock immediately upon submitting your order.</p>
+            </div>
 
-            <Button type="submit" size="lg" className="justify-self-start">
-              Place order · {formatPrice(total)}
+            <Button type="submit" size="lg" className="justify-self-start bg-gold hover:bg-gold-light text-black font-semibold rounded-xl mt-2">
+              Place Order · {formatPrice(total)}
             </Button>
           </form>
 
           <aside className="glass-panel h-fit rounded-3xl p-6">
-            <p className="font-display text-lg">Order summary</p>
+            <p className="font-display text-lg uppercase tracking-wider text-white">Order Summary</p>
             <ul className="mt-5 grid gap-4">
               {items.map((item) => (
                 <li key={item.slug} className="grid grid-cols-[40px_minmax(0,1fr)_auto] gap-3">
@@ -150,19 +187,19 @@ function CheckoutPage() {
                     className="aspect-2/3 w-10 rounded object-cover"
                   />
                   <div className="min-w-0">
-                    <p className="truncate text-sm">{item.title}</p>
-                    <p className="text-xs text-muted-foreground">{item.format}</p>
+                    <p className="truncate text-sm text-white font-medium">{item.title}</p>
+                    <p className="text-xs text-muted-foreground">{item.format || "PDF Edition"}</p>
                   </div>
-                  <span className="shrink-0 text-sm">{formatPrice(item.price)}</span>
+                  <span className="shrink-0 text-sm font-semibold text-gold">{formatPrice(item.price)}</span>
                 </li>
               ))}
             </ul>
             <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-4">
               <span className="text-sm text-muted-foreground">Total</span>
-              <span className="font-display text-2xl text-gold">{formatPrice(total)}</span>
+              <span className="font-display text-2xl text-gold font-bold">{formatPrice(total)}</span>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">
-              Reference: <span className="text-gold">{reference}</span>
+              Reference: <span className="text-gold font-mono font-bold">{reference}</span>
             </p>
           </aside>
         </div>
@@ -171,45 +208,3 @@ function CheckoutPage() {
   );
 }
 
-function BankDetails() {
-  const { bank } = SITE;
-  const rows = [
-    { label: "Bank", value: bank.bank },
-    { label: "Account title", value: bank.accountTitle },
-    { label: "Account / IBAN", value: bank.accountNumber },
-  ];
-
-  return (
-    <div className="rounded-2xl border border-gold/25 bg-surface/60 p-5 text-left">
-      <p className="flex items-center gap-2 text-sm font-medium">
-        <Landmark className="h-4 w-4 shrink-0 text-gold" /> {bank.label}
-      </p>
-      <dl className="mt-4 grid gap-3 text-sm">
-        {rows.map((row) => (
-          <div key={row.label} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-            <div className="min-w-0">
-              <dt className="text-xs uppercase tracking-wider text-muted-foreground">
-                {row.label}
-              </dt>
-              <dd className="truncate">{row.value}</dd>
-            </div>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label={`Copy ${row.label}`}
-              className="shrink-0"
-              onClick={() => {
-                void navigator.clipboard.writeText(row.value);
-                toast.success(`${row.label} copied`);
-              }}
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
-          </div>
-        ))}
-      </dl>
-      <p className="mt-4 text-xs leading-relaxed text-muted-foreground">{bank.note}</p>
-    </div>
-  );
-}

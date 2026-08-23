@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { BookCard } from "@/components/site/BookCard";
-import { BOOKS, GENRES } from "@/lib/books";
+import { useLiveBooks } from "@/lib/admin-store";
+import { GENRES } from "@/lib/books";
 
 export const Route = createFileRoute("/store/")({
   head: () => ({
@@ -24,10 +25,15 @@ export const Route = createFileRoute("/store/")({
 });
 
 function StorePage() {
+  const { books } = useLiveBooks();
   const [genre, setGenre] = useState<string>("All");
   const [sort, setSort] = useState<"featured" | "price-asc" | "price-desc">("featured");
 
-  const filtered = BOOKS.filter((b) => genre === "All" || b.genre === genre).sort((a, b) => {
+  const filtered = books.filter((b) => {
+    if (genre === "All") return true;
+    if (genre === "Pre-Order / Upcoming") return b.status === "preorder" || b.status === "upcoming";
+    return b.genre === genre;
+  }).sort((a, b) => {
     if (sort === "price-asc") return a.price - b.price;
     if (sort === "price-desc") return b.price - a.price;
     return Number(Boolean(b.featured)) - Number(Boolean(a.featured));
