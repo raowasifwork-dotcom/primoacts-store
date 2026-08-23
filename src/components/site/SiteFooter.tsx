@@ -27,9 +27,6 @@ export function SiteFooter() {
             <Link to="/contact" className="hover:text-gold">
               Contact
             </Link>
-            <Link to="/admin" className="hover:text-gold text-xs text-gold/70 pt-1">
-              🔒 Admin Portal
-            </Link>
           </div>
         </div>
 

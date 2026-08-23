@@ -90,14 +90,14 @@ function AdminMasterPortal() {
         });
       } else {
         setLoginError(true);
-        toast.error("Invalid credentials", {
-          description: "Try default PIN: 7788 or Password: primoacts",
+        toast.error("Access Denied", {
+          description: "Incorrect secret PIN or Master Password.",
         });
       }
     }, 300);
   };
 
-  // IF NOT AUTHENTICATED -> RENDER CINEMATIC LOGIN
+  // IF NOT AUTHENTICATED -> RENDER CINEMATIC SECURE LOGIN
   if (!isAuthenticated) {
     return (
       <div className="relative min-h-screen flex items-center justify-center p-4 bg-[#06080d] overflow-hidden">
@@ -119,7 +119,7 @@ function AdminMasterPortal() {
               {SITE.name} Admin
             </h1>
             <p className="mt-1 text-xs text-muted-foreground">
-              Enter your secret PIN or Master Password to access your store controls.
+              Enter your private master credentials to access store controls.
             </p>
           </div>
 
@@ -129,7 +129,7 @@ function AdminMasterPortal() {
                 <KeyRound className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="password"
-                  placeholder="Enter PIN (e.g. 7788) or Password..."
+                  placeholder="Enter Secret PIN or Password..."
                   value={inputPass}
                   onChange={(e) => {
                     setInputPass(e.target.value);
@@ -155,12 +155,13 @@ function AdminMasterPortal() {
             </Button>
           </form>
 
-          <div className="mt-6 rounded-xl border border-border/40 bg-surface/40 p-3 text-center">
-            <p className="text-[11px] text-muted-foreground">
-              Default Master PIN: <span className="font-mono text-gold font-bold">7788</span>
-              <br />
-              Default Password: <span className="font-mono text-gold font-bold">primoacts</span>
-            </p>
+          <div className="mt-6 text-center">
+            <Link
+              to="/"
+              className="text-xs text-muted-foreground hover:text-gold transition-colors inline-flex items-center gap-1"
+            >
+              ← Return to Public Store
+            </Link>
           </div>
         </div>
       </div>
