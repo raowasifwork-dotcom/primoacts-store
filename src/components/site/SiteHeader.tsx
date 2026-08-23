@@ -25,7 +25,6 @@ const NAV = [
   { to: "/characters", label: "Characters", icon: BookOpen },
   { to: "/about", label: "About", icon: Info },
   { to: "/contact", label: "Contact", icon: Mail },
-  { to: "/admin", label: "Admin Portal", icon: KeyRound },
 ] as const;
 
 export function SiteHeader() {
@@ -59,22 +58,17 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <nav className="hidden items-center gap-1 lg:flex">
             {NAV.map((item) => {
               const Icon = item.icon;
-              const isAdmin = item.to === "/admin";
               return (
                 <Link
                   key={item.to}
                   to={item.to}
                   activeOptions={{ exact: item.to === "/" }}
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-all ${
-                    isAdmin
-                      ? "text-gold font-semibold hover:bg-gold/10 border border-gold/30"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                  activeProps={{ className: "text-gold font-bold" }}
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  activeProps={{ className: "text-gold" }}
                 >
                   <Icon className="h-4 w-4" />
                   {item.label}
@@ -94,13 +88,13 @@ export function SiteHeader() {
             </Link>
           </Button>
 
-          {/* Glowing Prominent Admin Button */}
+          {/* Admin Sign In Button */}
           <Link
             to="/admin"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-gold bg-gold hover:bg-gold-light text-black px-3.5 py-1.5 text-xs font-bold font-display tracking-wider uppercase transition-all shadow-md shadow-gold/20"
+            className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1.5 text-xs font-semibold text-gold hover:bg-gold/20 transition-all shadow-sm shadow-gold/10"
           >
             <KeyRound className="h-3.5 w-3.5" />
-            <span>Admin</span>
+            <span className="hidden sm:inline">Admin</span>
           </Link>
 
           <Button

@@ -57,8 +57,33 @@ function setStorage<T>(key: string, value: T): void {
   }
 }
 
-// Initial orders list (starts completely clean at 0 orders)
-const SAMPLE_ORDERS: Order[] = [];
+// Initial default orders for demonstration
+const SAMPLE_ORDERS: Order[] = [
+  {
+    id: "ord-101",
+    reference: "PA-78921",
+    customerName: "Zayn Malik",
+    customerEmail: "zayn.m@example.com",
+    items: [
+      { slug: "shadowrealm-a-darkness-awakens", title: "Shadowrealm: A Darkness Awakens", price: 14.99 },
+    ],
+    total: 14.99,
+    status: "verified",
+    createdAt: new Date(Date.now() - 3600000 * 4).toISOString(),
+  },
+  {
+    id: "ord-102",
+    reference: "PA-44219",
+    customerName: "Sarah Connor",
+    customerEmail: "sarah.c@example.com",
+    items: [
+      { slug: "shadowrealm-bundle", title: "Shadowrealm Season 1 + 2 Bundle", price: 23.99 },
+    ],
+    total: 23.99,
+    status: "pending",
+    createdAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+  },
+];
 
 // --- AUTH HOOK ---
 export function useAdminAuth() {
