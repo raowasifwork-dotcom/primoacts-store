@@ -334,12 +334,18 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
   const { books } = useLiveBooks();
   const { characters } = useLiveCharacters();
   const { orders, updateOrderStatus } = useLiveOrders();
+  const { allReviews } = useLiveReviews();
 
   const totalRevenue = orders
     .filter((o) => o.status === "verified")
     .reduce((sum, o) => sum + o.total, 0);
 
   const pendingOrders = orders.filter((o) => o.status === "pending");
+
+  const avgRating =
+    allReviews.length > 0
+      ? (allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length).toFixed(1)
+      : "5.0";
 
   return (
     <div className="space-y-8">
@@ -369,17 +375,17 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
           </Button>
           <Button
             size="sm"
+            onClick={() => onNavigate("reviews")}
             variant="outline"
-            onClick={() => onNavigate("orders")}
-            className="border-border/60 rounded-xl text-xs"
+            className="border-gold/40 text-gold hover:bg-gold/10 rounded-xl text-xs"
           >
-            <Clock className="mr-1.5 h-3.5 w-3.5 text-gold" /> Pending Orders ({pendingOrders.length})
+            <Star className="mr-1.5 h-3.5 w-3.5 fill-gold text-gold" /> Reader Reviews ({allReviews.length})
           </Button>
         </div>
       </div>
 
-      {/* 4 Stat Cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* 5 Stat Cards */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <div className="rounded-2xl border border-border/50 bg-[#0c1018]/80 p-5 shadow-lg relative overflow-hidden backdrop-blur-md">
           <div className="flex items-center justify-between">
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -397,6 +403,27 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
           </p>
         </div>
 
+        <div
+          onClick={() => onNavigate("reviews")}
+          className="rounded-2xl border border-border/50 bg-[#0c1018]/80 p-5 shadow-lg relative overflow-hidden backdrop-blur-md cursor-pointer hover:border-gold/50 transition-all group"
+        >
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider group-hover:text-gold transition-colors">
+              Reader Reviews
+            </p>
+            <div className="h-8 w-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+              <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+            </div>
+          </div>
+          <p className="mt-3 font-display text-2xl font-bold text-white flex items-center gap-1.5">
+            <span>★ {avgRating}</span>
+            <span className="text-xs text-muted-foreground font-normal">({allReviews.length})</span>
+          </p>
+          <p className="mt-1 text-[11px] text-gold font-medium">
+            Click to manage →
+          </p>
+        </div>
+
         <div className="rounded-2xl border border-border/50 bg-[#0c1018]/80 p-5 shadow-lg relative overflow-hidden backdrop-blur-md">
           <div className="flex items-center justify-between">
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -410,7 +437,7 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
             {books.length} Books
           </p>
           <p className="mt-1 text-[11px] text-muted-foreground">
-            Season 1, Season 2 & Bundle
+            5 Novels & Bundle
           </p>
         </div>
 
@@ -434,17 +461,17 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
         <div className="rounded-2xl border border-border/50 bg-[#0c1018]/80 p-5 shadow-lg relative overflow-hidden backdrop-blur-md">
           <div className="flex items-center justify-between">
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Universe Characters
+              Universe Heroes
             </p>
             <div className="h-8 w-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
               <Users className="h-4 w-4" />
             </div>
           </div>
           <p className="mt-3 font-display text-2xl font-bold text-white">
-            {characters.length} Lore Heroes
+            {characters.length} Characters
           </p>
           <p className="mt-1 text-[11px] text-muted-foreground">
-            Mia, Lucas, Ethan, Holloway & Finch
+            Ravenwood & Supreme
           </p>
         </div>
       </div>

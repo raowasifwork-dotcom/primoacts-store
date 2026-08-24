@@ -1,13 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { Check, Clock, Flame, Plus, Sparkles } from "lucide-react";
+import { Check, Clock, Flame, Plus, Sparkles, Star } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { useLiveReviews } from "@/lib/admin-store";
 import { formatPrice, type Book } from "@/lib/books";
 import { useCart } from "@/lib/cart";
 
 export function BookCard({ book }: { book: Book }) {
   const { add, has } = useCart();
+  const { totalReviews, averageRating } = useLiveReviews(book.slug);
   const inCart = has(book.slug);
 
   const isPreorder = book.status === "preorder";
@@ -54,6 +56,28 @@ export function BookCard({ book }: { book: Book }) {
               {book.genre}
             </span>
             <span className="font-display text-lg text-gold font-bold">{formatPrice(book.price)}</span>
+          </div>
+
+          {/* Star Rating Badge on Card */}
+          <div className="flex items-center gap-1.5 text-xs">
+            <div className="flex text-amber-400">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <Star
+                  key={s}
+                  className={`h-3 w-3 ${
+                    s <= Math.round(averageRating)
+                      ? "fill-amber-400 text-amber-400"
+                      : "text-zinc-600"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="text-[11px] font-bold text-white">
+              {totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}
+            </span>
+            <span className="text-[10px] text-muted-foreground">
+              ({totalReviews})
+            </span>
           </div>
 
           <Link to="/store/$slug" params={{ slug: book.slug }}>
