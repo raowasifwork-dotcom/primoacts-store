@@ -7,10 +7,11 @@ import { useLiveVideos } from "@/lib/admin-store";
 import { getYoutubeEmbedUrl, getYoutubeThumbnail, YOUTUBE_CHANNEL_URL, type VideoItem } from "@/lib/videos";
 
 export function CinematicTrailersSection() {
-  const { videos } = useLiveVideos();
+  const { videos = [] } = useLiveVideos();
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
 
-  const featured = videos.find((v) => v.featured) || videos[0];
+  const safeVideos = Array.isArray(videos) ? videos : [];
+  const featured = safeVideos.find((v) => v?.featured) || safeVideos[0];
 
   return (
     <section className="section-pad border-t border-border/60 bg-gradient-to-b from-[#0a0d14] via-[#080a10] to-background relative overflow-hidden">
@@ -49,7 +50,7 @@ export function CinematicTrailersSection() {
 
         {/* Video Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {videos.map((video) => (
+          {safeVideos.map((video) => (
             <div
               key={video.id}
               onClick={() => setSelectedVideo(video)}

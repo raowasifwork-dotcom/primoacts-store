@@ -47,10 +47,12 @@ export function CustomerAuthDialog({
     onOpenChange(false);
   };
 
-  const isFounder =
-    user?.email.includes("raowasif") ||
-    user?.email.includes("primoacts") ||
-    user?.email === "raowasifwork@gmail.com";
+  const isFounder = Boolean(
+    user?.email &&
+      (user.email.includes("raowasif") ||
+        user.email.includes("primoacts") ||
+        user.email === "raowasifwork@gmail.com"),
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -65,11 +67,11 @@ export function CustomerAuthDialog({
           <div className="space-y-6 pt-2">
             <div className="flex items-center gap-4 p-4 rounded-2xl bg-surface/60 border border-border/50">
               <div className="h-12 w-12 rounded-full bg-gold/20 border border-gold/40 flex items-center justify-center text-gold font-bold font-display text-lg">
-                {user.name.slice(0, 1).toUpperCase()}
+                {(user.name || user.email || "R").slice(0, 1).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-bold text-white text-base truncate">{user.name}</p>
-                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                <p className="font-bold text-white text-base truncate">{user.name || "Reader"}</p>
+                <p className="text-xs text-muted-foreground truncate">{user.email || ""}</p>
                 <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 mt-1 font-medium">
                   <Check className="h-3 w-3" /> Verified Reader
                 </span>

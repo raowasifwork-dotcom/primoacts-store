@@ -106,7 +106,9 @@ export function SiteHeader() {
               {isLoggedIn ? (
                 <>
                   <User className="h-3.5 w-3.5 text-gold" />
-                  <span className="max-w-[90px] truncate">{user?.name.split(" ")[0]}</span>
+                  <span className="max-w-[90px] truncate">
+                    {user?.name ? user.name.split(" ")[0] : (user?.email ? user.email.split("@")[0] : "Account")}
+                  </span>
                 </>
               ) : (
                 <>
@@ -155,7 +157,7 @@ export function SiteHeader() {
                 className="flex items-center gap-3 py-3 text-sm text-gold font-semibold w-full text-left"
               >
                 <User className="h-4 w-4" />
-                {isLoggedIn ? `Account (${user?.name})` : "Sign In / Register"}
+                {isLoggedIn ? `Account (${user?.name || user?.email || "Reader"})` : "Sign In / Register"}
               </button>
             </div>
           </nav>
