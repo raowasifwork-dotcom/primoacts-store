@@ -57,6 +57,18 @@ export type SupportMessage = {
   agentName?: string;
 };
 
+export type BookReview = {
+  id: string;
+  bookSlug: string;
+  reviewerName: string;
+  reviewerEmail?: string;
+  rating: number; // 1 to 5
+  title: string;
+  comment: string;
+  createdAt: string;
+  status: "approved" | "pending";
+};
+
 export type SiteSettings = {
   announcementEnabled: boolean;
   announcementText: string;
@@ -401,4 +413,62 @@ export function useLiveSettings() {
   };
 
   return { settings, updateSettings };
+}
+
+// --- BOOK REVIEWS & 5-STAR RATINGS HOOK (Clean - No Fake Reviews) ---
+export function useLiveReviews(bookSlug?: string) {
+  const [reviews, setReviews] = useState<BookReview[]>(() => {
+    return getStorage<BookReview[]>("primo_book_reviews", []);
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setReviews(getStorage<BookReview[]>("primo_book_reviews", []));
+    };
+    window.addEventListener("primoacts_store_update", handleUpdate);
+    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+  }, []);
+
+  const addReview = (reviewData: {
+    bookSlug: string;
+    reviewerName: string;
+    reviewerEmail?: string;
+    rating: number;
+    title: string;
+    comment: string;
+  }) => {
+    const newRev: BookReview = {
+      ...reviewData,
+      id: `rev-${Date.now()}`,
+      createdAt: new Date().toISOString(),
+      status: "approved",
+    };
+    const updated = [newRev, ...reviews];
+    setReviews(updated);
+    setStorage("primo_book_reviews", updated);
+    return newRev;
+  };
+
+  const deleteReview = (id: string) => {
+    const updated = reviews.filter((r) => r.id !== id);
+    setReviews(updated);
+    setStorage("primo_book_reviews", updated);
+  };
+
+  const bookReviews = bookSlug ? reviews.filter((r) => r.bookSlug === bookSlug) : reviews;
+
+  const totalReviews = bookReviews.length;
+  const averageRating =
+    totalReviews > 0
+      ? Number((bookReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1))
+      : 5.0;
+
+  return {
+    reviews: bookReviews,
+    allReviews: reviews,
+    totalReviews,
+    averageRating,
+    addReview,
+    deleteReview,
+  };
 }

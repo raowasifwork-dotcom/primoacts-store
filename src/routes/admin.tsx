@@ -28,6 +28,7 @@ import {
   Send,
   ShieldCheck,
   Sparkles,
+  Star,
   Trash2,
   TrendingUp,
   UploadCloud,
@@ -53,6 +54,7 @@ import {
   useLiveCharacters,
   useLiveMessages,
   useLiveOrders,
+  useLiveReviews,
   useLiveSettings,
   useLiveVideos,
   type SupportMessage,
@@ -190,6 +192,7 @@ function AdminMasterPortal() {
   const TABS = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "books", label: "Books Vault", icon: Package },
+    { id: "reviews", label: "Reader Reviews", icon: Star },
     { id: "characters", label: "Characters Lore", icon: Users },
     { id: "orders", label: "Customer Orders", icon: DollarSign },
     { id: "trailers", label: "YouTube Trailers", icon: Youtube },
@@ -313,6 +316,7 @@ function AdminMasterPortal() {
       <main className="flex-1 p-4 md:p-8 overflow-y-auto max-w-7xl">
         {activeTab === "dashboard" && <AdminDashboardView onNavigate={setActiveTab} />}
         {activeTab === "books" && <AdminBooksView />}
+        {activeTab === "reviews" && <AdminReviewsView />}
         {activeTab === "characters" && <AdminCharactersView />}
         {activeTab === "orders" && <AdminOrdersView />}
         {activeTab === "trailers" && <AdminTrailersView />}
@@ -2459,6 +2463,304 @@ function AdminMessagesView() {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+// -------------------------------------------------------------
+// TAB 3: READER REVIEWS & 5-STAR RATINGS VIEW
+// -------------------------------------------------------------
+function AdminReviewsView() {
+  const { allReviews, deleteReview, addReview } = useLiveReviews();
+  const { books } = useLiveBooks();
+  const [selectedBook, setSelectedBook] = useState<string>("all");
+  const [filterRating, setFilterRating] = useState<string>("all");
+  const [newReviewOpen, setNewReviewOpen] = useState(false);
+
+  // Add review form state
+  const [formBookSlug, setFormBookSlug] = useState(
+    books[0]?.slug || "shadowrealm-a-darkness-awakens",
+  );
+  const [formName, setFormName] = useState("");
+  const [formRating, setFormRating] = useState(5);
+  const [formTitle, setFormTitle] = useState("");
+  const [formComment, setFormComment] = useState("");
+
+  const filteredReviews = allReviews.filter((r) => {
+    if (selectedBook !== "all" && r.bookSlug !== selectedBook) return false;
+    if (filterRating !== "all" && r.rating !== Number(filterRating)) return false;
+    return true;
+  });
+
+  const handleCreateOfficialReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formName.trim() || !formComment.trim()) {
+      toast.error("Please fill in reviewer name and feedback.");
+      return;
+    }
+
+    addReview({
+      bookSlug: formBookSlug,
+      reviewerName: formName.trim(),
+      rating: formRating,
+      title: formTitle.trim() || `${formRating}-Star Verified Review`,
+      comment: formComment.trim(),
+    });
+
+    toast.success("Review published live to book page!");
+    setNewReviewOpen(false);
+    setFormName("");
+    setFormTitle("");
+    setFormComment("");
+    setFormRating(5);
+  };
+
+  const averageRating =
+    allReviews.length > 0
+      ? (allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length).toFixed(1)
+      : "5.0";
+
+  return (
+    <div className="space-y-8">
+      {/* Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
+              Reader Reviews & Ratings
+            </h1>
+            <span className="rounded-full bg-gold/15 border border-gold/30 px-2.5 py-0.5 text-xs font-bold text-gold">
+              ★ {averageRating} Avg Rating
+            </span>
+          </div>
+          <p className="mt-1 text-xs md:text-sm text-muted-foreground">
+            Manage genuine reader ratings and reviews across your entire bookstore catalog.
+          </p>
+        </div>
+
+        <Button
+          onClick={() => setNewReviewOpen(true)}
+          className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+        >
+          <Plus className="h-4 w-4 mr-1.5" /> Add Official Review
+        </Button>
+      </div>
+
+      {/* Filter Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-surface/50 border border-border/40 text-xs">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <Label className="text-muted-foreground text-xs">Filter Novel:</Label>
+            <select
+              value={selectedBook}
+              onChange={(e) => setSelectedBook(e.target.value)}
+              className="h-8 rounded-lg bg-surface border border-border/60 px-2.5 text-xs text-white"
+            >
+              <option value="all">All Books ({allReviews.length})</option>
+              {books.map((b) => (
+                <option key={b.slug} value={b.slug}>
+                  {b.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <Label className="text-muted-foreground text-xs">Stars:</Label>
+            <select
+              value={filterRating}
+              onChange={(e) => setFilterRating(e.target.value)}
+              className="h-8 rounded-lg bg-surface border border-border/60 px-2.5 text-xs text-white"
+            >
+              <option value="all">All Ratings</option>
+              <option value="5">5 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="2">2 Stars</option>
+              <option value="1">1 Star</option>
+            </select>
+          </div>
+        </div>
+
+        <span className="text-[11px] text-muted-foreground">
+          Showing {filteredReviews.length} of {allReviews.length} total reviews
+        </span>
+      </div>
+
+      {/* Reviews Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredReviews.map((rev) => {
+          const book = books.find((b) => b.slug === rev.bookSlug);
+
+          return (
+            <div
+              key={rev.id}
+              className="p-5 rounded-2xl border border-border/40 bg-[#0c1018]/90 flex flex-col justify-between gap-4 hover:border-gold/30 transition-all shadow-lg"
+            >
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-gold bg-gold/10 px-2 py-0.5 rounded-md truncate max-w-[180px]">
+                    {book ? book.title : rev.bookSlug}
+                  </span>
+
+                  <button
+                    onClick={() => {
+                      if (confirm(`Delete review from ${rev.reviewerName}?`)) {
+                        deleteReview(rev.id);
+                        toast.info("Review deleted.");
+                      }
+                    }}
+                    className="text-rose-400 hover:text-rose-300 p-1 text-xs"
+                    title="Delete Review"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <div className="flex text-amber-400">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        className={`h-3.5 w-3.5 ${
+                          s <= rev.rating ? "fill-amber-400 text-amber-400" : "text-zinc-600"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-xs font-bold text-white">{rev.title}</span>
+                </div>
+
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  “{rev.comment}”
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between pt-3 border-t border-border/30 text-[11px]">
+                <span className="font-semibold text-white">{rev.reviewerName}</span>
+                <span className="text-[10px] text-muted-foreground">
+                  {new Date(rev.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+
+        {filteredReviews.length === 0 && (
+          <div className="sm:col-span-2 lg:col-span-3 p-12 text-center rounded-2xl border border-dashed border-border/60 bg-[#0c1018]/40 space-y-3">
+            <div className="h-10 w-10 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto">
+              <Star className="h-5 w-5" />
+            </div>
+            <p className="text-xs text-muted-foreground">
+              No reader reviews yet. All future verified reviews submitted on book pages will appear here.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Add Review Dialog */}
+      <Dialog open={newReviewOpen} onOpenChange={setNewReviewOpen}>
+        <DialogContent className="border border-gold/30 bg-[#0d111a] text-white sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-gold flex items-center gap-2">
+              <Star className="h-4 w-4 fill-gold text-gold" />
+              <span>Add Official Reader Review</span>
+            </DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleCreateOfficialReview} className="space-y-4 text-xs pt-2">
+            <div className="space-y-1.5">
+              <Label>Select Novel / Book</Label>
+              <select
+                value={formBookSlug}
+                onChange={(e) => setFormBookSlug(e.target.value)}
+                className="w-full h-10 rounded-xl bg-surface/80 border border-border/60 px-3 text-xs text-white"
+              >
+                {books.map((b) => (
+                  <option key={b.slug} value={b.slug}>
+                    {b.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Star Rating</Label>
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setFormRating(s)}
+                    className="p-1 hover:scale-110 transition-transform"
+                  >
+                    <Star
+                      className={`h-6 w-6 ${
+                        s <= formRating ? "fill-amber-400 text-amber-400" : "text-zinc-600"
+                      }`}
+                    />
+                  </button>
+                ))}
+                <span className="text-xs font-semibold text-gold ml-2">
+                  {formRating} Stars
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Reviewer Name</Label>
+              <Input
+                value={formName}
+                onChange={(e) => setFormName(e.target.value)}
+                placeholder="e.g. Early Reader / Critic Name"
+                className="bg-surface/80 border-border/60 text-xs"
+                required
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Headline</Label>
+              <Input
+                value={formTitle}
+                onChange={(e) => setFormTitle(e.target.value)}
+                placeholder="e.g. Masterpiece of suspense and world-building"
+                className="bg-surface/80 border-border/60 text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Review Text</Label>
+              <Textarea
+                rows={4}
+                value={formComment}
+                onChange={(e) => setFormComment(e.target.value)}
+                placeholder="Write review commentary..."
+                className="bg-surface/80 border-border/60 text-xs"
+                required
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setNewReviewOpen(false)}
+                className="border-border/60 text-xs"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
+              >
+                Publish Review
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
