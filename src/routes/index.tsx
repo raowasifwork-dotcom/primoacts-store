@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import heroImage from "@/assets/hero-shadowrealm.jpg";
 import { BookCard } from "@/components/site/BookCard";
+import { CinematicTrailersSection } from "@/components/site/CinematicTrailersSection";
 import { Button } from "@/components/ui/button";
 import { BOOKS, BUNDLE, formatPrice, getBook } from "@/lib/books";
 import { useCart } from "@/lib/cart";
@@ -203,10 +204,13 @@ function Home() {
         </div>
       </section>
 
+      {/* OFFICIAL YOUTUBE TRAILERS & TEASERS */}
+      <CinematicTrailersSection />
+
       {/* Characters preview */}
       <section className="section-pad">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl">The seven of Hollow Creek</h2>
+          <h2 className="text-3xl md:text-4xl font-display uppercase tracking-wide text-white">The seven of Ravenwood</h2>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
             Every act of the Shadowrealm saga is carried by these seven. Some of them will not make
             it to the end.

@@ -45,7 +45,7 @@ export const BOOKS: Book[] = [
     pdf: "/downloads/shadowrealm-a-darkness-awakens.pdf",
     tagline: "Seven kids. One door that should have stayed shut.",
     description:
-      "An original fantasy thriller series. When a door appears in the woods behind Hollow Creek, six teenagers and one very unwilling old man discover their town has been borrowing time from something patient. The first act of the Shadowrealm saga — a cinematic descent into the space between courage and curiosity.",
+      "An original fantasy thriller series. When a door appears in the woods behind Ravenwood, six teenagers and one very unwilling old man discover their town has been borrowing time from something patient. The first act of the Shadowrealm saga — a cinematic descent into the space between courage and curiosity.",
     featured: true,
     status: "available",
   },
@@ -62,7 +62,7 @@ export const BOOKS: Book[] = [
     pdf: "/downloads/shadowrealm-2-the-past-truth.pdf",
     tagline: "The town remembers what the children forgot.",
     description:
-      "Releasing September 10, 2026! Hollow Creek is quiet again — too quiet. As fire spreads through the realm between, an old truth surfaces in the voices of the missing. Book two deepens the Shadowrealm mythos and forces every member of the group to choose a side. Pre-order now to receive the digital edition on release day.",
+      "Releasing September 10, 2026! Ravenwood is quiet again — too quiet. As fire spreads through the realm between, an old truth surfaces in the voices of the missing. Book two deepens the Shadowrealm mythos and forces every member of the group to choose a side. Pre-order now to receive the digital edition on release day.",
     featured: true,
     status: "preorder",
     releaseDate: "September 10, 2026",

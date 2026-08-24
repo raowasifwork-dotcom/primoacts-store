@@ -163,10 +163,10 @@ function CharactersPage() {
                   <Sparkles className="h-3.5 w-3.5 text-gold" /> Dark Fantasy Thriller
                 </span>
                 <h2 className="text-3xl md:text-4xl font-display uppercase tracking-wide text-white">
-                  Shadowrealm: The Seven of Hollow Creek
+                  Shadowrealm: The Seven of Ravenwood
                 </h2>
                 <p className="mt-2 text-xs md:text-sm text-muted-foreground max-w-2xl">
-                  Five teenagers and two adults who know the dark truth behind the doors of Hollow Creek.
+                  Five teenagers and two adults who know the dark truth behind the doors of Ravenwood.
                 </p>
               </div>
               <span className="text-xs font-mono font-bold text-gold bg-gold/10 px-3 py-1.5 rounded-xl border border-gold/30 shrink-0">

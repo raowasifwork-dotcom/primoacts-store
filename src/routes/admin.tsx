@@ -16,19 +16,25 @@ import {
   LogOut,
   Mail,
   Menu,
+  MessageCircle,
+  MessageSquare,
   Package,
+  Play,
   Plus,
   Quote,
   RotateCcw,
   Save,
   Search,
+  Send,
   ShieldCheck,
   Sparkles,
   Trash2,
   TrendingUp,
   Users,
+  Video,
   X,
   XCircle,
+  Youtube,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -44,12 +50,22 @@ import {
   useAdminAuth,
   useLiveBooks,
   useLiveCharacters,
+  useLiveMessages,
   useLiveOrders,
   useLiveSettings,
+  useLiveVideos,
+  type SupportMessage,
 } from "@/lib/admin-store";
 import { type Book, formatPrice } from "@/lib/books";
 import type { Character } from "@/lib/characters";
 import { SITE } from "@/lib/site";
+import {
+  extractYoutubeId,
+  getYoutubeEmbedUrl,
+  getYoutubeThumbnail,
+  YOUTUBE_CHANNEL_URL,
+  type VideoItem,
+} from "@/lib/videos";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -63,8 +79,9 @@ export const Route = createFileRoute("/admin")({
 
 function AdminMasterPortal() {
   const { isAuthenticated, login, logout, updateCredentials } = useAdminAuth();
+  const { unreadCount } = useLiveMessages();
   const [activeTab, setActiveTab] = useState<
-    "dashboard" | "books" | "characters" | "orders" | "settings"
+    "dashboard" | "books" | "characters" | "orders" | "trailers" | "messages" | "settings"
   >("dashboard");
   const [mobileNav, setMobileNav] = useState(false);
 
@@ -174,6 +191,8 @@ function AdminMasterPortal() {
     { id: "books", label: "Books Vault", icon: Package },
     { id: "characters", label: "Characters Lore", icon: Users },
     { id: "orders", label: "Customer Orders", icon: DollarSign },
+    { id: "trailers", label: "YouTube Trailers", icon: Youtube },
+    { id: "messages", label: "Support Chat", icon: MessageSquare, badge: unreadCount },
     { id: "settings", label: "Settings & Security", icon: Sparkles },
   ] as const;
 
@@ -233,22 +252,30 @@ function AdminMasterPortal() {
             {TABS.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
+              const badge = "badge" in item ? item.badge : 0;
 
               return (
                 <button
                   key={item.id}
                   onClick={() => {
-                    setActiveTab(item.id);
+                    setActiveTab(item.id as any);
                     setMobileNav(false);
                   }}
-                  className={`flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all text-left ${
+                  className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all text-left ${
                     isActive
                       ? "bg-gold/15 text-gold border border-gold/30 shadow-sm shadow-gold/5"
                       : "text-muted-foreground hover:bg-surface hover:text-white"
                   }`}
                 >
-                  <Icon className={`h-4 w-4 ${isActive ? "text-gold" : "text-muted-foreground"}`} />
-                  {item.label}
+                  <span className="flex items-center gap-3">
+                    <Icon className={`h-4 w-4 ${isActive ? "text-gold" : "text-muted-foreground"}`} />
+                    {item.label}
+                  </span>
+                  {Boolean(badge && badge > 0) && (
+                    <span className="h-5 min-w-5 px-1.5 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center animate-pulse">
+                      {badge}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -287,6 +314,8 @@ function AdminMasterPortal() {
         {activeTab === "books" && <AdminBooksView />}
         {activeTab === "characters" && <AdminCharactersView />}
         {activeTab === "orders" && <AdminOrdersView />}
+        {activeTab === "trailers" && <AdminTrailersView />}
+        {activeTab === "messages" && <AdminMessagesView />}
         {activeTab === "settings" && <AdminSettingsView onUpdateCredentials={updateCredentials} />}
       </main>
     </div>
@@ -961,7 +990,7 @@ function AdminCharactersView() {
       role: "The Wanderer",
       trait: "Mysterious",
       quote: "The shadows speak if you stay quiet enough.",
-      bio: "A new presence emerging in Hollow Creek.",
+      bio: "A new presence emerging in Ravenwood.",
       image: "/src/assets/hero-shadowrealm.jpg",
     });
     setIsNew(true);
@@ -1664,6 +1693,482 @@ function AdminSettingsView({
           </Button>
         </div>
       </form>
+    </div>
+  );
+}
+
+// -------------------------------------------------------------
+// TAB 5: YOUTUBE MEDIA & TRAILERS STUDIO
+// -------------------------------------------------------------
+function AdminTrailersView() {
+  const { videos, addVideo, updateVideo, deleteVideo, resetVideos } = useLiveVideos();
+  const [editingVideo, setEditingVideo] = useState<VideoItem | null>(null);
+  const [isNew, setIsNew] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleEdit = (video: VideoItem) => {
+    setEditingVideo({ ...video });
+    setIsNew(false);
+    setDialogOpen(true);
+  };
+
+  const handleCreate = () => {
+    setEditingVideo({
+      id: `vid-${Date.now()}`,
+      title: "",
+      description: "",
+      youtubeUrl: "",
+      videoId: "",
+      category: "Official Trailer",
+      featured: true,
+      publishedAt: new Date().getFullYear().toString(),
+    });
+    setIsNew(true);
+    setDialogOpen(true);
+  };
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingVideo || !editingVideo.title || !editingVideo.youtubeUrl) {
+      toast.error("Please enter both title and YouTube URL.");
+      return;
+    }
+
+    const videoId = extractYoutubeId(editingVideo.youtubeUrl);
+    const finalized = { ...editingVideo, videoId };
+
+    if (isNew) {
+      addVideo(finalized);
+      toast.success(`Video "${finalized.title}" added to trailers section!`);
+    } else {
+      updateVideo(finalized);
+      toast.success(`Video "${finalized.title}" updated!`);
+    }
+
+    setDialogOpen(false);
+    setEditingVideo(null);
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
+              YouTube Trailers Studio
+            </h1>
+            <span className="rounded-full bg-red-500/10 border border-red-500/30 text-red-400 px-2.5 py-0.5 text-xs font-bold">
+              {videos.length} Videos
+            </span>
+          </div>
+          <p className="mt-1 text-xs md:text-sm text-muted-foreground">
+            Manage your official YouTube teasers, trailers, and character reels shown on the website.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <a
+            href={YOUTUBE_CHANNEL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl border border-red-500/40 bg-red-500/10 px-3.5 py-2 text-xs font-bold text-red-400 hover:bg-red-500 hover:text-white transition-all shadow-md shadow-red-950/40"
+          >
+            <Youtube className="h-4 w-4" /> Visit YouTube Channel
+          </a>
+          <Button
+            onClick={handleCreate}
+            size="sm"
+            className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+          >
+            <Plus className="mr-1.5 h-3.5 w-3.5" /> Add New Trailer
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {videos.map((video) => (
+          <div
+            key={video.id}
+            className="rounded-2xl border border-border/50 bg-[#0c1018]/90 overflow-hidden shadow-xl flex flex-col justify-between"
+          >
+            <div>
+              <div className="relative aspect-video overflow-hidden bg-black">
+                <img
+                  src={getYoutubeThumbnail(video.videoId || video.youtubeUrl)}
+                  alt={video.title}
+                  className="h-full w-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg`;
+                  }}
+                />
+                <div className="absolute top-2 left-2">
+                  <span className="rounded-full bg-black/80 border border-white/20 px-2 py-0.5 text-[9px] font-bold uppercase text-white">
+                    {video.category}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-4 space-y-2">
+                <h3 className="font-display text-sm font-bold text-white line-clamp-2">
+                  {video.title}
+                </h3>
+                <p className="text-xs text-muted-foreground line-clamp-2">
+                  {video.description}
+                </p>
+                <p className="text-[10px] font-mono text-gold truncate">
+                  ID: {video.videoId || extractYoutubeId(video.youtubeUrl)}
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 pt-2 border-t border-border/30 flex items-center justify-between gap-2">
+              <a
+                href={video.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-red-400 hover:underline flex items-center gap-1"
+              >
+                <Play className="h-3 w-3" /> Test Link
+              </a>
+
+              <div className="flex items-center gap-1.5">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleEdit(video)}
+                  className="h-8 text-xs border-border/60 rounded-lg text-white"
+                >
+                  <Edit2 className="h-3 w-3 mr-1" /> Edit
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    if (confirm(`Delete trailer "${video.title}"?`)) {
+                      deleteVideo(video.id);
+                      toast.info("Trailer deleted.");
+                    }
+                  }}
+                  className="h-8 w-8 p-0 text-rose-400 hover:bg-rose-500/10 rounded-lg"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Edit / Add Trailer Dialog */}
+      {dialogOpen && editingVideo && (
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent className="max-w-xl border-border/60 bg-[#0c1018]/95 p-6 backdrop-blur-2xl rounded-3xl shadow-2xl">
+            <DialogHeader>
+              <DialogTitle className="font-display text-lg font-bold text-white uppercase tracking-wide">
+                {isNew ? "Add YouTube Trailer / Teaser" : `Edit Trailer: ${editingVideo.title}`}
+              </DialogTitle>
+            </DialogHeader>
+
+            <form onSubmit={handleSave} className="space-y-4 pt-2 text-xs">
+              <div className="space-y-1.5">
+                <Label>Trailer Title</Label>
+                <Input
+                  value={editingVideo.title}
+                  onChange={(e) => setEditingVideo({ ...editingVideo, title: e.target.value })}
+                  placeholder="e.g. Shadowrealm: The Awakening Trailer"
+                  className="bg-surface/80 border-border/60"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>YouTube Video Link or ID</Label>
+                <Input
+                  value={editingVideo.youtubeUrl}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setEditingVideo({
+                      ...editingVideo,
+                      youtubeUrl: val,
+                      videoId: extractYoutubeId(val),
+                    });
+                  }}
+                  placeholder="Paste https://youtu.be/... or https://youtube.com/watch?v=..."
+                  className="bg-surface/80 border-border/60 font-mono"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label>Media Category</Label>
+                  <select
+                    value={editingVideo.category}
+                    onChange={(e) =>
+                      setEditingVideo({
+                        ...editingVideo,
+                        category: e.target.value as VideoItem["category"],
+                      })
+                    }
+                    className="w-full h-10 rounded-xl bg-surface/80 border border-border/60 px-3 text-xs text-white"
+                  >
+                    <option value="Official Trailer">Official Trailer</option>
+                    <option value="Teaser">Teaser</option>
+                    <option value="Character Spotlight">Character Spotlight</option>
+                    <option value="Behind The Scenes">Behind The Scenes</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label>Extracted Video ID</Label>
+                  <Input
+                    value={editingVideo.videoId || extractYoutubeId(editingVideo.youtubeUrl)}
+                    readOnly
+                    className="bg-black/50 border-border/60 font-mono text-gold"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Description / Tagline</Label>
+                <Textarea
+                  rows={2}
+                  value={editingVideo.description}
+                  onChange={(e) =>
+                    setEditingVideo({ ...editingVideo, description: e.target.value })
+                  }
+                  placeholder="Short description for viewers..."
+                  className="bg-surface/80 border-border/60"
+                />
+              </div>
+
+              {editingVideo.youtubeUrl && (
+                <div className="p-3 rounded-2xl bg-black/60 border border-border/40 space-y-2">
+                  <Label className="text-gold font-semibold">Live Embedded Preview:</Label>
+                  <div className="aspect-video w-full rounded-xl overflow-hidden bg-black">
+                    <iframe
+                      src={getYoutubeEmbedUrl(editingVideo.youtubeUrl)}
+                      title="Preview"
+                      className="h-full w-full"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-end gap-3 pt-3 border-t border-border/40">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setDialogOpen(false)}
+                  className="text-xs"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+                >
+                  Save Trailer
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+}
+
+// -------------------------------------------------------------
+// TAB 6: CUSTOMER SUPPORT LIVE MESSAGES INBOX
+// -------------------------------------------------------------
+function AdminMessagesView() {
+  const { messages, unreadCount, replyMessage, deleteMessage } = useLiveMessages();
+  const [selectedMsg, setSelectedMsg] = useState<SupportMessage | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [filter, setFilter] = useState<"all" | "unread" | "replied">("all");
+
+  const filtered = messages.filter((m) => {
+    if (filter === "unread") return m.status === "unread";
+    if (filter === "replied") return m.status === "replied";
+    return true;
+  });
+
+  const handleSendReply = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedMsg || !replyText.trim()) return;
+
+    replyMessage(selectedMsg.id, replyText.trim());
+    toast.success(`Reply sent to ${selectedMsg.senderName}!`);
+    setSelectedMsg(null);
+    setReplyText("");
+  };
+
+  return (
+    <div className="space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
+              Customer Support Inbox
+            </h1>
+            {unreadCount > 0 && (
+              <span className="rounded-full bg-red-600 text-white px-2.5 py-0.5 text-xs font-bold animate-pulse">
+                {unreadCount} Unread
+              </span>
+            )}
+          </div>
+          <p className="mt-1 text-xs md:text-sm text-muted-foreground">
+            Live questions, pre-order inquiries, and reader messages sent from the website chat widget.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {(["all", "unread", "replied"] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setFilter(tab)}
+              className={`rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
+                filter === tab
+                  ? "border-gold/60 bg-gold/15 text-gold"
+                  : "border-border/60 text-muted-foreground hover:text-white"
+              }`}
+            >
+              {tab} ({tab === "all" ? messages.length : messages.filter((m) => m.status === tab).length})
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+        {/* Messages List */}
+        <div className="space-y-3">
+          {filtered.map((msg) => {
+            const isSelected = selectedMsg?.id === msg.id;
+            const isUnread = msg.status === "unread";
+
+            return (
+              <div
+                key={msg.id}
+                onClick={() => {
+                  setSelectedMsg(msg);
+                  setReplyText(msg.replyText || "");
+                }}
+                className={`p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-3 ${
+                  isSelected
+                    ? "border-gold bg-gold/10 shadow-lg shadow-gold/10"
+                    : isUnread
+                    ? "border-amber-500/50 bg-[#121622]"
+                    : "border-border/40 bg-[#0c1018]/80 hover:border-border"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="h-8 w-8 rounded-full bg-gold/20 text-gold flex items-center justify-center font-bold text-xs uppercase shrink-0">
+                      {msg.senderName.slice(0, 1)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-bold text-white text-xs truncate">{msg.senderName}</p>
+                      <p className="text-[11px] text-muted-foreground truncate">{msg.senderEmail}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    {isUnread ? (
+                      <span className="rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40 px-2 py-0.5 text-[10px] font-bold">
+                        ● New
+                      </span>
+                    ) : (
+                      <span className="rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 text-[10px] font-bold">
+                        ✓ Replied
+                      </span>
+                    )}
+                    <span className="text-[10px] text-muted-foreground">
+                      {new Date(msg.timestamp).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl bg-black/40 border border-border/30 text-xs text-white/90 leading-relaxed">
+                  “{msg.message}”
+                </div>
+
+                {msg.replyText && (
+                  <div className="p-2.5 rounded-xl bg-purple-950/30 border border-purple-500/30 text-[11px] text-purple-200">
+                    <strong className="text-gold">Rao Wasif's Reply:</strong> {msg.replyText}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {filtered.length === 0 && (
+            <div className="p-12 text-center rounded-2xl border border-border/40 bg-[#0c1018]/60 text-muted-foreground text-xs">
+              No customer messages matching this filter.
+            </div>
+          )}
+        </div>
+
+        {/* Reply Composer Panel */}
+        <div className="rounded-2xl border border-border/50 bg-[#0c1018]/95 p-5 shadow-xl h-fit sticky top-24 space-y-4">
+          <div className="border-b border-border/40 pb-3 flex items-center justify-between">
+            <h2 className="font-display text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
+              <Send className="h-4 w-4 text-gold" />
+              <span>Reply to Reader</span>
+            </h2>
+            {selectedMsg && (
+              <button
+                onClick={() => {
+                  if (confirm(`Delete message from ${selectedMsg.senderName}?`)) {
+                    deleteMessage(selectedMsg.id);
+                    setSelectedMsg(null);
+                    toast.info("Message deleted.");
+                  }
+                }}
+                className="text-rose-400 hover:text-rose-300 p-1 text-xs"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          {selectedMsg ? (
+            <form onSubmit={handleSendReply} className="space-y-3 text-xs">
+              <div className="p-3 rounded-xl bg-surface/50 border border-border/40 space-y-1">
+                <p className="font-bold text-white">{selectedMsg.senderName}</p>
+                <p className="text-muted-foreground text-[11px]">{selectedMsg.senderEmail}</p>
+                <p className="text-white text-xs pt-1 border-t border-border/30 mt-1 italic">
+                  “{selectedMsg.message}”
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Your Reply (as Rao Wasif)</Label>
+                <Textarea
+                  rows={4}
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  placeholder="Type your reply here... (Reader will see this in their live chat)"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-gold hover:bg-gold-light text-black font-semibold rounded-xl text-xs"
+              >
+                <Send className="mr-1.5 h-3.5 w-3.5" /> Send Direct Reply
+              </Button>
+            </form>
+          ) : (
+            <p className="text-xs text-muted-foreground text-center py-10">
+              Select a customer message on the left to write a direct reply.
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

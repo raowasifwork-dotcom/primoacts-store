@@ -151,9 +151,10 @@ function RootComponent() {
           </main>
           <SiteFooter />
         </div>
+        {/* Floating Customer Support Live Chat Widget */}
+        <LiveChatWidget />
         <Toaster />
       </CartProvider>
     </QueryClientProvider>
   );
 }
-

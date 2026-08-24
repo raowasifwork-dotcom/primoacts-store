@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BOOKS, type Book } from "./books";
 import { CHARACTERS, type Character } from "./characters";
 import { SITE } from "./site";
+import { DEFAULT_VIDEOS, type VideoItem } from "./videos";
 
 export type Order = {
   id: string;
@@ -15,21 +16,34 @@ export type Order = {
   note?: string;
 };
 
+export type SupportMessage = {
+  id: string;
+  senderName: string;
+  senderEmail: string;
+  message: string;
+  timestamp: string;
+  status: "unread" | "replied";
+  replyText?: string;
+  repliedAt?: string;
+};
+
 export type SiteSettings = {
   announcementEnabled: boolean;
   announcementText: string;
   announcementLink: string;
   contactEmail: string;
   contactPhone: string;
+  youtubeChannelUrl: string;
   allowInstantDownloads: boolean;
 };
 
 const DEFAULT_SETTINGS: SiteSettings = {
   announcementEnabled: true,
-  announcementText: "🔥 Shadowrealm Season 2: The Past Truth is out now!",
+  announcementText: "🔥 Shadowrealm Season 2: The Past Truth · Pre-Order Now!",
   announcementLink: "/store",
   contactEmail: SITE.email,
   contactPhone: SITE.phone,
+  youtubeChannelUrl: "https://www.youtube.com/@primoacts_official",
   allowInstantDownloads: true,
 };
 
@@ -70,29 +84,28 @@ export function useAdminAuth() {
     const savedPin = getStorage<string>("primo_admin_pin", DEFAULT_PIN);
     const savedPass = getStorage<string>("primo_admin_pass", DEFAULT_PASSWORD);
 
-    const clean = input.trim();
-    if (clean === savedPin || clean === savedPass) {
-      setStorage("primo_auth_status", true);
+    if (input === savedPin || input === savedPass) {
       setIsAuthenticated(true);
+      setStorage("primo_auth_status", true);
       return true;
     }
     return false;
   };
 
   const logout = () => {
-    setStorage("primo_auth_status", false);
     setIsAuthenticated(false);
+    setStorage("primo_auth_status", false);
   };
 
   const updateCredentials = (newPin: string, newPass: string) => {
-    if (newPin) setStorage("primo_admin_pin", newPin);
-    if (newPass) setStorage("primo_admin_pass", newPass);
+    setStorage("primo_admin_pin", newPin);
+    setStorage("primo_admin_pass", newPass);
   };
 
   return { isAuthenticated, login, logout, updateCredentials };
 }
 
-// --- LIVE BOOKS HOOK ---
+// --- BOOKS HOOK ---
 export function useLiveBooks() {
   const [books, setBooks] = useState<Book[]>(() => {
     return getStorage<Book[]>("primo_books_catalog", BOOKS);
@@ -107,21 +120,21 @@ export function useLiveBooks() {
   }, []);
 
   const updateBook = (updated: Book) => {
-    const next = books.map((b) => (b.slug === updated.slug ? updated : b));
-    setBooks(next);
-    setStorage("primo_books_catalog", next);
+    const newBooks = books.map((b) => (b.slug === updated.slug ? updated : b));
+    setBooks(newBooks);
+    setStorage("primo_books_catalog", newBooks);
   };
 
   const addBook = (newBook: Book) => {
-    const next = [newBook, ...books];
-    setBooks(next);
-    setStorage("primo_books_catalog", next);
+    const newBooks = [newBook, ...books];
+    setBooks(newBooks);
+    setStorage("primo_books_catalog", newBooks);
   };
 
   const deleteBook = (slug: string) => {
-    const next = books.filter((b) => b.slug !== slug);
-    setBooks(next);
-    setStorage("primo_books_catalog", next);
+    const newBooks = books.filter((b) => b.slug !== slug);
+    setBooks(newBooks);
+    setStorage("primo_books_catalog", newBooks);
   };
 
   const resetBooks = () => {
@@ -132,7 +145,7 @@ export function useLiveBooks() {
   return { books, updateBook, addBook, deleteBook, resetBooks };
 }
 
-// --- LIVE CHARACTERS HOOK ---
+// --- CHARACTERS HOOK ---
 export function useLiveCharacters() {
   const [characters, setCharacters] = useState<Character[]>(() => {
     return getStorage<Character[]>("primo_characters_roster", CHARACTERS);
@@ -147,21 +160,21 @@ export function useLiveCharacters() {
   }, []);
 
   const updateCharacter = (updated: Character) => {
-    const next = characters.map((c) => (c.slug === updated.slug ? updated : c));
-    setCharacters(next);
-    setStorage("primo_characters_roster", next);
+    const newChars = characters.map((c) => (c.slug === updated.slug ? updated : c));
+    setCharacters(newChars);
+    setStorage("primo_characters_roster", newChars);
   };
 
   const addCharacter = (newChar: Character) => {
-    const next = [...characters, newChar];
-    setCharacters(next);
-    setStorage("primo_characters_roster", next);
+    const newChars = [newChar, ...characters];
+    setCharacters(newChars);
+    setStorage("primo_characters_roster", newChars);
   };
 
   const deleteCharacter = (slug: string) => {
-    const next = characters.filter((c) => c.slug !== slug);
-    setCharacters(next);
-    setStorage("primo_characters_roster", next);
+    const newChars = characters.filter((c) => c.slug !== slug);
+    setCharacters(newChars);
+    setStorage("primo_characters_roster", newChars);
   };
 
   const resetCharacters = () => {
@@ -170,6 +183,101 @@ export function useLiveCharacters() {
   };
 
   return { characters, updateCharacter, addCharacter, deleteCharacter, resetCharacters };
+}
+
+// --- YOUTUBE VIDEOS & TRAILERS HOOK ---
+export function useLiveVideos() {
+  const [videos, setVideos] = useState<VideoItem[]>(() => {
+    return getStorage<VideoItem[]>("primo_youtube_videos", DEFAULT_VIDEOS);
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setVideos(getStorage<VideoItem[]>("primo_youtube_videos", DEFAULT_VIDEOS));
+    };
+    window.addEventListener("primoacts_store_update", handleUpdate);
+    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+  }, []);
+
+  const addVideo = (newVideo: VideoItem) => {
+    const updated = [newVideo, ...videos];
+    setVideos(updated);
+    setStorage("primo_youtube_videos", updated);
+  };
+
+  const updateVideo = (updatedVideo: VideoItem) => {
+    const updated = videos.map((v) => (v.id === updatedVideo.id ? updatedVideo : v));
+    setVideos(updated);
+    setStorage("primo_youtube_videos", updated);
+  };
+
+  const deleteVideo = (id: string) => {
+    const updated = videos.filter((v) => v.id !== id);
+    setVideos(updated);
+    setStorage("primo_youtube_videos", updated);
+  };
+
+  const resetVideos = () => {
+    setVideos(DEFAULT_VIDEOS);
+    setStorage("primo_youtube_videos", DEFAULT_VIDEOS);
+  };
+
+  return { videos, addVideo, updateVideo, deleteVideo, resetVideos };
+}
+
+// --- SUPPORT MESSAGES & LIVE CHAT HOOK ---
+export function useLiveMessages() {
+  const [messages, setMessages] = useState<SupportMessage[]>(() => {
+    return getStorage<SupportMessage[]>("primo_support_messages", []);
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setMessages(getStorage<SupportMessage[]>("primo_support_messages", []));
+    };
+    window.addEventListener("primoacts_store_update", handleUpdate);
+    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+  }, []);
+
+  const sendMessage = (senderName: string, senderEmail: string, messageText: string) => {
+    const newMsg: SupportMessage = {
+      id: `msg-${Date.now()}`,
+      senderName,
+      senderEmail,
+      message: messageText,
+      timestamp: new Date().toISOString(),
+      status: "unread",
+    };
+    const updated = [newMsg, ...messages];
+    setMessages(updated);
+    setStorage("primo_support_messages", updated);
+    return newMsg;
+  };
+
+  const replyMessage = (id: string, replyText: string) => {
+    const updated = messages.map((m) =>
+      m.id === id
+        ? {
+            ...m,
+            status: "replied" as const,
+            replyText,
+            repliedAt: new Date().toISOString(),
+          }
+        : m,
+    );
+    setMessages(updated);
+    setStorage("primo_support_messages", updated);
+  };
+
+  const deleteMessage = (id: string) => {
+    const updated = messages.filter((m) => m.id !== id);
+    setMessages(updated);
+    setStorage("primo_support_messages", updated);
+  };
+
+  const unreadCount = messages.filter((m) => m.status === "unread").length;
+
+  return { messages, unreadCount, sendMessage, replyMessage, deleteMessage };
 }
 
 // --- ORDERS HOOK ---
@@ -186,32 +294,25 @@ export function useLiveOrders() {
     return () => window.removeEventListener("primoacts_store_update", handleUpdate);
   }, []);
 
-  const createOrder = (orderData: Omit<Order, "id" | "createdAt" | "status">) => {
-    const newOrder: Order = {
-      ...orderData,
-      id: `ord-${Date.now().toString().slice(-6)}`,
-      status: "pending",
-      createdAt: new Date().toISOString(),
-    };
-    const next = [newOrder, ...orders];
-    setOrders(next);
-    setStorage("primo_orders_list", next);
-    return newOrder;
+  const addOrder = (order: Order) => {
+    const newOrders = [order, ...orders];
+    setOrders(newOrders);
+    setStorage("primo_orders_list", newOrders);
   };
 
-  const updateOrderStatus = (orderId: string, status: Order["status"]) => {
-    const next = orders.map((o) => (o.id === orderId ? { ...o, status } : o));
-    setOrders(next);
-    setStorage("primo_orders_list", next);
+  const updateOrderStatus = (id: string, status: Order["status"]) => {
+    const newOrders = orders.map((o) => (o.id === id ? { ...o, status } : o));
+    setOrders(newOrders);
+    setStorage("primo_orders_list", newOrders);
   };
 
-  const deleteOrder = (orderId: string) => {
-    const next = orders.filter((o) => o.id !== orderId);
-    setOrders(next);
-    setStorage("primo_orders_list", next);
+  const deleteOrder = (id: string) => {
+    const newOrders = orders.filter((o) => o.id !== id);
+    setOrders(newOrders);
+    setStorage("primo_orders_list", newOrders);
   };
 
-  return { orders, createOrder, updateOrderStatus, deleteOrder };
+  return { orders, addOrder, updateOrderStatus, deleteOrder };
 }
 
 // --- SETTINGS HOOK ---
@@ -228,10 +329,10 @@ export function useLiveSettings() {
     return () => window.removeEventListener("primoacts_store_update", handleUpdate);
   }, []);
 
-  const updateSettings = (partial: Partial<SiteSettings>) => {
-    const next = { ...settings, ...partial };
-    setSettings(next);
-    setStorage("primo_site_settings", next);
+  const updateSettings = (newSettings: Partial<SiteSettings>) => {
+    const updated = { ...settings, ...newSettings };
+    setSettings(updated);
+    setStorage("primo_site_settings", updated);
   };
 
   return { settings, updateSettings };

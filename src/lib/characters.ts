@@ -32,7 +32,7 @@ export const UNIVERSES = ["All", "Shadowrealm Saga", "Rise of the Supreme"] as c
 
 export const CHARACTERS: Character[] = [
   // ==========================================
-  // --- SHADOWREALM SAGA (THE 7 OF HOLLOW CREEK) ---
+  // --- SHADOWREALM SAGA (THE 7 OF RAVENWOOD) ---
   // ==========================================
   {
     slug: "mia-carter",
@@ -96,7 +96,7 @@ export const CHARACTERS: Character[] = [
     role: "The Keeper",
     trait: "Guarded",
     quote: "I've seen this before. I buried the last group that asked.",
-    bio: "Hollow Creek's oldest resident and its most reluctant guide. He knows the rules of the Shadowrealm because he helped write them.",
+    bio: "Ravenwood's oldest resident and its most reluctant guide. He knows the rules of the Shadowrealm because he helped write them.",
     image: mrHolloway,
     universe: "Shadowrealm Saga",
   },
