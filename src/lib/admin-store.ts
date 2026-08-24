@@ -69,6 +69,26 @@ export type BookReview = {
   status: "approved" | "pending";
 };
 
+export type HeroSlide = {
+  id: string;
+  universe: string;
+  badge: string;
+  title: string;
+  titleHighlight: string;
+  description: string;
+  image: string;
+  primaryBtnText: string;
+  primaryBtnLink: string;
+  secondaryBtnText?: string;
+  secondaryBtnLink?: string;
+  active: boolean;
+};
+
+export type HeroConfig = {
+  autoplayDuration: number; // milliseconds (e.g. 5000)
+  slides: HeroSlide[];
+};
+
 export type SiteSettings = {
   announcementEnabled: boolean;
   announcementText: string;
@@ -470,5 +490,101 @@ export function useLiveReviews(bookSlug?: string) {
     averageRating,
     addReview,
     deleteReview,
+  };
+}
+
+// --- HERO SLIDESHOW HOOK ---
+export const DEFAULT_HERO_SLIDES: HeroSlide[] = [
+  {
+    id: "slide-shadowrealm",
+    universe: "Shadowrealm Saga",
+    badge: "PRIMO ACTS PRESENTS · DARK FANTASY THRILLER",
+    title: "Stories that step",
+    titleHighlight: "out of the dark.",
+    description:
+      "Seven unlikely heroes, one town that keeps its secrets, and a door that should have stayed shut.",
+    image: "/hero-shadowrealm.jpg",
+    primaryBtnText: "Enter the store",
+    primaryBtnLink: "/store",
+    secondaryBtnText: "Meet the seven",
+    secondaryBtnLink: "/characters",
+    active: true,
+  },
+  {
+    id: "slide-supreme",
+    universe: "Rise of the Supreme",
+    badge: "EPIC SCI-FI FANTASY UNIVERSE",
+    title: "Rise of the",
+    titleHighlight: "Supreme Warrior.",
+    description:
+      "Alexander Vega awakens supreme cosmic powers to confront ancient dark conquerors threatening the galaxies.",
+    image: "/hero-supreme.jpg",
+    primaryBtnText: "Read Supreme",
+    primaryBtnLink: "/store/rise-of-the-supreme",
+    secondaryBtnText: "Meet The Heroes",
+    secondaryBtnLink: "/characters",
+    active: true,
+  },
+];
+
+export const DEFAULT_HERO_CONFIG: HeroConfig = {
+  autoplayDuration: 5000,
+  slides: DEFAULT_HERO_SLIDES,
+};
+
+export function useLiveHero() {
+  const [config, setConfig] = useState<HeroConfig>(() => {
+    return getStorage<HeroConfig>("primo_hero_config", DEFAULT_HERO_CONFIG);
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setConfig(getStorage<HeroConfig>("primo_hero_config", DEFAULT_HERO_CONFIG));
+    };
+    window.addEventListener("primoacts_store_update", handleUpdate);
+    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+  }, []);
+
+  const updateDuration = (durationMs: number) => {
+    const updated = { ...config, autoplayDuration: durationMs };
+    setConfig(updated);
+    setStorage("primo_hero_config", updated);
+  };
+
+  const updateSlide = (id: string, partial: Partial<HeroSlide>) => {
+    const updatedSlides = config.slides.map((s) => (s.id === id ? { ...s, ...partial } : s));
+    const updated = { ...config, slides: updatedSlides };
+    setConfig(updated);
+    setStorage("primo_hero_config", updated);
+  };
+
+  const addSlide = (slide: Omit<HeroSlide, "id">) => {
+    const newSlide: HeroSlide = {
+      ...slide,
+      id: `slide-${Date.now()}`,
+    };
+    const updatedSlides = [...config.slides, newSlide];
+    const updated = { ...config, slides: updatedSlides };
+    setConfig(updated);
+    setStorage("primo_hero_config", updated);
+    return newSlide;
+  };
+
+  const deleteSlide = (id: string) => {
+    const updatedSlides = config.slides.filter((s) => s.id !== id);
+    const updated = { ...config, slides: updatedSlides };
+    setConfig(updated);
+    setStorage("primo_hero_config", updated);
+  };
+
+  return {
+    heroConfig: config,
+    slides: config.slides.filter((s) => s.active),
+    allSlides: config.slides,
+    autoplayDuration: config.autoplayDuration || 5000,
+    updateDuration,
+    updateSlide,
+    addSlide,
+    deleteSlide,
   };
 }

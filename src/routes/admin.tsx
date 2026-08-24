@@ -11,6 +11,7 @@ import {
   Edit2,
   ExternalLink,
   FileDown,
+  Film,
   KeyRound,
   LayoutDashboard,
   LogOut,
@@ -52,11 +53,13 @@ import {
   useAdminAuth,
   useLiveBooks,
   useLiveCharacters,
+  useLiveHero,
   useLiveMessages,
   useLiveOrders,
   useLiveReviews,
   useLiveSettings,
   useLiveVideos,
+  type HeroSlide,
   type SupportMessage,
 } from "@/lib/admin-store";
 import { type Book, formatPrice } from "@/lib/books";
@@ -194,6 +197,7 @@ function AdminMasterPortal() {
     { id: "books", label: "Books Vault", icon: Package },
     { id: "reviews", label: "Reader Reviews", icon: Star },
     { id: "characters", label: "Characters Lore", icon: Users },
+    { id: "hero", label: "Hero Billboard", icon: Film },
     { id: "orders", label: "Customer Orders", icon: DollarSign },
     { id: "trailers", label: "YouTube Trailers", icon: Youtube },
     { id: "messages", label: "Support Chat", icon: MessageSquare, badge: unreadCount },
@@ -318,6 +322,7 @@ function AdminMasterPortal() {
         {activeTab === "books" && <AdminBooksView />}
         {activeTab === "reviews" && <AdminReviewsView />}
         {activeTab === "characters" && <AdminCharactersView />}
+        {activeTab === "hero" && <AdminHeroSlideshowView />}
         {activeTab === "orders" && <AdminOrdersView />}
         {activeTab === "trailers" && <AdminTrailersView />}
         {activeTab === "messages" && <AdminMessagesView />}
@@ -2783,6 +2788,639 @@ function AdminReviewsView() {
                 className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
               >
                 Publish Review
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+// -------------------------------------------------------------
+// TAB 5: HERO BILLBOARD & SLIDESHOW MANAGER
+// -------------------------------------------------------------
+function AdminHeroSlideshowView() {
+  const { allSlides, autoplayDuration, updateDuration, updateSlide, addSlide, deleteSlide } =
+    useLiveHero();
+
+  const [editSlideOpen, setEditSlideOpen] = useState(false);
+  const [newSlideOpen, setNewSlideOpen] = useState(false);
+  const [selectedSlide, setSelectedSlide] = useState<HeroSlide | null>(null);
+
+  // Form states for adding/editing
+  const [formUniverse, setFormUniverse] = useState("");
+  const [formBadge, setFormBadge] = useState("");
+  const [formTitle, setFormTitle] = useState("");
+  const [formHighlight, setFormHighlight] = useState("");
+  const [formDescription, setFormDescription] = useState("");
+  const [formImage, setFormImage] = useState("");
+  const [formPrimaryText, setFormPrimaryText] = useState("");
+  const [formPrimaryLink, setFormPrimaryLink] = useState("");
+  const [formSecondaryText, setFormSecondaryText] = useState("");
+  const [formSecondaryLink, setFormSecondaryLink] = useState("");
+  const [formActive, setFormActive] = useState(true);
+
+  // Open edit modal
+  const openEditModal = (slide: HeroSlide) => {
+    setSelectedSlide(slide);
+    setFormUniverse(slide.universe);
+    setFormBadge(slide.badge);
+    setFormTitle(slide.title);
+    setFormHighlight(slide.titleHighlight);
+    setFormDescription(slide.description);
+    setFormImage(slide.image);
+    setFormPrimaryText(slide.primaryBtnText);
+    setFormPrimaryLink(slide.primaryBtnLink);
+    setFormSecondaryText(slide.secondaryBtnText || "");
+    setFormSecondaryLink(slide.secondaryBtnLink || "");
+    setFormActive(slide.active);
+    setEditSlideOpen(true);
+  };
+
+  // Open new slide modal
+  const openNewModal = () => {
+    setFormUniverse("New Epic Saga");
+    setFormBadge("PRIMO ACTS EXCLUSIVE");
+    setFormTitle("The Awakening of");
+    setFormHighlight("Dark Realms.");
+    setFormDescription(
+      "Experience original dark fiction with breathtaking lore and thrilling mysteries.",
+    );
+    setFormImage("/hero-shadowrealm.jpg");
+    setFormPrimaryText("Explore Saga");
+    setFormPrimaryLink("/store");
+    setFormSecondaryText("Read Lore");
+    setFormSecondaryLink("/characters");
+    setFormActive(true);
+    setNewSlideOpen(true);
+  };
+
+  // Handle Drag & Drop / File Upload for Image
+  const handleImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (PNG, JPG, WEBP).");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target?.result as string;
+      setFormImage(base64);
+      toast.success("Artwork loaded successfully!");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedSlide) return;
+
+    updateSlide(selectedSlide.id, {
+      universe: formUniverse,
+      badge: formBadge,
+      title: formTitle,
+      titleHighlight: formHighlight,
+      description: formDescription,
+      image: formImage,
+      primaryBtnText: formPrimaryText,
+      primaryBtnLink: formPrimaryLink,
+      secondaryBtnText: formSecondaryText,
+      secondaryBtnLink: formSecondaryLink,
+      active: formActive,
+    });
+
+    toast.success("Slide updated successfully!");
+    setEditSlideOpen(false);
+  };
+
+  const handleCreateSlide = (e: React.FormEvent) => {
+    e.preventDefault();
+    addSlide({
+      universe: formUniverse,
+      badge: formBadge,
+      title: formTitle,
+      titleHighlight: formHighlight,
+      description: formDescription,
+      image: formImage,
+      primaryBtnText: formPrimaryText,
+      primaryBtnLink: formPrimaryLink,
+      secondaryBtnText: formSecondaryText,
+      secondaryBtnLink: formSecondaryLink,
+      active: formActive,
+    });
+
+    toast.success("New slide added to homepage billboard!");
+    setNewSlideOpen(false);
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
+              Hero Billboard & Slideshow
+            </h1>
+            <span className="rounded-full bg-gold/15 border border-gold/30 px-2.5 py-0.5 text-xs font-bold text-gold">
+              Live On Homepage
+            </span>
+          </div>
+          <p className="mt-1 text-xs md:text-sm text-muted-foreground">
+            Manage Netflix-style cinematic billboard slides, background 3D artwork, and auto-transition duration.
+          </p>
+        </div>
+
+        <Button
+          onClick={openNewModal}
+          className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+        >
+          <Plus className="h-4 w-4 mr-1.5" /> Add New Slide
+        </Button>
+      </div>
+
+      {/* Timing Controls Card */}
+      <div className="p-5 rounded-2xl border border-border/50 bg-[#0c1018]/90 shadow-xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-display font-bold uppercase tracking-wider text-white flex items-center gap-2">
+              <Clock className="h-4 w-4 text-gold" />
+              <span>Slideshow Transition Interval</span>
+            </h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              How many seconds each slide stays on screen before automatically rotating.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {[3000, 5000, 8000, 10000].map((duration) => (
+              <Button
+                key={duration}
+                size="sm"
+                variant={autoplayDuration === duration ? "default" : "outline"}
+                onClick={() => {
+                  updateDuration(duration);
+                  toast.success(`Slide duration updated to ${duration / 1000} seconds!`);
+                }}
+                className={`text-xs rounded-xl font-medium ${
+                  autoplayDuration === duration
+                    ? "bg-gold text-black font-bold"
+                    : "border-border/60 text-muted-foreground hover:text-white"
+                }`}
+              >
+                {duration / 1000}s
+              </Button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Slides List Grid */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {allSlides.map((slide, idx) => (
+          <div
+            key={slide.id}
+            className={`rounded-2xl border overflow-hidden transition-all shadow-xl bg-[#0c1018]/80 ${
+              slide.active ? "border-gold/30 hover:border-gold/60" : "border-border/40 opacity-60"
+            }`}
+          >
+            {/* Image Preview Banner */}
+            <div className="relative aspect-16/9 w-full overflow-hidden bg-surface">
+              <img
+                src={slide.image}
+                alt={slide.universe}
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+
+              <div className="absolute top-3 left-3 flex items-center gap-2">
+                <span className="rounded-full bg-black/70 border border-gold/40 px-2.5 py-0.5 text-[10px] font-bold text-gold backdrop-blur-md">
+                  Slide {idx + 1}
+                </span>
+                <span className="rounded-full bg-black/70 border border-white/20 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
+                  {slide.universe}
+                </span>
+              </div>
+
+              <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                <span
+                  className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider backdrop-blur-md ${
+                    slide.active
+                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                      : "bg-zinc-800 text-zinc-400 border border-zinc-700"
+                  }`}
+                >
+                  {slide.active ? "Active" : "Hidden"}
+                </span>
+              </div>
+
+              <div className="absolute bottom-3 left-3 right-3">
+                <p className="text-sm font-display font-bold text-white truncate drop-shadow-md">
+                  {slide.title} {slide.titleHighlight}
+                </p>
+              </div>
+            </div>
+
+            {/* Slide Details & Actions */}
+            <div className="p-5 space-y-3 text-xs">
+              <p className="text-muted-foreground line-clamp-2 text-xs">
+                {slide.description}
+              </p>
+
+              <div className="flex items-center gap-2 text-[11px] text-zinc-400">
+                <span className="bg-surface/80 border border-border/50 px-2 py-1 rounded-md">
+                  🔘 Primary: <strong className="text-white">{slide.primaryBtnText}</strong> ({slide.primaryBtnLink})
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between pt-3 border-t border-border/30">
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={slide.active}
+                    onCheckedChange={(checked) => {
+                      updateSlide(slide.id, { active: checked });
+                      toast.success(`Slide ${checked ? "activated" : "hidden"}!`);
+                    }}
+                  />
+                  <span className="text-[11px] text-muted-foreground">
+                    {slide.active ? "Enabled" : "Disabled"}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {allSlides.length > 1 && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        if (confirm(`Delete slide "${slide.universe}"?`)) {
+                          deleteSlide(slide.id);
+                          toast.info("Slide deleted.");
+                        }
+                      }}
+                      className="text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 h-8 px-2.5 text-xs rounded-lg"
+                    >
+                      <Trash2 className="h-3.5 w-3.5 mr-1" /> Delete
+                    </Button>
+                  )}
+
+                  <Button
+                    size="sm"
+                    onClick={() => openEditModal(slide)}
+                    className="bg-gold/15 text-gold hover:bg-gold/25 border border-gold/30 h-8 px-3 text-xs rounded-lg font-medium"
+                  >
+                    <Edit2 className="h-3.5 w-3.5 mr-1.5" /> Edit Slide & Image
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* EDIT SLIDE DIALOG */}
+      <Dialog open={editSlideOpen} onOpenChange={setEditSlideOpen}>
+        <DialogContent className="border border-gold/30 bg-[#0d111a] text-white sm:max-w-xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-gold flex items-center gap-2">
+              <Film className="h-4 w-4 text-gold" />
+              <span>Edit Hero Billboard Slide</span>
+            </DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleSaveEdit} className="space-y-4 text-xs pt-2">
+            {/* Image Preview & Drag-Drop Uploader */}
+            <div className="space-y-1.5">
+              <Label className="text-muted-foreground text-xs">Background 3D Artwork (16:9)</Label>
+              <div className="relative aspect-16/9 w-full rounded-xl overflow-hidden border border-border/60 bg-black/60 group">
+                <img src={formImage} alt="Preview" className="h-full w-full object-cover" />
+                <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity text-white text-xs font-semibold gap-1">
+                  <UploadCloud className="h-6 w-6 text-gold" />
+                  <span>Click or Drag New Image to Replace</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageFile}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1">
+                <span>Upload high-res JPG/PNG from your computer.</span>
+                <label className="text-gold hover:underline cursor-pointer font-semibold">
+                  Browse File
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageFile}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>Universe / Franchise Name</Label>
+                <Input
+                  value={formUniverse}
+                  onChange={(e) => setFormUniverse(e.target.value)}
+                  placeholder="e.g. Shadowrealm Saga"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Badge Text (Top Pill)</Label>
+                <Input
+                  value={formBadge}
+                  onChange={(e) => setFormBadge(e.target.value)}
+                  placeholder="e.g. PRIMO ACTS PRESENTS"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>Title (Part 1 - Violet)</Label>
+                <Input
+                  value={formTitle}
+                  onChange={(e) => setFormTitle(e.target.value)}
+                  placeholder="e.g. Stories that step"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Title Highlight (Part 2 - Gold)</Label>
+                <Input
+                  value={formHighlight}
+                  onChange={(e) => setFormHighlight(e.target.value)}
+                  placeholder="e.g. out of the dark."
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Description / Tagline</Label>
+              <Textarea
+                rows={3}
+                value={formDescription}
+                onChange={(e) => setFormDescription(e.target.value)}
+                placeholder="Write compelling hook..."
+                className="bg-surface/80 border-border/60 text-xs"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>Primary Button Text</Label>
+                <Input
+                  value={formPrimaryText}
+                  onChange={(e) => setFormPrimaryText(e.target.value)}
+                  placeholder="e.g. Enter the store"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Primary Button Link</Label>
+                <Input
+                  value={formPrimaryLink}
+                  onChange={(e) => setFormPrimaryLink(e.target.value)}
+                  placeholder="e.g. /store"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>Secondary Button Text (Optional)</Label>
+                <Input
+                  value={formSecondaryText}
+                  onChange={(e) => setFormSecondaryText(e.target.value)}
+                  placeholder="e.g. Meet the characters"
+                  className="bg-surface/80 border-border/60 text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Secondary Button Link</Label>
+                <Input
+                  value={formSecondaryLink}
+                  onChange={(e) => setFormSecondaryLink(e.target.value)}
+                  placeholder="e.g. /characters"
+                  className="bg-surface/80 border-border/60 text-xs"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-3 border-t border-border/30">
+              <div className="flex items-center gap-2">
+                <Switch checked={formActive} onCheckedChange={setFormActive} />
+                <Label className="text-xs">Show on public homepage</Label>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditSlideOpen(false)}
+                  className="border-border/60 text-xs"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  size="sm"
+                  className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
+                >
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* ADD NEW SLIDE DIALOG */}
+      <Dialog open={newSlideOpen} onOpenChange={setNewSlideOpen}>
+        <DialogContent className="border border-gold/30 bg-[#0d111a] text-white sm:max-w-xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-gold flex items-center gap-2">
+              <Plus className="h-4 w-4 text-gold" />
+              <span>Create New Billboard Slide</span>
+            </DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleCreateSlide} className="space-y-4 text-xs pt-2">
+            {/* Image Preview & Drag-Drop Uploader */}
+            <div className="space-y-1.5">
+              <Label className="text-muted-foreground text-xs">Background 3D Artwork (16:9)</Label>
+              <div className="relative aspect-16/9 w-full rounded-xl overflow-hidden border border-border/60 bg-black/60 group">
+                <img src={formImage} alt="Preview" className="h-full w-full object-cover" />
+                <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity text-white text-xs font-semibold gap-1">
+                  <UploadCloud className="h-6 w-6 text-gold" />
+                  <span>Click or Drag New Image</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageFile}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1">
+                <span>Upload high-res JPG/PNG from your computer.</span>
+                <label className="text-gold hover:underline cursor-pointer font-semibold">
+                  Browse File
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageFile}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>Universe / Franchise Name</Label>
+                <Input
+                  value={formUniverse}
+                  onChange={(e) => setFormUniverse(e.target.value)}
+                  placeholder="e.g. Shadowrealm Saga"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Badge Text (Top Pill)</Label>
+                <Input
+                  value={formBadge}
+                  onChange={(e) => setFormBadge(e.target.value)}
+                  placeholder="e.g. PRIMO ACTS PRESENTS"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>Title (Part 1)</Label>
+                <Input
+                  value={formTitle}
+                  onChange={(e) => setFormTitle(e.target.value)}
+                  placeholder="e.g. Stories that step"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Title Highlight (Part 2)</Label>
+                <Input
+                  value={formHighlight}
+                  onChange={(e) => setFormHighlight(e.target.value)}
+                  placeholder="e.g. out of the dark."
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>Description / Tagline</Label>
+              <Textarea
+                rows={3}
+                value={formDescription}
+                onChange={(e) => setFormDescription(e.target.value)}
+                placeholder="Write compelling hook..."
+                className="bg-surface/80 border-border/60 text-xs"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>Primary Button Text</Label>
+                <Input
+                  value={formPrimaryText}
+                  onChange={(e) => setFormPrimaryText(e.target.value)}
+                  placeholder="e.g. Enter the store"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Primary Button Link</Label>
+                <Input
+                  value={formPrimaryLink}
+                  onChange={(e) => setFormPrimaryLink(e.target.value)}
+                  placeholder="e.g. /store"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label>Secondary Button Text (Optional)</Label>
+                <Input
+                  value={formSecondaryText}
+                  onChange={(e) => setFormSecondaryText(e.target.value)}
+                  placeholder="e.g. Meet the characters"
+                  className="bg-surface/80 border-border/60 text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Secondary Button Link</Label>
+                <Input
+                  value={formSecondaryLink}
+                  onChange={(e) => setFormSecondaryLink(e.target.value)}
+                  placeholder="e.g. /characters"
+                  className="bg-surface/80 border-border/60 text-xs"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-border/30">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setNewSlideOpen(false)}
+                className="border-border/60 text-xs"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
+              >
+                Create Slide
               </Button>
             </div>
           </form>

@@ -3,9 +3,9 @@ import { ArrowRight, BookOpen, Download, ShieldCheck } from "lucide-react";
 
 import { toast } from "sonner";
 
-import heroImage from "@/assets/hero-shadowrealm.jpg";
 import { BookCard } from "@/components/site/BookCard";
 import { CinematicTrailersSection } from "@/components/site/CinematicTrailersSection";
+import { HeroSlideshow } from "@/components/site/HeroSlideshow";
 import { Button } from "@/components/ui/button";
 import { BOOKS, BUNDLE, formatPrice, getBook } from "@/lib/books";
 import { useCart } from "@/lib/cart";
@@ -40,40 +40,8 @@ function Home() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="veil-bottom relative isolate overflow-hidden">
-        <img
-          src={heroImage}
-          alt="The seven characters of the Shadowrealm saga standing beneath a stormy moonlit sky"
-          width={1536}
-          height={1152}
-          className="absolute inset-0 h-full w-full object-cover object-top opacity-60"
-        />
-        <div className="relative z-10 mx-auto flex min-h-[86vh] max-w-6xl flex-col justify-end px-4 pb-20 pt-28 md:px-6">
-          <p className="animate-rise font-display text-xs uppercase tracking-[0.4em] text-gold">
-            {SITE.name} Presents
-          </p>
-          <h1 className="animate-rise mt-5 max-w-3xl text-4xl leading-[1.05] sm:text-6xl md:text-7xl">
-            <span className="text-gradient-violet">Stories that step</span>
-            <br />
-            <span className="text-gradient-gold">out of the dark.</span>
-          </h1>
-          <p className="animate-rise mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
-            An original fantasy thriller universe written by {SITE.founder}. Seven unlikely heroes,
-            one town that keeps its secrets, and a door that should have stayed shut.
-          </p>
-          <div className="animate-rise mt-9 flex flex-wrap gap-3">
-            <Button asChild size="lg">
-              <Link to="/store">
-                Enter the store <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/characters">Meet the seven</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Netflix-Style Cinematic Hero Slideshow */}
+      <HeroSlideshow />
 
       {/* Trust strip */}
       <section className="border-y border-border/60">
