@@ -89,14 +89,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "Original fantasy thriller universe and digital book store written by Rao Wasif.",
       },
       { name: "author", content: "Rao Wasif" },
+      { name: "application-name", content: "Primo Acts" },
+      { name: "apple-mobile-web-app-title", content: "Primo Acts" },
+      { name: "theme-color", content: "#07090e" },
+      { property: "og:site_name", content: "Primo Acts" },
       { property: "og:title", content: "Primo Acts — Stories That Step Out of the Dark" },
       {
         property: "og:description",
         content: "Original fantasy thriller universe and digital book store written by Rao Wasif.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://primoacts-store.vercel.app" },
+      { property: "og:image", content: "https://primoacts-store.vercel.app/logo.png" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@PrimoActs" },
+      { name: "twitter:creator", content: "@PrimoActs" },
+      { name: "twitter:title", content: "Primo Acts — Stories That Step Out of the Dark" },
+      {
+        name: "twitter:description",
+        content: "Original fantasy thriller universe and digital book store written by Rao Wasif.",
+      },
+      { name: "twitter:image", content: "https://primoacts-store.vercel.app/logo.png" },
       {
         name: "google-site-verification",
         content: "zRqQOmPT2e552_tnY-GGh_rurcIwKarh5cJqePj1ExA",
@@ -107,15 +120,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "canonical", href: "https://primoacts-store.vercel.app/" },
+      { rel: "manifest", href: "/manifest.json" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Sora:wght@300;400;500;600&display=swap",
       },
+      { rel: "icon", href: "/logo.png", type: "image/png" },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/logo.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -125,10 +141,49 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://primoacts-store.vercel.app/#website",
+        "url": "https://primoacts-store.vercel.app/",
+        "name": "Primo Acts",
+        "alternateName": ["PrimoActs", "Primo Acts Official", "Primo Acts Store", "primoacts"],
+        "description": "Original fantasy thriller universe and digital book store written by Rao Wasif.",
+        "publisher": {
+          "@id": "https://primoacts-store.vercel.app/#organization",
+        },
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://primoacts-store.vercel.app/#organization",
+        "name": "Primo Acts",
+        "url": "https://primoacts-store.vercel.app/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://primoacts-store.vercel.app/logo.png",
+        },
+        "founder": {
+          "@type": "Person",
+          "name": "Rao Wasif",
+          "jobTitle": "Author & Founder",
+          "email": "raowasifwork@gmail.com",
+          "url": "https://primoacts-store.vercel.app/about",
+        },
+        "sameAs": ["https://www.youtube.com/@primoacts_official"],
+      },
+    ],
+  };
+
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body>
         {children}

@@ -1,0 +1,22 @@
+﻿{
+  "name": "Primo Acts",
+  "short_name": "Primo Acts",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07090e",
+  "theme_color": "#d4af37",
+  "description": "Original fantasy thriller universe and digital book store written by Rao Wasif.",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/png"
+    }
+  ]
+}
