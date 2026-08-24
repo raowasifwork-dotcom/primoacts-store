@@ -16,6 +16,35 @@ export type Order = {
   note?: string;
 };
 
+export type SupportAgent = {
+  id: string;
+  name: string;
+  role: string;
+  avatar?: string;
+  online: boolean;
+};
+
+export const DEFAULT_AGENTS: SupportAgent[] = [
+  {
+    id: "agent-1",
+    name: "Support Agent 1",
+    role: "Order & Pre-Order Specialist",
+    online: true,
+  },
+  {
+    id: "agent-2",
+    name: "Support Agent 2",
+    role: "Digital Delivery & Tech Support",
+    online: true,
+  },
+  {
+    id: "agent-3",
+    name: "Support Agent 3",
+    role: "Universe & General Inquiries",
+    online: true,
+  },
+];
+
 export type SupportMessage = {
   id: string;
   senderName: string;
@@ -25,6 +54,7 @@ export type SupportMessage = {
   status: "unread" | "replied";
   replyText?: string;
   repliedAt?: string;
+  agentName?: string;
 };
 
 export type SiteSettings = {
@@ -35,6 +65,8 @@ export type SiteSettings = {
   contactPhone: string;
   youtubeChannelUrl: string;
   allowInstantDownloads: boolean;
+  founderPhotoUrl?: string;
+  founderBio?: string;
 };
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -45,6 +77,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
   contactPhone: SITE.phone,
   youtubeChannelUrl: "https://www.youtube.com/@primoacts_official",
   allowInstantDownloads: true,
+  founderPhotoUrl: "",
+  founderBio: "",
 };
 
 const DEFAULT_PIN = "7788";
@@ -231,9 +265,14 @@ export function useLiveMessages() {
     return getStorage<SupportMessage[]>("primo_support_messages", []);
   });
 
+  const [agents, setAgents] = useState<SupportAgent[]>(() => {
+    return getStorage<SupportAgent[]>("primo_support_agents", DEFAULT_AGENTS);
+  });
+
   useEffect(() => {
     const handleUpdate = () => {
       setMessages(getStorage<SupportMessage[]>("primo_support_messages", []));
+      setAgents(getStorage<SupportAgent[]>("primo_support_agents", DEFAULT_AGENTS));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
     return () => window.removeEventListener("primoacts_store_update", handleUpdate);
@@ -254,7 +293,11 @@ export function useLiveMessages() {
     return newMsg;
   };
 
-  const replyMessage = (id: string, replyText: string) => {
+  const replyMessage = (
+    id: string,
+    replyText: string,
+    agentName: string = "Primo Acts Support Desk",
+  ) => {
     const updated = messages.map((m) =>
       m.id === id
         ? {
@@ -262,6 +305,7 @@ export function useLiveMessages() {
             status: "replied" as const,
             replyText,
             repliedAt: new Date().toISOString(),
+            agentName,
           }
         : m,
     );
@@ -275,9 +319,30 @@ export function useLiveMessages() {
     setStorage("primo_support_messages", updated);
   };
 
+  const updateAgent = (updatedAgent: SupportAgent) => {
+    const updated = agents.map((a) => (a.id === updatedAgent.id ? updatedAgent : a));
+    setAgents(updated);
+    setStorage("primo_support_agents", updated);
+  };
+
+  const addAgent = (newAgent: SupportAgent) => {
+    const updated = [...agents, newAgent];
+    setAgents(updated);
+    setStorage("primo_support_agents", updated);
+  };
+
   const unreadCount = messages.filter((m) => m.status === "unread").length;
 
-  return { messages, unreadCount, sendMessage, replyMessage, deleteMessage };
+  return {
+    messages,
+    agents,
+    unreadCount,
+    sendMessage,
+    replyMessage,
+    deleteMessage,
+    updateAgent,
+    addAgent,
+  };
 }
 
 // --- ORDERS HOOK ---

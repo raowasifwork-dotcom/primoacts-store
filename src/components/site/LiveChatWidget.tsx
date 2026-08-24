@@ -67,17 +67,17 @@ export function LiveChatWidget() {
           {/* Header */}
           <div className="bg-gradient-to-r from-gold/20 via-[#121622] to-purple-950/30 p-4 border-b border-border/50 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative h-10 w-10 rounded-full overflow-hidden border border-gold/50 bg-black/60 shrink-0">
-                <img src={founderImg} alt="Rao Wasif" className="h-full w-full object-cover" />
+              <div className="relative h-10 w-10 rounded-xl overflow-hidden border border-gold/50 bg-black/60 shrink-0 p-1">
+                <img src="/logo.png" alt="Primo Acts Support" className="h-full w-full object-contain" />
                 <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-black" />
               </div>
               <div className="min-w-0">
                 <p className="font-display text-sm font-bold text-white truncate flex items-center gap-1.5">
-                  <span>{SITE.name} Support</span>
+                  <span>{SITE.name} Support Desk</span>
                   <Sparkles className="h-3 w-3 text-gold" />
                 </p>
                 <p className="text-[11px] text-emerald-400 font-medium">
-                  Direct with {SITE.founder}
+                  Active Customer Care Team
                 </p>
               </div>
             </div>
@@ -95,7 +95,7 @@ export function LiveChatWidget() {
             <div className="rounded-2xl bg-surface/60 border border-border/40 p-3.5 space-y-1.5">
               <p className="font-semibold text-gold text-xs">Welcome to {SITE.name} Support! 👋</p>
               <p className="text-muted-foreground leading-relaxed text-[11px]">
-                Ask any question regarding <strong>Shadowrealm</strong>, upcoming novels, pre-orders, Word/PDF digital downloads, or custom inquiries.
+                Our support desk is online. Ask any question regarding <strong>Shadowrealm</strong>, upcoming novels, pre-orders, Word/PDF digital downloads, or custom inquiries.
               </p>
             </div>
 
@@ -111,13 +111,13 @@ export function LiveChatWidget() {
                   </div>
                 </div>
 
-                {/* Founder Reply (if replied) */}
+                {/* Support Agent Reply (if replied) */}
                 {msg.replyText && (
                   <div className="flex justify-start">
                     <div className="max-w-[85%] rounded-2xl rounded-tl-none bg-[#161c28] border border-purple-500/30 p-3 text-purple-100 space-y-1">
                       <div className="flex items-center gap-1.5 text-gold text-[10px] font-bold uppercase">
                         <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                        <span>Rao Wasif (Founder)</span>
+                        <span>{msg.agentName || "Support Agent (Verified)"}</span>
                       </div>
                       <p className="text-xs leading-relaxed">{msg.replyText}</p>
                       {msg.repliedAt && (

@@ -30,6 +30,7 @@ import {
   Sparkles,
   Trash2,
   TrendingUp,
+  UploadCloud,
   Users,
   Video,
   X,
@@ -1513,6 +1514,7 @@ function AdminSettingsView({
 
   const [contactEmail, setContactEmail] = useState(settings.contactEmail);
   const [contactPhone, setContactPhone] = useState(settings.contactPhone);
+  const [founderPhotoUrl, setFounderPhotoUrl] = useState(settings.founderPhotoUrl || "");
 
   const [newPin, setNewPin] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -1525,6 +1527,7 @@ function AdminSettingsView({
       announcementLink,
       contactEmail,
       contactPhone,
+      founderPhotoUrl,
     });
     toast.success("Store and announcement settings saved live!");
   };
@@ -1548,8 +1551,127 @@ function AdminSettingsView({
           Settings & Security
         </h1>
         <p className="mt-1 text-xs md:text-sm text-muted-foreground">
-          Manage header announcements, contact information, and admin security credentials.
+          Manage header announcements, contact information, about page photo, and admin credentials.
         </p>
+      </div>
+
+      {/* Founder Portrait & About Page Image Manager */}
+      <div className="rounded-2xl border border-border/50 bg-[#0c1018]/90 p-6 shadow-xl backdrop-blur-md space-y-6">
+        <div className="flex items-center gap-2.5 border-b border-border/40 pb-4">
+          <div className="h-8 w-8 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold">
+            <Users className="h-4 w-4" />
+          </div>
+          <div>
+            <h2 className="font-display text-base font-semibold text-white uppercase tracking-wide">
+              About Page & Author Photo Manager
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              Direct drag & drop image upload to change your official author photo on the About Page.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-[140px_1fr] items-start">
+          <div className="relative group">
+            <div className="h-44 w-32 rounded-2xl overflow-hidden border-2 border-gold/50 shadow-2xl bg-black">
+              <img
+                src={founderPhotoUrl || founderImg}
+                alt="Founder Preview"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <span className="absolute bottom-2 left-2 right-2 rounded-lg bg-black/80 text-[10px] text-gold font-bold text-center py-0.5 border border-gold/30 backdrop-blur-sm">
+              Live Preview
+            </span>
+          </div>
+
+          <div className="space-y-4 text-xs">
+            {/* Drag & Drop File Upload Area */}
+            <div
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                const file = e.dataTransfer.files?.[0];
+                if (file && file.type.startsWith("image/")) {
+                  const reader = new FileReader();
+                  reader.onload = (event) => {
+                    const result = event.target?.result as string;
+                    if (result) {
+                      setFounderPhotoUrl(result);
+                      updateSettings({ founderPhotoUrl: result });
+                      toast.success("New About photo uploaded and saved live!");
+                    }
+                  };
+                  reader.readAsDataURL(file);
+                } else {
+                  toast.error("Please drop a valid image file (PNG, JPG, WEBP).");
+                }
+              }}
+              className="border-2 border-dashed border-gold/40 hover:border-gold rounded-2xl p-6 text-center bg-gold/5 hover:bg-gold/10 transition-all cursor-pointer flex flex-col items-center justify-center gap-2"
+              onClick={() => {
+                const input = document.getElementById("about-photo-file-input");
+                input?.click();
+              }}
+            >
+              <input
+                id="about-photo-file-input"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                      const result = event.target?.result as string;
+                      if (result) {
+                        setFounderPhotoUrl(result);
+                        updateSettings({ founderPhotoUrl: result });
+                        toast.success("New About photo uploaded and saved live!");
+                      }
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+              <div className="h-10 w-10 rounded-full bg-gold/20 text-gold flex items-center justify-center">
+                <UploadCloud className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="font-bold text-white text-xs">
+                  Drag & Drop New Image Here, or <span className="text-gold underline">Click to Browse</span>
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Direct Upload from Computer (PNG, JPG, JPEG, WEBP)
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <p className="text-[11px] text-muted-foreground">
+                {founderPhotoUrl
+                  ? "✓ Custom photo active on About Page."
+                  : "✓ Currently displaying your official studio portrait."}
+              </p>
+
+              {founderPhotoUrl && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setFounderPhotoUrl("");
+                    updateSettings({ founderPhotoUrl: "" });
+                    toast.info("Reset to default studio portrait.");
+                  }}
+                  className="border-border/60 text-xs rounded-xl text-muted-foreground hover:text-white"
+                >
+                  <RotateCcw className="h-3 w-3 mr-1" /> Reset to Default Portrait
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Header Announcement Banner */}
@@ -1984,10 +2106,28 @@ function AdminTrailersView() {
 // TAB 6: CUSTOMER SUPPORT LIVE MESSAGES INBOX
 // -------------------------------------------------------------
 function AdminMessagesView() {
-  const { messages, unreadCount, replyMessage, deleteMessage } = useLiveMessages();
+  const {
+    messages,
+    agents = [],
+    unreadCount,
+    replyMessage,
+    deleteMessage,
+    updateAgent,
+  } = useLiveMessages();
   const [selectedMsg, setSelectedMsg] = useState<SupportMessage | null>(null);
   const [replyText, setReplyText] = useState("");
+  const [selectedAgent, setSelectedAgent] = useState(
+    agents[0] ? `${agents[0].name} (${agents[0].role})` : "Support Agent 1 (Order Specialist)",
+  );
   const [filter, setFilter] = useState<"all" | "unread" | "replied">("all");
+
+  // Agent Slot Editor State
+  const [editingAgent, setEditingAgent] = useState<{
+    id: string;
+    name: string;
+    role: string;
+    online: boolean;
+  } | null>(null);
 
   const filtered = messages.filter((m) => {
     if (filter === "unread") return m.status === "unread";
@@ -1999,19 +2139,42 @@ function AdminMessagesView() {
     e.preventDefault();
     if (!selectedMsg || !replyText.trim()) return;
 
-    replyMessage(selectedMsg.id, replyText.trim());
-    toast.success(`Reply sent to ${selectedMsg.senderName}!`);
+    replyMessage(selectedMsg.id, replyText.trim(), selectedAgent);
+    toast.success(`Reply sent to ${selectedMsg.senderName} as ${selectedAgent}!`);
     setSelectedMsg(null);
     setReplyText("");
   };
 
+  const handleSaveAgentSlot = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingAgent) return;
+    updateAgent({
+      id: editingAgent.id,
+      name: editingAgent.name.trim() || "Support Agent",
+      role: editingAgent.role.trim() || "Customer Care Specialist",
+      online: editingAgent.online,
+    });
+    toast.success(`Agent slot ${editingAgent.name} saved!`);
+    setEditingAgent(null);
+  };
+
+  const activeAgentsList =
+    agents.length > 0
+      ? agents
+      : [
+          { id: "agent-1", name: "Support Agent 1", role: "Order & Pre-Order Specialist", online: true },
+          { id: "agent-2", name: "Support Agent 2", role: "Digital Delivery & Tech Support", online: true },
+          { id: "agent-3", name: "Support Agent 3", role: "Universe & General Inquiries", online: true },
+        ];
+
   return (
     <div className="space-y-8">
+      {/* Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
-              Customer Support Inbox
+              Customer Support Desk & Inbox
             </h1>
             {unreadCount > 0 && (
               <span className="rounded-full bg-red-600 text-white px-2.5 py-0.5 text-xs font-bold animate-pulse">
@@ -2040,6 +2203,117 @@ function AdminMessagesView() {
           ))}
         </div>
       </div>
+
+      {/* Support Agent Slots Panel */}
+      <div className="rounded-2xl border border-border/50 bg-[#0c1018]/90 p-5 shadow-xl space-y-3">
+        <div className="flex items-center justify-between border-b border-border/40 pb-3">
+          <div className="flex items-center gap-2 text-xs font-bold text-white uppercase tracking-wider">
+            <ShieldCheck className="h-4 w-4 text-emerald-400" />
+            <span>Support Agent Slots (3 Configurable Slots — Click to Edit)</span>
+          </div>
+          <span className="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">
+            Manage Team
+          </span>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          {activeAgentsList.map((agent) => (
+            <div
+              key={agent.id}
+              onClick={() => setEditingAgent({ ...agent })}
+              className="p-3.5 rounded-xl bg-surface/50 hover:bg-surface/80 border border-border/40 hover:border-gold/50 flex items-center justify-between gap-3 text-xs cursor-pointer transition-all group"
+            >
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <p className="font-bold text-white truncate group-hover:text-gold transition-colors">
+                    {agent.name}
+                  </p>
+                  <Edit2 className="h-3 w-3 text-muted-foreground group-hover:text-gold shrink-0 opacity-60" />
+                </div>
+                <p className="text-[11px] text-muted-foreground truncate">{agent.role}</p>
+              </div>
+              <div
+                className={`h-2.5 w-2.5 rounded-full shrink-0 shadow-sm ${
+                  agent.online
+                    ? "bg-emerald-500 shadow-emerald-500/80 animate-pulse"
+                    : "bg-zinc-600"
+                }`}
+                title={agent.online ? "Online" : "Offline"}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Edit Agent Modal Dialog */}
+      <Dialog open={!!editingAgent} onOpenChange={(open) => !open && setEditingAgent(null)}>
+        <DialogContent className="border border-gold/30 bg-[#0d111a] text-white sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-gold flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              <span>Edit Support Agent Slot</span>
+            </DialogTitle>
+          </DialogHeader>
+
+          {editingAgent && (
+            <form onSubmit={handleSaveAgentSlot} className="space-y-4 text-xs pt-2">
+              <div className="space-y-1.5">
+                <Label>Agent / Support Name</Label>
+                <Input
+                  value={editingAgent.name}
+                  onChange={(e) => setEditingAgent({ ...editingAgent, name: e.target.value })}
+                  placeholder="e.g. Support Agent 1 (or person's real name when hired)"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Role / Department</Label>
+                <Input
+                  value={editingAgent.role}
+                  onChange={(e) => setEditingAgent({ ...editingAgent, role: e.target.value })}
+                  placeholder="e.g. Order Specialist / Digital Downloads Desk"
+                  className="bg-surface/80 border-border/60 text-xs"
+                  required
+                />
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-xl bg-surface/50 border border-border/40">
+                <div>
+                  <p className="font-bold text-white text-xs">Agent Online Status</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Shows active green indicator to customers
+                  </p>
+                </div>
+                <Switch
+                  checked={editingAgent.online}
+                  onCheckedChange={(val) => setEditingAgent({ ...editingAgent, online: val })}
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditingAgent(null)}
+                  className="border-border/60 text-xs"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  size="sm"
+                  className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
+                >
+                  <Save className="h-3.5 w-3.5 mr-1" /> Save Agent Slot
+                </Button>
+              </div>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
         {/* Messages List */}
@@ -2096,7 +2370,7 @@ function AdminMessagesView() {
 
                 {msg.replyText && (
                   <div className="p-2.5 rounded-xl bg-purple-950/30 border border-purple-500/30 text-[11px] text-purple-200">
-                    <strong className="text-gold">Rao Wasif's Reply:</strong> {msg.replyText}
+                    <strong className="text-gold">{msg.agentName || "Support Desk"}:</strong> {msg.replyText}
                   </div>
                 )}
               </div>
@@ -2115,7 +2389,7 @@ function AdminMessagesView() {
           <div className="border-b border-border/40 pb-3 flex items-center justify-between">
             <h2 className="font-display text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
               <Send className="h-4 w-4 text-gold" />
-              <span>Reply to Reader</span>
+              <span>Reply as Support Agent</span>
             </h2>
             {selectedMsg && (
               <button
@@ -2144,12 +2418,28 @@ function AdminMessagesView() {
               </div>
 
               <div className="space-y-1.5">
-                <Label>Your Reply (as Rao Wasif)</Label>
+                <Label>Reply As Support Agent Slot:</Label>
+                <select
+                  value={selectedAgent}
+                  onChange={(e) => setSelectedAgent(e.target.value)}
+                  className="w-full h-10 rounded-xl bg-surface/80 border border-border/60 px-3 text-xs text-white"
+                >
+                  {activeAgentsList.map((agent) => (
+                    <option key={agent.id} value={`${agent.name} (${agent.role})`}>
+                      {agent.name} — {agent.role}
+                    </option>
+                  ))}
+                  <option value="Primo Acts Live Helpdesk">Primo Acts Live Helpdesk</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label>Your Reply</Label>
                 <Textarea
                   rows={4}
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
-                  placeholder="Type your reply here... (Reader will see this in their live chat)"
+                  placeholder="Type support reply here... (Customer will see this in their live chat)"
                   className="bg-surface/80 border-border/60 text-xs"
                   required
                 />
@@ -2159,7 +2449,7 @@ function AdminMessagesView() {
                 type="submit"
                 className="w-full bg-gold hover:bg-gold-light text-black font-semibold rounded-xl text-xs"
               >
-                <Send className="mr-1.5 h-3.5 w-3.5" /> Send Direct Reply
+                <Send className="mr-1.5 h-3.5 w-3.5" /> Send Agent Reply
               </Button>
             </form>
           ) : (

@@ -3,6 +3,7 @@ import { ArrowRight, Mail, Phone } from "lucide-react";
 
 import founderAsset from "@/assets/rao-wasif.png";
 import { Button } from "@/components/ui/button";
+import { useLiveSettings } from "@/lib/admin-store";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/about")({
@@ -25,15 +26,18 @@ export const Route = createFileRoute("/about")({
 });
 
 function AboutPage() {
+  const { settings } = useLiveSettings();
+  const photo = settings?.founderPhotoUrl || founderAsset;
+
   return (
     <div className="section-pad">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <div className="grid gap-12 md:grid-cols-[minmax(0,360px)_minmax(0,1fr)] md:items-start">
           <div className="glass-panel animate-drift overflow-hidden rounded-3xl p-3">
             <img
-              src={founderAsset}
+              src={photo}
               alt={`Portrait of ${SITE.founder}, founder of ${SITE.name}`}
-              className="w-full rounded-2xl object-cover"
+              className="w-full rounded-2xl object-cover shadow-2xl"
             />
           </div>
 
