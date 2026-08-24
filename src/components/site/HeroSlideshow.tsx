@@ -11,7 +11,6 @@ export function HeroSlideshow() {
   const { slides, autoplayDuration } = useLiveHero();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   // Fallback if slides empty
   const activeSlides =
@@ -62,39 +61,23 @@ export function HeroSlideshow() {
   const activeIndex = currentIndex % activeSlides.length;
   const currentSlide = activeSlides[activeIndex] || activeSlides[0];
 
-  // Autoplay timer with progress bar
+  // Autoplay timer
   useEffect(() => {
     if (activeSlides.length <= 1 || isHovered) return;
 
-    const intervalTime = 50; // update progress every 50ms
-    const step = (intervalTime / autoplayDuration) * 100;
-
     const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          setCurrentIndex((curr) => (curr + 1) % activeSlides.length);
-          return 0;
-        }
-        return prev + step;
-      });
-    }, intervalTime);
+      setCurrentIndex((curr) => (curr + 1) % activeSlides.length);
+    }, autoplayDuration);
 
     return () => clearInterval(timer);
-  }, [activeSlides.length, autoplayDuration, isHovered, activeIndex]);
+  }, [activeSlides.length, autoplayDuration, isHovered]);
 
   const handleNext = () => {
-    setProgress(0);
     setCurrentIndex((prev) => (prev + 1) % activeSlides.length);
   };
 
   const handlePrev = () => {
-    setProgress(0);
     setCurrentIndex((prev) => (prev - 1 + activeSlides.length) % activeSlides.length);
-  };
-
-  const handleSelect = (idx: number) => {
-    setProgress(0);
-    setCurrentIndex(idx);
   };
 
   return (
@@ -202,43 +185,6 @@ export function HeroSlideshow() {
             )}
           </div>
         </div>
-
-        {/* Bottom Slide Indicators & Progress Bars */}
-        {activeSlides.length > 1 && (
-          <div className="mt-8 pt-4 flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2.5">
-              {activeSlides.map((s, idx) => {
-                const isActive = idx === activeIndex;
-
-                return (
-                  <button
-                    key={s.id}
-                    onClick={() => handleSelect(idx)}
-                    className={`group flex items-center gap-2 py-1 transition-all text-left ${
-                      isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
-                    }`}
-                  >
-                    <div className="relative h-1.5 w-14 sm:w-20 rounded-full bg-white/20 overflow-hidden">
-                      <div
-                        className="h-full bg-gold rounded-full transition-all duration-75"
-                        style={{
-                          width: isActive ? `${progress}%` : "0%",
-                        }}
-                      />
-                    </div>
-                    <span className="text-[11px] font-semibold text-white/90 hidden sm:inline-block">
-                      {s.universe}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <span className="text-[11px] font-mono text-gold font-bold ml-auto bg-black/50 border border-gold/30 px-2.5 py-0.5 rounded-full backdrop-blur-md">
-              0{activeIndex + 1} / 0{activeSlides.length}
-            </span>
-          </div>
-        )}
       </div>
     </section>
   );
