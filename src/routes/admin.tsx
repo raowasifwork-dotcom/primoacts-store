@@ -3,9 +3,11 @@ import {
   ArrowRight,
   ArrowUpRight,
   BookOpen,
+  Building2,
   CheckCircle2,
   Clock,
   Copy,
+  CreditCard,
   DollarSign,
   Download,
   Edit2,
@@ -1552,6 +1554,18 @@ function AdminSettingsView({
   const [contactPhone, setContactPhone] = useState(settings.contactPhone);
   const [founderPhotoUrl, setFounderPhotoUrl] = useState(settings.founderPhotoUrl || "");
 
+  // Bank Account & Payment Details
+  const [bankName, setBankName] = useState(
+    settings.bankName || "Meezan Bank / Allied Bank / EasyPaisa / JazzCash",
+  );
+  const [accountTitle, setAccountTitle] = useState(settings.accountTitle || "Rao Wasif");
+  const [accountNumber, setAccountNumber] = useState(settings.accountNumber || "+92 309 296743");
+  const [iban, setIban] = useState(settings.iban || "PK00MEZN0000000000000000");
+  const [paymentInstructions, setPaymentInstructions] = useState(
+    settings.paymentInstructions ||
+      "Please transfer the exact amount and share your payment screenshot on WhatsApp or Support Live Chat along with your Order Reference ID.",
+  );
+
   const [newPin, setNewPin] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -1564,8 +1578,13 @@ function AdminSettingsView({
       contactEmail,
       contactPhone,
       founderPhotoUrl,
+      bankName,
+      accountTitle,
+      accountNumber,
+      iban,
+      paymentInstructions,
     });
-    toast.success("Store and announcement settings saved live!");
+    toast.success("Store and bank account settings saved live!");
   };
 
   const handleSaveSecurity = (e: React.FormEvent) => {
@@ -1587,9 +1606,105 @@ function AdminSettingsView({
           Settings & Security
         </h1>
         <p className="mt-1 text-xs md:text-sm text-muted-foreground">
-          Manage header announcements, contact information, about page photo, and admin credentials.
+          Manage bank transfer details, header announcements, about page photo, and admin credentials.
         </p>
       </div>
+
+      {/* Official Bank Account & Checkout Payment Manager */}
+      <form
+        onSubmit={handleSaveStore}
+        className="rounded-2xl border border-border/50 bg-[#0c1018]/90 p-6 shadow-xl backdrop-blur-md space-y-6"
+      >
+        <div className="flex items-center justify-between border-b border-border/40 pb-4">
+          <div className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold">
+              <Building2 className="h-4 w-4" />
+            </div>
+            <div>
+              <h2 className="font-display text-base font-semibold text-white uppercase tracking-wide">
+                Bank & Payment Account Details (Live on Checkout)
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                These bank and wallet details are displayed to customers on the checkout page for manual bank transfers.
+              </p>
+            </div>
+          </div>
+
+          <Button
+            type="submit"
+            size="sm"
+            className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+          >
+            <Save className="h-3.5 w-3.5 mr-1.5" /> Save Bank Details
+          </Button>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 text-xs">
+          <div className="space-y-1.5">
+            <Label>Bank / Wallet Provider Name</Label>
+            <Input
+              value={bankName}
+              onChange={(e) => setBankName(e.target.value)}
+              placeholder="e.g. Meezan Bank / EasyPaisa / JazzCash"
+              className="bg-surface/80 border-border/60"
+              required
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Account Title / Beneficiary Name</Label>
+            <Input
+              value={accountTitle}
+              onChange={(e) => setAccountTitle(e.target.value)}
+              placeholder="e.g. Rao Wasif"
+              className="bg-surface/80 border-border/60"
+              required
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Account Number / Mobile Wallet</Label>
+            <Input
+              value={accountNumber}
+              onChange={(e) => setAccountNumber(e.target.value)}
+              placeholder="e.g. +92 309 296743"
+              className="bg-surface/80 border-border/60 font-mono"
+              required
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>IBAN Number (Optional)</Label>
+            <Input
+              value={iban}
+              onChange={(e) => setIban(e.target.value)}
+              placeholder="e.g. PK00MEZN0000000000000000"
+              className="bg-surface/80 border-border/60 font-mono"
+            />
+          </div>
+
+          <div className="space-y-1.5 sm:col-span-2">
+            <Label>Payment & Verification Instructions</Label>
+            <Textarea
+              rows={3}
+              value={paymentInstructions}
+              onChange={(e) => setPaymentInstructions(e.target.value)}
+              placeholder="Instructions displayed to reader on checkout..."
+              className="bg-surface/80 border-border/60 text-xs"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-end pt-2">
+          <Button
+            type="submit"
+            className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+          >
+            <Save className="h-3.5 w-3.5 mr-1.5" /> Save Bank Details Live
+          </Button>
+        </div>
+      </form>
 
       {/* Founder Portrait & About Page Image Manager */}
       <div className="rounded-2xl border border-border/50 bg-[#0c1018]/90 p-6 shadow-xl backdrop-blur-md space-y-6">

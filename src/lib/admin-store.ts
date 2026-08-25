@@ -14,6 +14,8 @@ export type Order = {
   status: "pending" | "verified" | "cancelled";
   createdAt: string;
   note?: string;
+  paymentMethod?: string;
+  billingCountry?: string;
 };
 
 export type SupportAgent = {
@@ -99,6 +101,11 @@ export type SiteSettings = {
   allowInstantDownloads: boolean;
   founderPhotoUrl?: string;
   founderBio?: string;
+  bankName?: string;
+  accountTitle?: string;
+  accountNumber?: string;
+  iban?: string;
+  paymentInstructions?: string;
 };
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -111,6 +118,12 @@ const DEFAULT_SETTINGS: SiteSettings = {
   allowInstantDownloads: true,
   founderPhotoUrl: "",
   founderBio: "",
+  bankName: "Meezan Bank / Allied Bank / EasyPaisa / JazzCash",
+  accountTitle: "Rao Wasif",
+  accountNumber: "+92 309 296743",
+  iban: "PK00MEZN0000000000000000",
+  paymentInstructions:
+    "Please transfer the exact amount and share your payment screenshot on WhatsApp or Support Live Chat along with your Order Reference ID.",
 };
 
 const DEFAULT_PIN = "7788";
@@ -397,6 +410,33 @@ export function useLiveOrders() {
     setStorage("primo_orders_list", newOrders);
   };
 
+  const createOrder = (orderData: {
+    reference: string;
+    customerName: string;
+    customerEmail: string;
+    items: { slug: string; title: string; price: number }[];
+    total: number;
+    paymentMethod?: string;
+    billingCountry?: string;
+  }) => {
+    const newOrder: Order = {
+      id: `ord-${Date.now()}`,
+      reference: orderData.reference,
+      customerName: orderData.customerName,
+      customerEmail: orderData.customerEmail,
+      items: orderData.items,
+      total: orderData.total,
+      status: orderData.paymentMethod === "visa" ? "verified" : "pending",
+      paymentMethod: orderData.paymentMethod || "bank",
+      billingCountry: orderData.billingCountry || "Pakistan",
+      createdAt: new Date().toISOString(),
+    };
+    const newOrders = [newOrder, ...orders];
+    setOrders(newOrders);
+    setStorage("primo_orders_list", newOrders);
+    return newOrder;
+  };
+
   const updateOrderStatus = (id: string, status: Order["status"]) => {
     const newOrders = orders.map((o) => (o.id === id ? { ...o, status } : o));
     setOrders(newOrders);
@@ -409,7 +449,7 @@ export function useLiveOrders() {
     setStorage("primo_orders_list", newOrders);
   };
 
-  return { orders, addOrder, updateOrderStatus, deleteOrder };
+  return { orders, addOrder, createOrder, updateOrderStatus, deleteOrder };
 }
 
 // --- SETTINGS HOOK ---
