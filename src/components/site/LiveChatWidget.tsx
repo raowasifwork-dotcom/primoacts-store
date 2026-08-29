@@ -1,4 +1,4 @@
-import { CheckCircle2, MessageCircle, MessageSquare, Send, Sparkles, User, X } from "lucide-react";
+import { CheckCircle2, MessageCircle, MessageSquare, Phone, Send, Sparkles, User, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -19,6 +19,7 @@ export function LiveChatWidget() {
   const [email, setEmail] = useState(user?.email || "");
   const [message, setMessage] = useState("");
   const [activeThreadEmail, setActiveThreadEmail] = useState<string>(user?.email || "");
+  const [lastSentText, setLastSentText] = useState<string>("");
 
   // Find messages from current customer email
   const currentEmail = user?.email || activeThreadEmail;
@@ -38,11 +39,18 @@ export function LiveChatWidget() {
       return;
     }
 
-    sendMessage(senderName, senderEmail, message.trim());
+    const textToSend = message.trim();
+    sendMessage(senderName, senderEmail, textToSend);
     setActiveThreadEmail(senderEmail);
+    setLastSentText(textToSend);
     setMessage("");
     toast.success("Message sent! Rao Wasif has been notified.");
   };
+
+  const cleanPhone = SITE.phone.replace(/[^0-9]/g, "");
+  const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(
+    lastSentText ? `Hi Rao Wasif, I sent a message on Primo Acts: "${lastSentText}"` : "Hi Rao Wasif, I have a question about Primo Acts books.",
+  )}`;
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -73,30 +81,51 @@ export function LiveChatWidget() {
               </div>
               <div className="min-w-0">
                 <p className="font-display text-sm font-bold text-white truncate flex items-center gap-1.5">
-                  <span>{SITE.name} Support Desk</span>
+                  <span>{SITE.name} Support</span>
                   <Sparkles className="h-3 w-3 text-gold" />
                 </p>
                 <p className="text-[11px] text-emerald-400 font-medium">
-                  Active Customer Care Team
+                  Active Helpdesk
                 </p>
               </div>
             </div>
 
-            <button
-              onClick={() => setOpen(false)}
-              className="h-8 w-8 rounded-full bg-surface/60 hover:bg-surface text-muted-foreground hover:text-white flex items-center justify-center transition-colors"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            <div className="flex items-center gap-1.5">
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="h-8 px-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 flex items-center gap-1 text-[10px] font-bold transition-all"
+                title="Direct WhatsApp"
+              >
+                <Phone className="h-3 w-3" /> WhatsApp
+              </a>
+              <button
+                onClick={() => setOpen(false)}
+                className="h-8 w-8 rounded-full bg-surface/60 hover:bg-surface text-muted-foreground hover:text-white flex items-center justify-center transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
           </div>
 
           {/* Messages Body */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
-            <div className="rounded-2xl bg-surface/60 border border-border/40 p-3.5 space-y-1.5">
+            <div className="rounded-2xl bg-surface/60 border border-border/40 p-3.5 space-y-2">
               <p className="font-semibold text-gold text-xs">Welcome to {SITE.name} Support! 👋</p>
               <p className="text-muted-foreground leading-relaxed text-[11px]">
-                Our support desk is online. Ask any question regarding <strong>Shadowrealm</strong>, upcoming novels, pre-orders, Word/PDF digital downloads, or custom inquiries.
+                Ask any question regarding <strong>Shadowrealm</strong>, pre-orders, digital PDF downloads, or bank transfer verification.
               </p>
+              <div className="pt-1 flex items-center gap-2">
+                <a
+                  href={`https://wa.me/${cleanPhone}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 hover:underline"
+                >
+                  <Phone className="h-3 w-3" /> WhatsApp: {SITE.phone}
+                </a>
+              </div>
             </div>
 
             {userMessages.map((msg) => (

@@ -195,7 +195,11 @@ export function useLiveBooks() {
       setBooks(getStorage<Book[]>("primo_books_catalog", BOOKS));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
-    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("primoacts_store_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   const updateBook = (updated: Book) => {
@@ -235,7 +239,11 @@ export function useLiveCharacters() {
       setCharacters(getStorage<Character[]>("primo_characters_roster", CHARACTERS));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
-    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("primoacts_store_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   const updateCharacter = (updated: Character) => {
@@ -275,7 +283,11 @@ export function useLiveVideos() {
       setVideos(getStorage<VideoItem[]>("primo_youtube_videos", DEFAULT_VIDEOS));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
-    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("primoacts_store_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   const addVideo = (newVideo: VideoItem) => {
@@ -320,7 +332,11 @@ export function useLiveMessages() {
       setAgents(getStorage<SupportAgent[]>("primo_support_agents", DEFAULT_AGENTS));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
-    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("primoacts_store_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   const sendMessage = (senderName: string, senderEmail: string, messageText: string) => {
@@ -401,7 +417,11 @@ export function useLiveOrders() {
       setOrders(getStorage<Order[]>("primo_orders_list", SAMPLE_ORDERS));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
-    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("primoacts_store_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   const addOrder = (order: Order) => {
@@ -463,7 +483,11 @@ export function useLiveSettings() {
       setSettings(getStorage<SiteSettings>("primo_site_settings", DEFAULT_SETTINGS));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
-    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("primoacts_store_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   const updateSettings = (newSettings: Partial<SiteSettings>) => {
@@ -486,7 +510,11 @@ export function useLiveReviews(bookSlug?: string) {
       setReviews(getStorage<BookReview[]>("primo_book_reviews", []));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
-    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("primoacts_store_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   const addReview = (reviewData: {
@@ -582,7 +610,11 @@ export function useLiveHero() {
       setConfig(getStorage<HeroConfig>("primo_hero_config", DEFAULT_HERO_CONFIG));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
-    return () => window.removeEventListener("primoacts_store_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("primoacts_store_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
   }, []);
 
   const updateDuration = (durationMs: number) => {

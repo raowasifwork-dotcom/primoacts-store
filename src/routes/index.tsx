@@ -98,118 +98,114 @@ function Home() {
                       src={book.cover}
                       alt={`Cover of ${book.title}`}
                       loading="lazy"
-                      className={`animate-drift w-1/2 rounded-xl object-cover shadow-[var(--shadow-float)] ${
-                        i === 1 ? "[animation-delay:1.4s]" : ""
+                      className={`h-48 w-32 rounded-xl object-cover shadow-float md:h-64 md:w-44 ${
+                        i > 0 ? "-ml-12 md:-ml-20" : ""
                       }`}
                     />
                   ),
               )}
             </div>
+
             <div className="flex flex-col justify-center">
-              <p className="font-display text-xs uppercase tracking-[0.3em] text-gold">
-                Saga bundle
-              </p>
-              <h2 className="mt-4 text-3xl font-display uppercase tracking-wide">{BUNDLE.title}</h2>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Both seasons of the Shadowrealm story as digital editions, bundled at a special pre-order discount price.
-              </p>
-              <div className="mt-6 flex items-baseline gap-3">
-                <span className="font-display text-3xl text-gold font-bold">
+              <span className="text-xs uppercase tracking-widest text-gold">Complete package</span>
+              <h3 className="mt-2 text-2xl md:text-3xl">{BUNDLE.title}</h3>
+              <p className="mt-3 text-sm text-muted-foreground">{BUNDLE.description}</p>
+              <div className="mt-6 flex flex-wrap items-baseline gap-3">
+                <span className="font-display text-3xl font-bold text-gold">
                   {formatPrice(BUNDLE.price)}
                 </span>
                 <span className="text-sm text-muted-foreground line-through">
-                  {formatPrice(BUNDLE.compareAt)}
+                  {formatPrice(BUNDLE.originalPrice)}
+                </span>
+                <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-semibold text-gold">
+                  Save {Math.round((1 - BUNDLE.price / BUNDLE.originalPrice) * 100)}%
                 </span>
               </div>
-              <Button
-                size="lg"
-                variant={bundleInCart ? "secondary" : "default"}
-                className="mt-6 self-start bg-gold hover:bg-gold-light text-black font-semibold rounded-xl"
-                onClick={() => {
-                  if (bundleInCart) return;
-                  add({
-                    slug: BUNDLE.slug,
-                    title: BUNDLE.title,
-                    price: BUNDLE.price,
-                    cover: bundleBooks[0]?.cover ?? "",
-                    format: "PDF",
-                  });
-                  toast.success("Shadowrealm bundle added to cart");
-                }}
-              >
-                {bundleInCart ? "Bundle in cart" : "Pre-Order Saga Bundle"}
-              </Button>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Button
+                  className="btn-gold"
+                  disabled={bundleInCart}
+                  onClick={() => {
+                    add(BUNDLE.slug);
+                    toast.success("Bundle added to cart");
+                  }}
+                >
+                  {bundleInCart ? "In cart" : "Get the bundle"}
+                </Button>
+                <Link to="/checkout" search={{ direct: BUNDLE.slug }}>
+                  <Button variant="outline">Buy now</Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* UPCOMING NOVELS & UNIVERSE EXPANSION */}
-      <section className="section-pad border-t border-border/60 bg-gradient-to-b from-[#0a0d14] via-[#07090e] to-background">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border/40 pb-6">
-            <div>
-              <span className="font-display text-xs uppercase tracking-[0.35em] text-gold font-semibold">
-                New Universes · Coming 2026
-              </span>
-              <h2 className="mt-2 text-3xl md:text-5xl font-display uppercase tracking-wide text-white">
-                Upcoming Novels & Series
-              </h2>
-              <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-                Explore the upcoming cinematic universe created and written by <strong className="text-white">{SITE.founder}</strong>. Pre-order now to secure day-one digital copies.
-              </p>
-            </div>
-            <Button asChild variant="outline" className="shrink-0 border-gold/40 text-gold hover:bg-gold/10 rounded-xl">
-              <Link to="/store">View Full Catalog →</Link>
-            </Button>
-          </div>
-
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {BOOKS.filter((b) => b.status === "preorder" || b.status === "upcoming").map((book) => (
-              <BookCard key={book.slug} book={book} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* OFFICIAL YOUTUBE TRAILERS & TEASERS */}
+      {/* Cinematic Book Trailers */}
       <CinematicTrailersSection />
 
-      {/* Characters preview */}
-      <section className="section-pad">
+      {/* Meet the Characters */}
+      <section className="section-pad border-t border-border/60">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-display uppercase tracking-wide text-white">The seven of Ravenwood</h2>
-          <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-            Every act of the Shadowrealm saga is carried by these seven. Some of them will not make
-            it to the end.
-          </p>
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
+            <div className="min-w-0">
+              <span className="text-xs uppercase tracking-widest text-gold">Lore & Universe</span>
+              <h2 className="mt-1 text-3xl md:text-4xl">Meet the Characters</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                The legends, villains, and anti-heroes shaping the world of Primo Acts.
+              </p>
+            </div>
+            <Link to="/characters" className="shrink-0 text-sm text-gold hover:underline">
+              All characters
+            </Link>
+          </div>
 
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {CHARACTERS.slice(0, 4).map((c) => (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {CHARACTERS.slice(0, 3).map((character) => (
               <Link
-                key={c.slug}
+                key={character.id}
                 to="/characters"
-                className="float-card group relative overflow-hidden rounded-2xl border border-border"
+                className="glass-panel group block overflow-hidden rounded-2xl border border-border/40 p-4 transition-all duration-300 hover:border-gold/50"
               >
-                <img
-                  src={c.image}
-                  alt={c.name}
-                  loading="lazy"
-                  className="aspect-3/4 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/70 to-transparent p-4">
-                  <p className="font-display text-sm">{c.name}</p>
-                  <p className="text-xs text-gold">{c.role}</p>
+                <div className="aspect-[4/5] overflow-hidden rounded-xl bg-surface">
+                  <img
+                    src={character.imageUrl}
+                    alt={character.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="mt-3">
+                  <span className="text-[10px] uppercase tracking-wider text-gold">
+                    {character.role}
+                  </span>
+                  <h3 className="font-display text-lg font-semibold text-foreground">
+                    {character.name}
+                  </h3>
+                  <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
+                    {character.shortBio}
+                  </p>
                 </div>
               </Link>
             ))}
           </div>
+        </div>
+      </section>
 
-          <Button asChild variant="outline" className="mt-8">
-            <Link to="/characters">
-              Meet all seven <ArrowRight className="h-4 w-4" />
+      {/* Author note */}
+      <section className="section-pad border-t border-border/60">
+        <div className="mx-auto max-w-3xl px-4 text-center md:px-6">
+          <span className="text-xs uppercase tracking-widest text-gold">From the author</span>
+          <h2 className="mt-2 text-2xl md:text-3xl">Direct from writer to reader</h2>
+          <p className="mt-4 text-sm text-muted-foreground">
+            No middleman, no DRM, no platform locks. When you buy a book here, you get standard PDF files that work on Kindle, Apple Books, Kobo, and any device you own forever.
+          </p>
+          <div className="mt-6 flex justify-center gap-3">
+            <Link to="/about" className="inline-flex items-center gap-1.5 text-sm text-gold hover:underline">
+              <span>Read Rao Wasif's story</span>
+              <ArrowRight className="h-4 w-4" />
             </Link>
-          </Button>
+          </div>
         </div>
       </section>
     </div>
