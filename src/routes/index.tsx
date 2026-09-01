@@ -126,13 +126,19 @@ function Home() {
                   className="btn-gold"
                   disabled={bundleInCart}
                   onClick={() => {
-                    add(BUNDLE.slug);
+                    add({
+                      slug: BUNDLE.slug,
+                      title: BUNDLE.title,
+                      price: BUNDLE.price,
+                      cover: BUNDLE.cover,
+                      format: "PDF Edition",
+                    });
                     toast.success("Bundle added to cart");
                   }}
                 >
                   {bundleInCart ? "In cart" : "Get the bundle"}
                 </Button>
-                <Link to="/checkout" search={{ direct: BUNDLE.slug }}>
+                <Link to="/checkout">
                   <Button variant="outline">Buy now</Button>
                 </Link>
               </div>
