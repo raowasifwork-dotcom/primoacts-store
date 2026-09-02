@@ -149,7 +149,7 @@ export function HeroSlideshow() {
 
           {/* Title */}
           <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold leading-[1.08] text-white tracking-tight drop-shadow-2xl">
-            <span className="text-gradient-violet">{currentSlide.title}</span>{" "}
+            <span className="text-white">{currentSlide.title}</span>{" "}
             <span className="text-gradient-gold">{currentSlide.titleHighlight}</span>
           </h1>
 
@@ -163,11 +163,11 @@ export function HeroSlideshow() {
             <Button
               asChild
               size="lg"
-              className="bg-gold hover:bg-gold-light text-black font-semibold rounded-xl px-6 h-12 shadow-lg shadow-gold/20 hover:scale-105 transition-all text-sm"
+              className="btn-gold rounded-xl px-7 h-12 text-sm shadow-xl hover:scale-105 transition-all"
             >
               <Link to={currentSlide.primaryBtnLink as any}>
                 <span>{currentSlide.primaryBtnText}</span>
-                <ArrowRight className="ml-1.5 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
 
