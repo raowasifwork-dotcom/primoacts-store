@@ -8,8 +8,13 @@ export function SiteFooter() {
     <footer className="border-t border-border/60 py-12">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 md:grid-cols-3 md:px-6">
         <div>
-          <p className="font-display text-lg uppercase tracking-[0.2em]">{SITE.name}</p>
-          <p className="mt-3 max-w-xs text-sm text-muted-foreground">{SITE.tagline}</p>
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="h-8 w-8 rounded-lg overflow-hidden border border-slate-700">
+              <img src="/logo.png" alt="Primo Acts" className="h-full w-full object-cover" />
+            </div>
+            <p className="font-display text-lg uppercase tracking-[0.2em] font-bold text-white">{SITE.name}</p>
+          </div>
+          <p className="max-w-xs text-sm text-slate-400">{SITE.tagline}</p>
         </div>
 
         <div className="text-sm">
