@@ -83,7 +83,7 @@ function BookDetail() {
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <Link
           to="/store"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-gold"
+          className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" /> Back to store
         </Link>
@@ -92,18 +92,18 @@ function BookDetail() {
           <img
             src={book.cover}
             alt={`Cover of ${book.title}`}
-            className="animate-drift w-full rounded-2xl object-cover shadow-[var(--shadow-float)]"
+            className="w-full rounded-2xl object-cover shadow-2xl border border-slate-800"
           />
 
           <div>
             {book.series && (
-              <p className="font-display text-xs uppercase tracking-[0.3em] text-gold">
+              <p className="font-display text-xs uppercase tracking-[0.3em] text-blue-400 font-bold">
                 {book.series}
               </p>
             )}
-            <h1 className="mt-4 text-3xl md:text-5xl">{book.title}</h1>
+            <h1 className="mt-4 text-3xl md:text-5xl font-display text-white">{book.title}</h1>
             {book.subtitle && (
-              <p className="mt-2 font-display text-lg text-muted-foreground">{book.subtitle}</p>
+              <p className="mt-2 font-display text-lg text-slate-400">{book.subtitle}</p>
             )}
 
             {/* Star Rating Badge */}
@@ -123,58 +123,58 @@ function BookDetail() {
               <span className="text-xs font-bold text-white">
                 {totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}
               </span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-slate-400">
                 ({totalReviews} {totalReviews === 1 ? "Review" : "Reviews"})
               </span>
               <button
                 onClick={() => setReviewDialogOpen(true)}
-                className="text-xs text-gold hover:underline font-semibold ml-2 flex items-center gap-1"
+                className="text-xs text-blue-400 hover:underline font-semibold ml-2 flex items-center gap-1"
               >
                 <MessageSquarePlus className="h-3.5 w-3.5" />
                 <span>Write a Review</span>
               </button>
             </div>
 
-            <p className="mt-5 text-base italic text-foreground/90">{book.tagline}</p>
-            <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-5 text-base italic text-slate-200">{book.tagline}</p>
+            <p className="mt-5 text-sm leading-relaxed text-slate-400">
               {book.description}
             </p>
 
             <dl className="mt-8 grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
               <div>
-                <dt className="text-muted-foreground text-xs uppercase">Genre</dt>
-                <dd className="mt-1 font-medium">{book.genre}</dd>
+                <dt className="text-slate-500 text-xs uppercase font-semibold">Genre</dt>
+                <dd className="mt-1 font-medium text-slate-200">{book.genre}</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground text-xs uppercase">Pages</dt>
-                <dd className="mt-1 font-medium">{book.pages}</dd>
+                <dt className="text-slate-500 text-xs uppercase font-semibold">Pages</dt>
+                <dd className="mt-1 font-medium text-slate-200">{book.pages}</dd>
               </div>
               <div>
-                <dt className="text-muted-foreground text-xs uppercase">Formats</dt>
-                <dd className="mt-1 font-medium">{book.formats.join(" · ")}</dd>
+                <dt className="text-slate-500 text-xs uppercase font-semibold">Formats</dt>
+                <dd className="mt-1 font-medium text-slate-200">{book.formats.join(" · ")}</dd>
               </div>
               {book.releaseDate && (
                 <div>
-                  <dt className="text-gold text-xs uppercase font-semibold">Release Date</dt>
-                  <dd className="mt-1 text-gold font-bold">{book.releaseDate}</dd>
+                  <dt className="text-blue-400 text-xs uppercase font-semibold">Release Date</dt>
+                  <dd className="mt-1 text-blue-300 font-bold">{book.releaseDate}</dd>
                 </div>
               )}
             </dl>
 
             {book.status === "preorder" && (
-              <div className="mt-6 rounded-2xl border border-gold/40 bg-gold/10 p-4 text-xs text-gold flex items-center gap-3">
+              <div className="mt-6 rounded-2xl border border-blue-500/40 bg-blue-500/10 p-4 text-xs text-blue-300 flex items-center gap-3">
                 <span className="text-xl">🔥</span>
                 <div>
                   <p className="font-bold uppercase tracking-wider">Official Pre-Order Edition</p>
-                  <p className="text-muted-foreground text-[11px]">
+                  <p className="text-slate-400 text-[11px]">
                     Expected digital delivery on <strong className="text-white">{book.releaseDate || "Release Date"}</strong>. Pre-order now to secure launch access.
                   </p>
                 </div>
               </div>
             )}
 
-            <div className="glass-panel mt-8 rounded-2xl p-5">
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">
+            <div className="glass-panel mt-8 rounded-2xl p-5 border border-slate-800">
+              <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">
                 Choose your digital format
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
@@ -184,8 +184,8 @@ function BookDetail() {
                     onClick={() => setFormat(f)}
                     className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors ${
                       format === f
-                        ? "border-gold/60 bg-gold/15 text-gold"
-                        : "border-border text-muted-foreground hover:text-foreground"
+                        ? "border-blue-500/60 bg-blue-500/20 text-blue-300"
+                        : "border-slate-800 text-slate-400 hover:text-white"
                     }`}
                   >
                     {f}
@@ -194,15 +194,13 @@ function BookDetail() {
               </div>
 
               <div className="mt-6 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
-                <span className="font-display text-3xl text-gold font-bold">
+                <span className="font-display text-3xl text-white font-bold">
                   {formatPrice(book.price)}
                 </span>
                 <Button
-                  size="lg"
-                  variant={inCart ? "secondary" : "default"}
-                  className="shrink-0 bg-gold hover:bg-gold-light text-black font-semibold rounded-xl"
+                  className="btn-gold rounded-xl px-6"
+                  disabled={inCart}
                   onClick={() => {
-                    if (inCart) return;
                     add({
                       slug: book.slug,
                       title: book.title,
@@ -210,27 +208,15 @@ function BookDetail() {
                       cover: book.cover,
                       format,
                     });
-                    toast.success(`${book.title} (${format}) added to cart`);
+                    toast.success(`${book.title} added to cart!`);
                   }}
                 >
-                  {inCart ? (
-                    <>
-                      <Check className="h-4 w-4 mr-1.5" /> In cart
-                    </>
-                  ) : book.status === "preorder" ? (
-                    <>
-                      <Plus className="h-4 w-4 mr-1.5" /> Pre-Order Now
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="h-4 w-4 mr-1.5" /> Add to cart
-                    </>
-                  )}
+                  {inCart ? "In Cart" : "Add to Cart"}
                 </Button>
               </div>
             </div>   
-            <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
-              <FileDown className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+            <p className="mt-4 flex items-start gap-2 text-xs text-slate-400">
+              <FileDown className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
               Download links are emailed after your payment is verified — usually within 12 hours.
             </p>
           </div>
@@ -250,7 +236,7 @@ function BookDetail() {
 
             <Button
               onClick={() => setReviewDialogOpen(true)}
-              className="bg-gold hover:bg-gold-light text-black font-semibold rounded-xl text-xs"
+              className="btn-gold rounded-xl text-xs"
             >
               <MessageSquarePlus className="mr-1.5 h-4 w-4" /> Write a Review
             </Button>
@@ -258,7 +244,7 @@ function BookDetail() {
 
           <div className="mt-8 grid gap-8 md:grid-cols-[300px_1fr]">
             {/* Rating Summary Box */}
-            <div className="p-6 rounded-2xl border border-border/50 bg-[#0c1018]/90 shadow-xl space-y-4 h-fit">
+            <div className="p-6 rounded-2xl border border-slate-800 bg-[#0c1018]/90 shadow-xl space-y-4 h-fit">
               <div className="text-center space-y-1">
                 <p className="font-display text-5xl font-bold text-white">
                   {totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}
@@ -275,27 +261,27 @@ function BookDetail() {
                     />
                   ))}
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-400">
                   Based on {totalReviews} {totalReviews === 1 ? "reader review" : "reader reviews"}
                 </p>
               </div>
 
-              <div className="border-t border-border/40 pt-4 space-y-2 text-xs">
+              <div className="border-t border-slate-800 pt-4 space-y-2 text-xs">
                 {[5, 4, 3, 2, 1].map((starVal) => {
                   const count = reviews.filter((r) => r.rating === starVal).length;
                   const pct = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
                   return (
                     <div key={starVal} className="flex items-center gap-2">
-                      <span className="w-12 text-muted-foreground text-[11px] font-mono">
+                      <span className="w-12 text-slate-400 text-[11px] font-mono">
                         {starVal} Stars
                       </span>
-                      <div className="flex-1 h-2 rounded-full bg-surface overflow-hidden">
+                      <div className="flex-1 h-2 rounded-full bg-slate-800 overflow-hidden">
                         <div
-                          className="h-full bg-gold rounded-full transition-all duration-500"
+                          className="h-full bg-blue-500 rounded-full transition-all duration-500"
                           style={{ width: `${pct}%` }}
                         />
                       </div>
-                      <span className="w-6 text-right text-[11px] text-muted-foreground font-mono">
+                      <span className="w-6 text-right text-[11px] text-slate-400 font-mono">
                         {count}
                       </span>
                     </div>
@@ -307,7 +293,7 @@ function BookDetail() {
                 <Button
                   onClick={() => setReviewDialogOpen(true)}
                   variant="outline"
-                  className="w-full border-gold/40 text-gold hover:bg-gold/10 text-xs rounded-xl"
+                  className="w-full border-blue-500/40 text-blue-400 hover:bg-blue-500/10 text-xs rounded-xl"
                 >
                   Rate This Novel
                 </Button>

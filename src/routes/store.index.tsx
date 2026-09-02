@@ -42,11 +42,10 @@ function StorePage() {
   return (
     <div className="section-pad">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <p className="font-display text-xs uppercase tracking-[0.35em] text-gold">Digital store</p>
-        <h1 className="mt-4 text-4xl md:text-5xl">The library</h1>
-        <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-          Every title is a DRM-free PDF you can download right after ordering. Pay by bank
-          transfer; the author verifies each order personally.
+        <p className="font-display text-xs uppercase tracking-[0.35em] text-blue-400 font-bold">Digital store</p>
+        <h1 className="mt-4 text-4xl md:text-5xl font-display text-white">The Library</h1>
+        <p className="mt-3 max-w-xl text-sm text-slate-400">
+          Every title is a DRM-free PDF you can download right after ordering. Verified payment processing with instant download.
         </p>
 
         <div className="mt-10 grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
@@ -57,8 +56,8 @@ function StorePage() {
                 onClick={() => setGenre(g)}
                 className={`rounded-full border px-4 py-1.5 text-xs uppercase tracking-wider transition-colors ${
                   genre === g
-                    ? "border-gold/60 bg-gold/10 text-gold"
-                    : "border-border text-muted-foreground hover:text-foreground"
+                    ? "border-blue-500/60 bg-blue-500/15 text-blue-300 font-semibold"
+                    : "border-slate-800 text-slate-400 hover:text-white"
                 }`}
               >
                 {g}
