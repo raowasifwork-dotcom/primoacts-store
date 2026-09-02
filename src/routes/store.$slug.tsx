@@ -121,10 +121,10 @@ function BookDetail() {
                 ))}
               </div>
               <span className="text-xs font-bold text-white">
-                {totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}
+                {totalReviews > 0 && typeof averageRating === "number" ? averageRating.toFixed(1) : "5.0"}
               </span>
               <span className="text-xs text-slate-400">
-                ({totalReviews} {totalReviews === 1 ? "Review" : "Reviews"})
+                ({totalReviews || 0} {totalReviews === 1 ? "Review" : "Reviews"})
               </span>
               <button
                 onClick={() => setReviewDialogOpen(true)}
@@ -247,7 +247,7 @@ function BookDetail() {
             <div className="p-6 rounded-2xl border border-slate-800 bg-[#0c1018]/90 shadow-xl space-y-4 h-fit">
               <div className="text-center space-y-1">
                 <p className="font-display text-5xl font-bold text-white">
-                  {totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}
+                  {totalReviews > 0 && typeof averageRating === "number" ? averageRating.toFixed(1) : "5.0"}
                 </p>
                 <div className="flex items-center justify-center text-amber-400 gap-1">
                   {[1, 2, 3, 4, 5].map((s) => (

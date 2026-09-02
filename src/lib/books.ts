@@ -141,6 +141,7 @@ export function getPdf(slug: string): string | undefined {
   return getBook(slug)?.pdf;
 }
 
-export function formatPrice(value: number): string {
+export function formatPrice(value?: number | null): string {
+  if (value == null || typeof value !== "number" || isNaN(value)) return "$0.00";
   return `$${value.toFixed(2)}`;
 }

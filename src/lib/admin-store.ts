@@ -543,12 +543,15 @@ export function useLiveReviews(bookSlug?: string) {
     setStorage("primo_book_reviews", updated);
   };
 
-  const bookReviews = bookSlug ? reviews.filter((r) => r.bookSlug === bookSlug) : reviews;
+  const bookReviews = bookSlug
+    ? (Array.isArray(reviews) ? reviews.filter((r) => r?.bookSlug === bookSlug) : [])
+    : (Array.isArray(reviews) ? reviews : []);
 
-  const totalReviews = bookReviews.length;
+  const safeReviews = bookReviews.filter(Boolean);
+  const totalReviews = safeReviews.length;
   const averageRating =
     totalReviews > 0
-      ? Number((bookReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1))
+      ? Number((safeReviews.reduce((sum, r) => sum + (Number(r?.rating) || 5), 0) / totalReviews).toFixed(1))
       : 5.0;
 
   return {

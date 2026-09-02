@@ -65,7 +65,7 @@ export function BookCard({ book }: { book: Book }) {
                 <Star
                   key={s}
                   className={`h-3 w-3 ${
-                    s <= Math.round(averageRating)
+                    s <= Math.round(Number(averageRating || 5))
                       ? "fill-amber-400 text-amber-400"
                       : "text-zinc-600"
                   }`}
@@ -73,10 +73,10 @@ export function BookCard({ book }: { book: Book }) {
               ))}
             </div>
             <span className="text-[11px] font-bold text-white">
-              {totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}
+              {totalReviews > 0 && typeof averageRating === "number" ? averageRating.toFixed(1) : "5.0"}
             </span>
             <span className="text-[10px] text-slate-400">
-              ({totalReviews})
+              ({totalReviews || 0})
             </span>
           </div>
 

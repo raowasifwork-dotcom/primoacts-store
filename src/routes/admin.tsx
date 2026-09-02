@@ -351,7 +351,7 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
 
   const avgRating =
     allReviews.length > 0
-      ? (allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length).toFixed(1)
+      ? (allReviews.reduce((sum, r) => sum + (Number(r?.rating) || 5), 0) / allReviews.length).toFixed(1)
       : "5.0";
 
   return (
@@ -2664,7 +2664,7 @@ function AdminReviewsView() {
 
   const averageRating =
     allReviews.length > 0
-      ? (allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length).toFixed(1)
+      ? (allReviews.reduce((sum, r) => sum + (Number(r?.rating) || 5), 0) / allReviews.length).toFixed(1)
       : "5.0";
 
   return (
