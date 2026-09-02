@@ -58,14 +58,14 @@ export function LiveChatWidget() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="group flex items-center gap-2.5 rounded-full bg-gradient-to-r from-gold via-amber-500 to-gold px-4 py-3 text-black font-semibold font-display text-xs shadow-xl shadow-gold/30 hover:scale-105 transition-all active:scale-95"
+          className="group flex items-center gap-2.5 rounded-full bg-blue-600 hover:bg-blue-500 px-4 py-3 text-white font-semibold font-display text-xs shadow-xl shadow-blue-950/50 hover:scale-105 transition-all active:scale-95"
           aria-label="Open customer support chat"
         >
           <div className="relative">
-            <MessageCircle className="h-5 w-5 fill-black/20 text-black" />
-            <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-black animate-pulse" />
+            <MessageCircle className="h-5 w-5 text-white" />
+            <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-slate-900 animate-pulse" />
           </div>
-          <span className="hidden sm:inline tracking-wider uppercase">Live Support</span>
+          <span className="hidden sm:inline tracking-wider uppercase font-bold">Live Support</span>
         </button>
       )}
 

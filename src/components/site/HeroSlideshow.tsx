@@ -142,8 +142,8 @@ export function HeroSlideshow() {
       <div className="relative z-20 mx-auto flex h-full max-w-7xl flex-col justify-end px-6 pb-16 md:pb-20 md:px-12">
         <div className="max-w-2xl space-y-4">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/15 px-3.5 py-1 text-[11px] font-semibold text-gold tracking-widest uppercase backdrop-blur-md shadow-lg shadow-gold/10 animate-fade-in">
-            <Sparkles className="h-3.5 w-3.5" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-950/60 px-3.5 py-1 text-[11px] font-semibold text-blue-300 tracking-widest uppercase backdrop-blur-md shadow-lg shadow-blue-950/40 animate-fade-in">
+            <Sparkles className="h-3.5 w-3.5 text-blue-400" />
             <span>{currentSlide.badge}</span>
           </div>
 

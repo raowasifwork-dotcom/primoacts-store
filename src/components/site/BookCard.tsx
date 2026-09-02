@@ -32,12 +32,12 @@ export function BookCard({ book }: { book: Book }) {
         {/* Status Badges Overlay */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
           {isPreorder && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-gold/90 text-black px-2.5 py-1 text-[11px] font-bold font-display uppercase tracking-wider shadow-lg shadow-gold/30">
+            <span className="inline-flex items-center gap-1 rounded-full bg-blue-600 text-white px-2.5 py-1 text-[11px] font-bold font-display uppercase tracking-wider shadow-lg shadow-blue-900/40">
               <Flame className="h-3.5 w-3.5" /> Pre-Order
             </span>
           )}
           {isUpcoming && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-purple-600/90 text-white px-2.5 py-1 text-[11px] font-bold font-display uppercase tracking-wider shadow-lg shadow-purple-900/40">
+            <span className="inline-flex items-center gap-1 rounded-full bg-slate-800 text-slate-200 border border-slate-700 px-2.5 py-1 text-[11px] font-bold font-display uppercase tracking-wider">
               <Clock className="h-3.5 w-3.5" /> Coming Soon
             </span>
           )}
@@ -52,10 +52,10 @@ export function BookCard({ book }: { book: Book }) {
       <div className="flex flex-col gap-3 p-5 flex-1 justify-between">
         <div className="space-y-2">
           <div className="flex items-center justify-between gap-3">
-            <span className="rounded-full border border-border px-2.5 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+            <span className="rounded-full border border-slate-700 px-2.5 py-0.5 text-[10px] uppercase tracking-wider text-slate-400 font-semibold">
               {book.genre}
             </span>
-            <span className="font-display text-lg text-gold font-bold">{formatPrice(book.price)}</span>
+            <span className="font-display text-lg text-white font-bold">{formatPrice(book.price)}</span>
           </div>
 
           {/* Star Rating Badge on Card */}
@@ -75,17 +75,17 @@ export function BookCard({ book }: { book: Book }) {
             <span className="text-[11px] font-bold text-white">
               {totalReviews > 0 ? averageRating.toFixed(1) : "5.0"}
             </span>
-            <span className="text-[10px] text-muted-foreground">
+            <span className="text-[10px] text-slate-400">
               ({totalReviews})
             </span>
           </div>
 
           <Link to="/store/$slug" params={{ slug: book.slug }}>
-            <h3 className="text-base font-display font-bold leading-snug hover:text-gold transition-colors text-white">
+            <h3 className="text-base font-display font-bold leading-snug hover:text-blue-400 transition-colors text-white">
               {book.title}
             </h3>
           </Link>
-          <p className="line-clamp-2 text-xs text-muted-foreground">{book.tagline}</p>
+          <p className="line-clamp-2 text-xs text-slate-400">{book.tagline}</p>
         </div>
 
         <div className="pt-2">
@@ -93,10 +93,10 @@ export function BookCard({ book }: { book: Book }) {
             variant={inCart ? "secondary" : isPreorder ? "default" : isUpcoming ? "outline" : "default"}
             className={`w-full rounded-xl text-xs font-semibold ${
               isPreorder
-                ? "bg-gold hover:bg-gold-light text-black shadow-md shadow-gold/20"
+                ? "bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-900/30"
                 : isUpcoming
-                ? "border-purple-500/40 text-purple-300 hover:bg-purple-500/10"
-                : ""
+                ? "border-slate-700 text-slate-300 hover:bg-slate-800"
+                : "btn-gold"
             }`}
             onClick={() => {
               if (inCart) return;

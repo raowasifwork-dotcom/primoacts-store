@@ -78,7 +78,7 @@ function Home() {
       <HeroSlideshow />
 
       {/* Trust strip */}
-      <section className="border-y border-border/60 bg-[#080b12]/80 backdrop-blur-md">
+      <section className="border-y border-slate-800 bg-[#0a0f1d]/90 backdrop-blur-md">
         <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:grid-cols-3 md:px-6">
           {[
             {
@@ -98,12 +98,12 @@ function Home() {
             },
           ].map((item) => (
             <div key={item.title} className="flex min-w-0 items-start gap-3.5">
-              <div className="h-10 w-10 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center shrink-0 text-gold">
+              <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center shrink-0 text-blue-400">
                 <item.icon className="h-5 w-5" />
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-white">{item.title}</p>
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{item.body}</p>
+                <p className="mt-1 text-xs text-slate-400 leading-relaxed">{item.body}</p>
               </div>
             </div>
           ))}
@@ -113,19 +113,19 @@ function Home() {
       {/* Featured Books */}
       <section className="section-pad">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-border/40 pb-6">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-slate-800 pb-6">
             <div className="min-w-0">
-              <span className="text-[11px] uppercase tracking-widest text-gold font-bold">
+              <span className="text-[11px] uppercase tracking-widest text-blue-400 font-bold">
                 Official Book Catalog
               </span>
               <h2 className="mt-1 text-3xl md:text-4xl font-display text-white">
                 Featured Releases
               </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm text-slate-400">
                 Stories readers start with — and finish in a single night.
               </p>
             </div>
-            <Link to="/store" className="shrink-0 text-sm font-semibold text-gold hover:underline flex items-center gap-1">
+            <Link to="/store" className="shrink-0 text-sm font-semibold text-blue-400 hover:text-blue-300 hover:underline flex items-center gap-1">
               <span>View All Books</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -142,7 +142,7 @@ function Home() {
       {/* Complete Bundle Offer */}
       <section className="pb-16">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <div className="glass-panel grid gap-8 rounded-3xl p-6 md:grid-cols-2 md:p-10 border border-gold/30 shadow-2xl">
+          <div className="glass-panel grid gap-8 rounded-3xl p-6 md:grid-cols-2 md:p-10 border border-slate-700 shadow-2xl">
             <div className="flex items-center gap-4 justify-center md:justify-start">
               {bundleBooks.map(
                 (book, i) =>
@@ -152,7 +152,7 @@ function Home() {
                       src={book.cover}
                       alt={`Cover of ${book.title}`}
                       loading="lazy"
-                      className={`h-48 w-32 rounded-xl object-cover shadow-2xl border border-gold/30 md:h-64 md:w-44 ${
+                      className={`h-48 w-32 rounded-xl object-cover shadow-2xl border border-slate-700 md:h-64 md:w-44 ${
                         i > 0 ? "-ml-12 md:-ml-20" : ""
                       }`}
                     />
@@ -161,23 +161,23 @@ function Home() {
             </div>
 
             <div className="flex flex-col justify-center">
-              <span className="text-[11px] uppercase tracking-widest text-gold font-bold">
+              <span className="text-[11px] uppercase tracking-widest text-blue-400 font-bold">
                 Special Author's Edition
               </span>
               <h3 className="mt-2 text-2xl md:text-3xl font-display font-bold text-white">
                 {BUNDLE.title}
               </h3>
-              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+              <p className="mt-3 text-sm text-slate-400 leading-relaxed">
                 {BUNDLE.description}
               </p>
               <div className="mt-6 flex flex-wrap items-baseline gap-3">
-                <span className="font-display text-3xl font-bold text-gold">
+                <span className="font-display text-3xl font-bold text-white">
                   {formatPrice(BUNDLE.price)}
                 </span>
-                <span className="text-sm text-muted-foreground line-through">
+                <span className="text-sm text-slate-500 line-through">
                   {formatPrice(BUNDLE.originalPrice)}
                 </span>
-                <span className="rounded-full bg-gold/15 border border-gold/40 px-2.5 py-0.5 text-xs font-semibold text-gold">
+                <span className="rounded-full bg-blue-500/15 border border-blue-500/40 px-2.5 py-0.5 text-xs font-semibold text-blue-300">
                   Save {Math.round((1 - BUNDLE.price / BUNDLE.originalPrice) * 100)}%
                 </span>
               </div>
@@ -198,7 +198,7 @@ function Home() {
                 >
                   {bundleInCart ? "In Cart" : "Get Complete Bundle"}
                 </Button>
-                <Button asChild variant="outline" className="border-border/60 rounded-xl px-6 h-11 text-xs text-white hover:bg-surface">
+                <Button asChild variant="outline" className="border-slate-700 rounded-xl px-6 h-11 text-xs text-slate-200 hover:bg-slate-800">
                   <Link to="/checkout">Buy Now</Link>
                 </Button>
               </div>
@@ -211,21 +211,21 @@ function Home() {
       <CinematicTrailersSection />
 
       {/* Meet the Characters Universe */}
-      <section className="section-pad border-t border-border/60">
+      <section className="section-pad border-t border-slate-800">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-border/40 pb-6">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-slate-800 pb-6">
             <div className="min-w-0">
-              <span className="text-[11px] uppercase tracking-widest text-gold font-bold">
+              <span className="text-[11px] uppercase tracking-widest text-blue-400 font-bold">
                 Lore & Universe
               </span>
               <h2 className="mt-1 text-3xl md:text-4xl font-display text-white">
                 Meet the Characters
               </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm text-slate-400">
                 The legends, villains, and anti-heroes shaping the universe of Primo Acts.
               </p>
             </div>
-            <Link to="/characters" className="shrink-0 text-sm font-semibold text-gold hover:underline flex items-center gap-1">
+            <Link to="/characters" className="shrink-0 text-sm font-semibold text-blue-400 hover:text-blue-300 hover:underline flex items-center gap-1">
               <span>All 7 Characters</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -236,9 +236,9 @@ function Home() {
               <Link
                 key={character.id}
                 to="/characters"
-                className="glass-panel group block overflow-hidden rounded-2xl border border-border/40 p-4 transition-all duration-300 hover:border-gold/50 shadow-xl"
+                className="glass-panel group block overflow-hidden rounded-2xl border border-slate-800 p-4 transition-all duration-300 hover:border-blue-500/50 shadow-xl"
               >
-                <div className="aspect-[4/5] overflow-hidden rounded-xl bg-surface border border-white/5">
+                <div className="aspect-[4/5] overflow-hidden rounded-xl bg-slate-900 border border-white/5">
                   <img
                     src={character.imageUrl}
                     alt={character.name}
@@ -247,13 +247,13 @@ function Home() {
                   />
                 </div>
                 <div className="mt-4">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-gold bg-gold/10 px-2 py-0.5 rounded border border-gold/30">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-blue-300 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/30">
                     {character.role}
                   </span>
                   <h3 className="mt-2 font-display text-lg font-bold text-white">
                     {character.name}
                   </h3>
-                  <p className="mt-1 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                  <p className="mt-1 text-xs text-slate-400 line-clamp-2 leading-relaxed">
                     {character.shortBio}
                   </p>
                 </div>
@@ -264,11 +264,11 @@ function Home() {
       </section>
 
       {/* Reader Reviews & Ratings Section */}
-      <section className="section-pad border-t border-border/60 bg-[#080b12]/90">
+      <section className="section-pad border-t border-slate-800 bg-[#0a0f1d]/90">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
             <div>
-              <span className="text-[11px] uppercase tracking-widest text-gold font-bold">
+              <span className="text-[11px] uppercase tracking-widest text-blue-400 font-bold">
                 Verified Reader Ratings
               </span>
               <h2 className="mt-1 text-3xl md:text-4xl font-display text-white">
@@ -277,7 +277,7 @@ function Home() {
             </div>
             <Link
               to="/store"
-              className="text-xs font-semibold text-gold hover:underline inline-flex items-center gap-1"
+              className="text-xs font-semibold text-blue-400 hover:text-blue-300 hover:underline inline-flex items-center gap-1"
             >
               <span>Explore Bookstore Reviews</span>
               <ArrowRight className="h-3.5 w-3.5" />
@@ -288,7 +288,7 @@ function Home() {
             {displayedReviews.map((rev) => (
               <div
                 key={rev.id}
-                className="glass-panel p-6 rounded-2xl border border-border/50 flex flex-col justify-between gap-4 shadow-xl hover:border-gold/40 transition-all"
+                className="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between gap-4 shadow-xl hover:border-blue-500/40 transition-all"
               >
                 <div className="space-y-3">
                   <div className="flex items-center gap-1 text-amber-400">
@@ -302,10 +302,10 @@ function Home() {
                     ))}
                   </div>
                   <h4 className="font-bold text-sm text-white">{rev.title}</h4>
-                  <p className="text-xs text-muted-foreground leading-relaxed">“{rev.comment}”</p>
+                  <p className="text-xs text-slate-400 leading-relaxed">“{rev.comment}”</p>
                 </div>
 
-                <div className="pt-3 border-t border-border/30 flex items-center justify-between text-xs">
+                <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
                   <span className="font-semibold text-white">{rev.reviewerName}</span>
                   <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
                     <UserCheck className="h-3 w-3" /> Verified Reader
@@ -318,19 +318,19 @@ function Home() {
       </section>
 
       {/* Direct Author Guarantee Note */}
-      <section className="section-pad border-t border-border/60">
+      <section className="section-pad border-t border-slate-800">
         <div className="mx-auto max-w-3xl px-4 text-center md:px-6 space-y-4">
-          <span className="text-[11px] uppercase tracking-widest text-gold font-bold">
+          <span className="text-[11px] uppercase tracking-widest text-blue-400 font-bold">
             Author Commitment
           </span>
           <h2 className="text-2xl md:text-3xl font-display text-white">
             Direct from Writer to Reader
           </h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <p className="text-sm text-slate-400 leading-relaxed">
             No DRM locks, no middleman markups. Every book purchased on Primo Acts delivers authentic DRM-Free PDF editions readable on any smartphone, tablet, Kindle, or laptop forever.
           </p>
           <div className="pt-4 flex justify-center gap-3">
-            <Button asChild variant="outline" className="border-gold/40 text-gold hover:bg-gold/10 rounded-xl text-xs px-6">
+            <Button asChild variant="outline" className="border-blue-500/40 text-blue-400 hover:bg-blue-500/10 rounded-xl text-xs px-6">
               <Link to="/about">
                 <span>Read Rao Wasif's Story</span>
                 <ArrowRight className="ml-1.5 h-3.5 w-3.5" />

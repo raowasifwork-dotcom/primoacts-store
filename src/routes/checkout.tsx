@@ -1,4 +1,4 @@
-﻿import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   BadgeCheck,
   Building2,
@@ -118,24 +118,24 @@ function CheckoutPage() {
           </h1>
           <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
             Thank you, <strong className="text-white">{name || "Reader"}</strong>! Your order reference is{" "}
-            <span className="font-display font-bold text-gold bg-gold/10 px-2.5 py-1 rounded border border-gold/30">
+            <span className="font-display font-bold text-blue-300 bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/30">
               {placed}
             </span>
             . Your digital book PDFs are now unlocked on this device!
           </p>
 
           {paymentMethod === "bank" && (
-            <div className="mt-8 rounded-2xl border border-border/60 bg-surface/50 p-6 text-left space-y-3">
-              <p className="text-xs uppercase font-semibold tracking-wider text-gold flex items-center gap-1.5">
+            <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-900/60 p-6 text-left space-y-3">
+              <p className="text-xs uppercase font-semibold tracking-wider text-blue-400 flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4" /> Bank Transfer Details
               </p>
-              <div className="text-xs text-muted-foreground space-y-1.5">
+              <div className="text-xs text-slate-300 space-y-1.5">
                 <p><strong>Bank / Method:</strong> {settings.bankName || "Meezan Bank / EasyPaisa / JazzCash"}</p>
                 <p><strong>Account Title:</strong> {settings.accountTitle || SITE.founder}</p>
                 <p><strong>Account / Phone:</strong> {settings.accountNumber || SITE.phone}</p>
                 {settings.iban && <p><strong>IBAN:</strong> {settings.iban}</p>}
               </div>
-              <p className="text-[11px] text-zinc-400 border-t border-border/40 pt-3">
+              <p className="text-[11px] text-slate-400 border-t border-slate-800 pt-3">
                 {settings.paymentInstructions ||
                   "Please share your payment screenshot with Order Reference on WhatsApp or Support Chat."}
               </p>
@@ -147,19 +147,19 @@ function CheckoutPage() {
               <p className="text-xs uppercase font-semibold tracking-wider text-emerald-400 flex items-center gap-1.5">
                 <Lock className="h-4 w-4" /> Card Payment Received
               </p>
-              <p className="text-xs text-zinc-300">
+              <p className="text-xs text-slate-300">
                 Your {paymentMethod === "visa" ? "Visa" : "Mastercard"} payment details have been securely recorded. The Primo Acts team will verify and confirm your payment shortly.
               </p>
             </div>
           )}
 
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button asChild className="bg-gold hover:bg-gold-light text-black font-semibold rounded-xl">
+            <Button asChild className="btn-gold rounded-xl">
               <Link to="/downloads">
                 <FileDown className="h-4 w-4 mr-1.5" /> Access & Download PDFs
               </Link>
             </Button>
-            <Button asChild variant="secondary" className="rounded-xl">
+            <Button asChild variant="secondary" className="rounded-xl border border-slate-700 bg-slate-800 text-slate-200">
               <Link to="/store">Browse More Books</Link>
             </Button>
           </div>
@@ -172,9 +172,9 @@ function CheckoutPage() {
     return (
       <div className="section-pad">
         <div className="mx-auto max-w-2xl px-4 text-center md:px-6">
-          <h1 className="text-3xl font-display uppercase">Nothing to check out</h1>
-          <p className="mt-3 text-sm text-muted-foreground">Add a book to your cart to continue.</p>
-          <Button asChild className="mt-8 bg-gold hover:bg-gold-light text-black font-semibold rounded-xl">
+          <h1 className="text-3xl font-display uppercase text-white">Nothing to check out</h1>
+          <p className="mt-3 text-sm text-slate-400">Add a book to your cart to continue.</p>
+          <Button asChild className="mt-8 btn-gold rounded-xl">
             <Link to="/store">Browse the store</Link>
           </Button>
         </div>
@@ -191,33 +191,33 @@ function CheckoutPage() {
     <div className="section-pad">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <h1 className="text-4xl md:text-5xl font-display uppercase tracking-wide text-white">Checkout</h1>
-        <p className="mt-3 max-w-xl text-sm text-muted-foreground">
+        <p className="mt-3 max-w-xl text-sm text-slate-400">
           Complete your order to instantly receive DRM-free high resolution PDF editions.
         </p>
 
         <div className="mt-12 grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
-          <form className="glass-panel grid gap-6 rounded-3xl p-6 md:p-8" onSubmit={handleSubmitOrder}>
+          <form className="glass-panel grid gap-6 rounded-3xl p-6 md:p-8 border border-slate-800" onSubmit={handleSubmitOrder}>
 
             <div className="grid gap-2">
-              <Label htmlFor="co-name">Your Full Name *</Label>
+              <Label htmlFor="co-name" className="text-slate-200 text-xs font-semibold">Your Full Name *</Label>
               <Input id="co-name" required value={name} onChange={(e) => setName(e.target.value)}
-                placeholder="Rao Wasif" className="bg-surface/80 border-border/60" />
+                placeholder="Rao Wasif" className="bg-slate-900 border-slate-700 text-white" />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="co-email">Delivery Email *</Label>
+              <Label htmlFor="co-email" className="text-slate-200 text-xs font-semibold">Delivery Email *</Label>
               <Input id="co-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-                placeholder="reader@example.com" className="bg-surface/80 border-border/60" />
-              <p className="text-xs text-muted-foreground">Your digital library access will be linked to this email.</p>
+                placeholder="reader@example.com" className="bg-slate-900 border-slate-700 text-white" />
+              <p className="text-xs text-slate-400">Your digital library access will be linked to this email.</p>
             </div>
 
             {/* Payment Method Tabs */}
             <div className="space-y-3">
-              <Label className="text-xs uppercase tracking-wider font-semibold text-white/80">Select Payment Method</Label>
+              <Label className="text-xs uppercase tracking-wider font-semibold text-slate-300">Select Payment Method</Label>
               <div className="grid grid-cols-3 gap-2">
                 <button type="button" onClick={() => setPaymentMethod("bank")}
                   className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all text-xs font-semibold ${
-                    paymentMethod === "bank" ? "border-gold bg-gold/10 text-gold" : "border-border/40 bg-surface/60 text-muted-foreground hover:border-gold/40"
+                    paymentMethod === "bank" ? "border-blue-500 bg-blue-500/10 text-blue-300" : "border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-700"
                   }`}>
                   <Building2 className="h-5 w-5" />
                   <span>Bank / Wallet</span>
