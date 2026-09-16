@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ShoppingBag, Trash2 } from "lucide-react";
+import { ArrowRight, MessageCircle, ShoppingBag, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/books";
@@ -87,11 +87,25 @@ function CartPage() {
                 </span>
                 <span className="font-display text-3xl font-bold text-white">{formatPrice(total)}</span>
               </div>
-              <Button asChild size="lg" className="btn-gold mt-6 w-full rounded-xl">
-                <Link to="/checkout">
-                  Continue to checkout <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
+              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                <Button asChild size="lg" className="btn-gold flex-1 rounded-xl">
+                  <Link to="/checkout">
+                    Continue to checkout <ArrowRight className="h-4 w-4 ml-1.5" />
+                  </Link>
+                </Button>
+
+                <a
+                  href={`https://wa.me/92309296743?text=${encodeURIComponent(
+                    `Hi Rao Wasif, I want to order from Primo Acts:\n${items.map((i) => `• ${i.title} (${formatPrice(i.price)})`).join("\n")}\nTotal: ${formatPrice(total)}\nPlease share payment details for instant delivery.`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25d366]/20 hover:bg-[#25d366]/30 border border-[#25d366]/40 text-[#25d366] font-semibold px-5 py-3 text-xs sm:text-sm transition-all"
+                >
+                  <MessageCircle className="h-4 w-4 fill-emerald-500" />
+                  <span>Order via WhatsApp</span>
+                </a>
+              </div>
             </div>
           </>
         )}

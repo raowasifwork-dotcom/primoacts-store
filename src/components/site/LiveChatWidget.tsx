@@ -111,12 +111,37 @@ export function LiveChatWidget() {
 
           {/* Messages Body */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
-            <div className="rounded-2xl bg-surface/60 border border-border/40 p-3.5 space-y-2">
+            <div className="rounded-2xl bg-surface/60 border border-border/40 p-3.5 space-y-2.5">
               <p className="font-semibold text-blue-400 text-xs">Welcome to {SITE.name} Support! 👋</p>
               <p className="text-muted-foreground leading-relaxed text-[11px]">
-                Ask any question regarding <strong>Shadowrealm</strong>, pre-orders, digital PDF downloads, or bank transfer verification.
+                Ask any question regarding <strong>Shadowrealm</strong>, digital PDF downloads, custom websites by Nexora, or payment verification.
               </p>
-              <div className="pt-1 flex items-center gap-2">
+              {/* Quick Helper Chips */}
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setMessage("How do I download my purchased book PDF?")}
+                  className="rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-1 text-[10px] font-medium text-blue-300 hover:bg-blue-500/20 transition-colors"
+                >
+                  ⚡ How to download PDF?
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMessage("How do I transfer to your bank account using EasyPaisa, JazzCash, or Bank App?")}
+                  className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-medium text-emerald-300 hover:bg-emerald-500/20 transition-colors"
+                >
+                  💳 Bank Transfer (via EasyPaisa / JazzCash)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMessage("I want to ask about website development by Nexora Web Studio.")}
+                  className="rounded-full border border-purple-500/30 bg-purple-500/10 px-2.5 py-1 text-[10px] font-medium text-purple-300 hover:bg-purple-500/20 transition-colors"
+                >
+                  🌐 Nexora Web Studio inquiry
+                </button>
+              </div>
+
+              <div className="pt-1 flex items-center justify-between border-t border-border/30">
                 <a
                   href={`https://wa.me/${cleanPhone}`}
                   target="_blank"
@@ -125,6 +150,7 @@ export function LiveChatWidget() {
                 >
                   <Phone className="h-3 w-3" /> WhatsApp: {SITE.phone}
                 </a>
+                <span className="text-[10px] text-muted-foreground">Direct Author Line</span>
               </div>
             </div>
 

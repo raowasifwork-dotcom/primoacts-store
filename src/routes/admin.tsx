@@ -1558,14 +1558,14 @@ function AdminSettingsView({
 
   // Bank Account & Payment Details
   const [bankName, setBankName] = useState(
-    settings.bankName || "Meezan Bank / Allied Bank / EasyPaisa / JazzCash",
+    settings.bankName || "Meezan Bank / Allied Bank",
   );
   const [accountTitle, setAccountTitle] = useState(settings.accountTitle || "Rao Wasif");
   const [accountNumber, setAccountNumber] = useState(settings.accountNumber || "+92 309 296743");
   const [iban, setIban] = useState(settings.iban || "PK00MEZN0000000000000000");
   const [paymentInstructions, setPaymentInstructions] = useState(
     settings.paymentInstructions ||
-      "Please transfer the exact amount and share your payment screenshot on WhatsApp or Support Live Chat along with your Order Reference ID.",
+      "Direct Bank Transfer: You can easily pay from any Bank Mobile App, or from EasyPaisa / JazzCash by opening your app, selecting 'Bank Transfer', choosing our bank, and entering the account details. Share your payment screenshot with Order Reference on WhatsApp for instant verification.",
   );
 
   // Web Agency / Sister Business Details
@@ -1674,11 +1674,11 @@ function AdminSettingsView({
 
         <div className="grid gap-4 sm:grid-cols-2 text-xs">
           <div className="space-y-1.5">
-            <Label>Bank / Wallet Provider Name</Label>
+            <Label>Bank Name</Label>
             <Input
               value={bankName}
               onChange={(e) => setBankName(e.target.value)}
-              placeholder="e.g. Meezan Bank / EasyPaisa / JazzCash"
+              placeholder="e.g. Meezan Bank / Allied Bank"
               className="bg-surface/80 border-border/60"
               required
             />
@@ -1696,11 +1696,11 @@ function AdminSettingsView({
           </div>
 
           <div className="space-y-1.5">
-            <Label>Account Number / Mobile Wallet</Label>
+            <Label>Bank Account Number</Label>
             <Input
               value={accountNumber}
               onChange={(e) => setAccountNumber(e.target.value)}
-              placeholder="e.g. +92 309 296743"
+              placeholder="e.g. 02010101010101"
               className="bg-surface/80 border-border/60 font-mono"
               required
             />

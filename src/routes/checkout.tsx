@@ -2,9 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   BadgeCheck,
   Building2,
+  Check,
+  Copy,
   CreditCard,
   FileDown,
   Lock,
+  MessageCircle,
   ShieldCheck,
 } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -116,28 +119,49 @@ function CheckoutPage() {
           <h1 className="mt-6 text-3xl md:text-4xl font-display uppercase tracking-wide text-white">
             Order Placed Successfully!
           </h1>
-          <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-            Thank you, <strong className="text-white">{name || "Reader"}</strong>! Your order reference is{" "}
-            <span className="font-display font-bold text-blue-300 bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/30">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <span className="font-display font-bold text-sm sm:text-base text-blue-300 bg-blue-500/10 px-3.5 py-1.5 rounded-xl border border-blue-500/30">
               {placed}
             </span>
-            . Your digital book PDFs are now unlocked on this device!
+            <button
+              type="button"
+              onClick={() => {
+                navigator.clipboard.writeText(placed);
+                toast.success("Order Reference copied to clipboard!");
+              }}
+              className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-white bg-slate-800 border border-slate-700 hover:border-slate-600 px-3 py-1.5 rounded-xl transition-colors cursor-pointer"
+            >
+              <Copy className="h-3.5 w-3.5" />
+              <span>Copy</span>
+            </button>
+          </div>
+
+          <p className="mt-3 text-xs text-slate-400">
+            Your digital book PDFs are now unlocked on this device!
           </p>
 
           {paymentMethod === "bank" && (
             <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-900/60 p-6 text-left space-y-3">
               <p className="text-xs uppercase font-semibold tracking-wider text-blue-400 flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4" /> Bank Transfer Details
+                <ShieldCheck className="h-4 w-4" /> Bank Account Transfer Details
               </p>
               <div className="text-xs text-slate-300 space-y-1.5">
-                <p><strong>Bank / Method:</strong> {settings.bankName || "Meezan Bank / EasyPaisa / JazzCash"}</p>
+                <p><strong>Bank Name:</strong> {settings.bankName || "Meezan Bank / Allied Bank"}</p>
                 <p><strong>Account Title:</strong> {settings.accountTitle || SITE.founder}</p>
-                <p><strong>Account / Phone:</strong> {settings.accountNumber || SITE.phone}</p>
+                <p><strong>Bank Account Number:</strong> {settings.accountNumber || SITE.phone}</p>
                 {settings.iban && <p><strong>IBAN:</strong> {settings.iban}</p>}
               </div>
+
+              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-[11px] text-slate-200">
+                <p className="font-bold text-emerald-400">💡 EasyPaisa / JazzCash Users:</p>
+                <p className="text-slate-300 mt-0.5">
+                  Open your EasyPaisa or JazzCash app → select <strong>"Bank Transfer"</strong> → choose <strong>{settings.bankName || "Meezan Bank / Allied Bank"}</strong> and transfer to Account <strong>{settings.accountNumber || SITE.phone}</strong> (Title: {settings.accountTitle || SITE.founder}).
+                </p>
+              </div>
+
               <p className="text-[11px] text-slate-400 border-t border-slate-800 pt-3">
                 {settings.paymentInstructions ||
-                  "Please share your payment screenshot with Order Reference on WhatsApp or Support Chat."}
+                  "Please share your payment screenshot with Order Reference on WhatsApp or Support Chat for instant verification."}
               </p>
             </div>
           )}
@@ -159,6 +183,17 @@ function CheckoutPage() {
                 <FileDown className="h-4 w-4 mr-1.5" /> Access & Download PDFs
               </Link>
             </Button>
+            <a
+              href={`https://wa.me/92309296743?text=${encodeURIComponent(
+                `Hi Rao Wasif, I just placed order ${placed} on Primo Acts. Here is my order reference for payment verification.`,
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#25d366] hover:bg-[#20bd5a] text-black font-bold px-5 py-2.5 text-xs shadow-xl shadow-emerald-950/40 transition-all hover:scale-105"
+            >
+              <MessageCircle className="h-4 w-4 fill-black text-black" />
+              <span>Send Order on WhatsApp</span>
+            </a>
             <Button asChild variant="secondary" className="rounded-xl border border-slate-700 bg-slate-800 text-slate-200">
               <Link to="/store">Browse More Books</Link>
             </Button>
@@ -182,7 +217,7 @@ function CheckoutPage() {
     );
   }
 
-  const bankName = settings.bankName || "Meezan Bank / Allied Bank / EasyPaisa / JazzCash";
+  const bankName = settings.bankName || "Meezan Bank / Allied Bank";
   const accountTitle = settings.accountTitle || "Rao Wasif";
   const accountNumber = settings.accountNumber || "+92 309 296743";
   const iban = settings.iban || "";
@@ -220,8 +255,8 @@ function CheckoutPage() {
                     paymentMethod === "bank" ? "border-blue-500 bg-blue-500/10 text-blue-300" : "border-slate-800 bg-slate-900/60 text-slate-400 hover:border-slate-700"
                   }`}>
                   <Building2 className="h-5 w-5" />
-                  <span>Bank / Wallet</span>
-                  <span className="text-[9px] font-normal opacity-70">EasyPaisa · Jazz</span>
+                  <span>Bank Transfer</span>
+                  <span className="text-[9px] font-normal opacity-70">EasyPaisa · JazzCash</span>
                 </button>
 
                 <button type="button" onClick={() => setPaymentMethod("visa")}
@@ -257,12 +292,12 @@ function CheckoutPage() {
                   <div className="h-7 w-7 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
                     <Building2 className="h-3.5 w-3.5" />
                   </div>
-                  <span className="text-xs font-display font-bold uppercase tracking-wider text-white">Bank / Wallet Transfer Details</span>
+                  <span className="text-xs font-display font-bold uppercase tracking-wider text-white">Bank Account Transfer Details</span>
                   <span className="ml-auto text-[10px] text-blue-400 font-bold bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/30">Verified</span>
                 </div>
                 <div className="grid gap-0 text-xs divide-y divide-slate-800">
                   <div className="flex justify-between items-center py-2.5">
-                    <span className="text-slate-400">Bank / Provider</span>
+                    <span className="text-slate-400">Bank Name</span>
                     <span className="font-semibold text-white text-right max-w-[55%]">{bankName}</span>
                   </div>
                   <div className="flex justify-between items-center py-2.5">
@@ -270,7 +305,7 @@ function CheckoutPage() {
                     <span className="font-semibold text-white">{accountTitle}</span>
                   </div>
                   <div className="flex justify-between items-center py-2.5">
-                    <span className="text-slate-400">Account / Wallet No.</span>
+                    <span className="text-slate-400">Bank Account Number</span>
                     <span className="font-mono font-bold text-blue-400">{accountNumber}</span>
                   </div>
                   {iban && (
@@ -280,6 +315,17 @@ function CheckoutPage() {
                     </div>
                   )}
                 </div>
+
+                {/* Important clear notice for EasyPaisa / JazzCash users */}
+                <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-[11px] text-slate-200 space-y-1">
+                  <p className="font-bold text-emerald-400 flex items-center gap-1.5">
+                    <span>💡 How to pay using EasyPaisa or JazzCash:</span>
+                  </p>
+                  <p className="text-slate-300 leading-relaxed">
+                    Open your <strong>EasyPaisa</strong> or <strong>JazzCash</strong> app → select <strong>"Bank Transfer"</strong> → choose <strong>{bankName}</strong> → enter Account Number <strong>{accountNumber}</strong> and Title <strong>{accountTitle}</strong>.
+                  </p>
+                </div>
+
                 <p className="text-[11px] text-slate-400 leading-relaxed">
                   {settings.paymentInstructions || "Transfer the exact order amount and send your payment screenshot with Order Reference on WhatsApp or Support Chat."}
                 </p>
@@ -365,15 +411,16 @@ function CheckoutPage() {
               </p>
             </div>
             <div className="border-t border-border/40 pt-4">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Accepted Payments</p>
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-[11px] font-bold font-mono text-white tracking-widest">VISA</div>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Accepted Payment Methods</p>
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="px-2 py-1 rounded bg-white/5 border border-white/10 text-[10px] font-bold font-mono text-white tracking-widest">VISA</div>
                 <div className="flex items-center -space-x-1.5">
                   <div className="h-4 w-4 rounded-full bg-[#eb001b]" />
                   <div className="h-4 w-4 rounded-full bg-[#f79e1b]" />
                 </div>
-                <div className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-[10px] font-semibold text-white">EasyPaisa</div>
-                <div className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-[10px] font-semibold text-white">JazzCash</div>
+                <div className="px-2 py-1 rounded bg-blue-500/10 border border-blue-500/30 text-[10px] font-semibold text-blue-300">Bank Transfer</div>
+                <div className="px-2 py-1 rounded bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-semibold text-emerald-300">EasyPaisa (to Bank)</div>
+                <div className="px-2 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-[10px] font-semibold text-amber-300">JazzCash (to Bank)</div>
               </div>
             </div>
           </aside>
