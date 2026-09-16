@@ -1,5 +1,5 @@
-﻿import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Check, FileDown, MessageSquarePlus, Plus, Sparkles, Star, UserCheck } from "lucide-react";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { ArrowLeft, Check, Clock, FileDown, MessageSquarePlus, Plus, Sparkles, Star, UserCheck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -173,6 +173,18 @@ function BookDetail() {
               </div>
             )}
 
+            {book.status === "upcoming" && (
+              <div className="mt-6 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-xs text-amber-300 flex items-center gap-3">
+                <Clock className="h-5 w-5 text-amber-400 shrink-0" />
+                <div>
+                  <p className="font-bold uppercase tracking-wider">Coming Soon</p>
+                  <p className="text-slate-400 text-[11px]">
+                    This book is currently in production by <strong className="text-white">Rao Wasif</strong>. Digital edition will be available soon.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <div className="glass-panel mt-8 rounded-2xl p-5 border border-slate-800">
               <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold">
                 Choose your digital format
@@ -197,22 +209,31 @@ function BookDetail() {
                 <span className="font-display text-3xl text-white font-bold">
                   {formatPrice(book.price)}
                 </span>
-                <Button
-                  className="btn-gold rounded-xl px-6"
-                  disabled={inCart}
-                  onClick={() => {
-                    add({
-                      slug: book.slug,
-                      title: book.title,
-                      price: book.price,
-                      cover: book.cover,
-                      format,
-                    });
-                    toast.success(`${book.title} added to cart!`);
-                  }}
-                >
-                  {inCart ? "In Cart" : "Add to Cart"}
-                </Button>
+                {book.status === "upcoming" ? (
+                  <Button
+                    disabled
+                    className="rounded-xl px-6 bg-slate-800/80 text-slate-400 border border-slate-700 cursor-not-allowed"
+                  >
+                    <Clock className="h-4 w-4 mr-1.5" /> Coming Soon
+                  </Button>
+                ) : (
+                  <Button
+                    className="btn-gold rounded-xl px-6"
+                    disabled={inCart}
+                    onClick={() => {
+                      add({
+                        slug: book.slug,
+                        title: book.title,
+                        price: book.price,
+                        cover: book.cover,
+                        format,
+                      });
+                      toast.success(`${book.title} added to cart!`);
+                    }}
+                  >
+                    {inCart ? "In Cart" : "Add to Cart"}
+                  </Button>
+                )}
               </div>
             </div>   
             <p className="mt-4 flex items-start gap-2 text-xs text-slate-400">

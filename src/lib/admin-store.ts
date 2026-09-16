@@ -132,12 +132,12 @@ const DEFAULT_SETTINGS: SiteSettings = {
   paymentInstructions:
     "Please transfer the exact amount and share your payment screenshot on WhatsApp or Support Live Chat along with your Order Reference ID.",
   webAgencyEnabled: true,
-  webAgencyTitle: "Custom High-Converting Business Websites & Stores",
-  webAgencyBadge: "Web Development Studio by Rao Wasif",
+  webAgencyTitle: "Nexora · Custom Websites & Online Stores by Rao Wasif",
+  webAgencyBadge: "Sister Venture · Nexora Web Studio",
   webAgencyDescription:
-    "Need a modern, ultra-fast custom website or online e-commerce store for your brand? We design, develop, and launch production-ready websites in 48 hours with lifetime direct support.",
-  webAgencyUrl: "https://nexoraweb-store.vercel.app",
-  webAgencyButtonText: "Explore Web Agency",
+    "Looking for a modern, ultra-fast custom business website or e-commerce store? Explore Nexora — Rao Wasif's dedicated web development agency. We design and launch high-converting websites in 48 hours.",
+  webAgencyUrl: "https://nexoraweb-store.vercel.app/",
+  webAgencyButtonText: "Visit Nexora Web Studio",
   webAgencyWhatsApp: "+92 309 296743",
 };
 

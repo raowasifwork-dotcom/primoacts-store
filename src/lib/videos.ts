@@ -60,7 +60,7 @@ export const DEFAULT_VIDEOS: VideoItem[] = [
   {
     id: "vid-3",
     title: "Shadowrealm 2: The Past Truth (Teaser)",
-    description: "Official teaser for Season 2. Ravenwood remembers what the children forgot. Releasing September 10, 2026.",
+    description: "Official teaser for Season 2. Ravenwood remembers what the children forgot. Coming Soon.",
     youtubeUrl: "https://youtu.be/DDWWNMClXUI",
     videoId: "DDWWNMClXUI",
     category: "Teaser",

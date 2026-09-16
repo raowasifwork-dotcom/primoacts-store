@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Mail, Phone } from "lucide-react";
+import { ArrowRight, Code2, ExternalLink, Mail, Phone } from "lucide-react";
 
 import founderAsset from "@/assets/rao-wasif.png";
 import { Button } from "@/components/ui/button";
@@ -70,7 +70,28 @@ function AboutPage() {
               </p>
             </div>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            <div className="mt-8 rounded-2xl border border-blue-500/30 bg-[#0c121e] p-5 shadow-lg">
+              <div className="flex items-center gap-2 text-blue-400 font-bold text-xs uppercase tracking-wider">
+                <Code2 className="h-4 w-4" />
+                <span>Web Development Agency · Nexora</span>
+              </div>
+              <p className="mt-2 text-xs text-slate-300 leading-relaxed">
+                Beyond fiction writing, Rao Wasif designs and develops high-converting, modern business websites and digital stores through his web development agency <strong className="text-white">Nexora</strong>.
+              </p>
+              <div className="mt-3">
+                <a
+                  href={settings?.webAgencyUrl || "https://nexoraweb-store.vercel.app/"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 hover:underline transition-colors"
+                >
+                  <span>Visit Nexora Web Studio</span>
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
               <a
                 href={`mailto:${SITE.email}`}
                 className="glass-panel flex min-w-0 items-center gap-3 rounded-2xl p-4 text-sm transition-colors hover:text-blue-400 border border-slate-800"

@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import {
   BookOpen,
+  Code2,
   Download,
+  ExternalLink,
   Home,
   Info,
   LogIn,
@@ -81,6 +83,19 @@ export function SiteHeader() {
                   </Link>
                 );
               })}
+              {settings.webAgencyEnabled !== false && (
+                <a
+                  href={settings.webAgencyUrl || "https://nexoraweb-store.vercel.app/"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-blue-400 hover:text-white bg-blue-500/10 border border-blue-500/25 hover:bg-blue-500/20 transition-all ml-1 shadow-sm"
+                  title="Visit Rao Wasif's Web Agency"
+                >
+                  <Code2 className="h-3.5 w-3.5" />
+                  <span>Nexora Web</span>
+                  <ExternalLink className="h-3 w-3 opacity-70" />
+                </a>
+              )}
             </nav>
 
             <Button asChild variant="ghost" size="icon" className="relative shrink-0 text-slate-300 hover:text-white">
@@ -148,6 +163,21 @@ export function SiteHeader() {
                 </Link>
               );
             })}
+            {settings.webAgencyEnabled !== false && (
+              <a
+                href={settings.webAgencyUrl || "https://nexoraweb-store.vercel.app/"}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between rounded-xl border border-blue-500/30 bg-blue-500/10 px-3.5 py-2.5 my-2 text-xs font-semibold text-blue-300 hover:bg-blue-500/20 hover:text-white transition-colors"
+              >
+                <span className="flex items-center gap-2">
+                  <Code2 className="h-4 w-4 text-blue-400" />
+                  <span>Nexora Web Studio (Sister Business)</span>
+                </span>
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+            )}
             <div className="pt-2 border-t border-border/40 mt-2">
               <button
                 onClick={() => {

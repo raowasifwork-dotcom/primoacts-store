@@ -45,13 +45,9 @@ export function BookCard({ book }: { book: Book }) {
             </span>
           )}
 
-          {book.releaseDate ? (
+          {!isUpcoming && book.releaseDate ? (
             <span className="rounded-full bg-black/80 border border-white/20 text-[10px] text-slate-200 font-medium px-2 py-0.5 backdrop-blur-md">
               {book.releaseDate}
-            </span>
-          ) : isUpcoming ? (
-            <span className="rounded-full bg-black/80 border border-white/20 text-[10px] text-slate-200 font-medium px-2 py-0.5 backdrop-blur-md">
-              Coming Soon 2026
             </span>
           ) : null}
         </div>
@@ -108,6 +104,10 @@ export function BookCard({ book }: { book: Book }) {
             }`}
             onClick={() => {
               if (inCart) return;
+              if (isUpcoming) {
+                toast.info(`${book.title} is coming soon! Check back later.`);
+                return;
+              }
               add({
                 slug: book.slug,
                 title: book.title,

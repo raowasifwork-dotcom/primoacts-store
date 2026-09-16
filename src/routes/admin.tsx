@@ -1573,20 +1573,20 @@ function AdminSettingsView({
     settings.webAgencyEnabled !== undefined ? settings.webAgencyEnabled : true,
   );
   const [webAgencyTitle, setWebAgencyTitle] = useState(
-    settings.webAgencyTitle || "Custom High-Converting Business Websites & Stores",
+    settings.webAgencyTitle || "Nexora · Custom Websites & Online Stores by Rao Wasif",
   );
   const [webAgencyBadge, setWebAgencyBadge] = useState(
-    settings.webAgencyBadge || "Web Development Studio by Rao Wasif",
+    settings.webAgencyBadge || "Sister Venture · Nexora Web Studio",
   );
   const [webAgencyDescription, setWebAgencyDescription] = useState(
     settings.webAgencyDescription ||
-      "Need a modern, ultra-fast custom website or online e-commerce store for your brand? We design, develop, and launch production-ready websites in 48 hours with lifetime direct support.",
+      "Looking for a modern, ultra-fast custom business website or e-commerce store? Explore Nexora — Rao Wasif's dedicated web development agency. We design and launch high-converting websites in 48 hours.",
   );
   const [webAgencyUrl, setWebAgencyUrl] = useState(
-    settings.webAgencyUrl || "https://nexoraweb-store.vercel.app",
+    settings.webAgencyUrl || "https://nexoraweb-store.vercel.app/",
   );
   const [webAgencyButtonText, setWebAgencyButtonText] = useState(
-    settings.webAgencyButtonText || "Explore Web Agency",
+    settings.webAgencyButtonText || "Visit Nexora Web Studio",
   );
   const [webAgencyWhatsApp, setWebAgencyWhatsApp] = useState(
     settings.webAgencyWhatsApp || "+92 309 296743",

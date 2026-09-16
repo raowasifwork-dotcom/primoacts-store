@@ -52,7 +52,7 @@ export const BOOKS: Book[] = [
   {
     slug: "shadowrealm-2-the-past-truth",
     title: "Shadowrealm 2: The Past Truth",
-    subtitle: "Season 2 · Coming Soon",
+    subtitle: "Season 2 · Upcoming",
     series: "Shadowrealm · Season 2",
     genre: "Dark Fantasy",
     price: 16.99,
@@ -62,10 +62,9 @@ export const BOOKS: Book[] = [
     pdf: "/downloads/shadowrealm-2-the-past-truth.pdf",
     tagline: "The town remembers what the children forgot.",
     description:
-      "Coming Soon 2026! Ravenwood is quiet again — too quiet. As fire spreads through the realm between, an old truth surfaces in the voices of the missing. Book two deepens the Shadowrealm mythos and forces every member of the group to choose a side.",
+      "Ravenwood is quiet again — too quiet. As fire spreads through the realm between, an old truth surfaces in the voices of the missing. Book two deepens the Shadowrealm mythos and forces every member of the group to choose a side.",
     featured: true,
     status: "upcoming",
-    releaseDate: "Coming Soon 2026",
   },
   {
     slug: "a-thousand-unsaid-things",
@@ -83,7 +82,6 @@ export const BOOKS: Book[] = [
       "Written by Rao Wasif. Not all loves find a place, some live in the heart forever. A deeply emotional and poetic romance novel exploring words left unsaid, memories etched in candlelight, and love that outlasts silence.",
     featured: true,
     status: "upcoming",
-    releaseDate: "Coming Soon 2026",
   },
   {
     slug: "rise-of-the-supreme",
@@ -101,7 +99,6 @@ export const BOOKS: Book[] = [
       "Created and Written by Rao Wasif. Starring Alexander Vega (The Supreme). When darkness falls and cosmic warlords threaten humanity, Alexander awakens an ancient celestial power. A massive cinematic superhero saga featuring The Resistance, The Divine Council, and the Order of the Void.",
     featured: true,
     status: "upcoming",
-    releaseDate: "Coming Soon 2026",
   },
   {
     slug: "the-silent-code",
@@ -119,7 +116,6 @@ export const BOOKS: Book[] = [
       "Written by Rao Wasif. A conspiracy. A coverup. A truth they fear. In a world driven by unseen surveillance and hidden shadow codes, one classified folder holds the key to uncovering the greatest digital conspiracy of modern times.",
     featured: true,
     status: "upcoming",
-    releaseDate: "Coming Soon 2026",
   },
 ];
 

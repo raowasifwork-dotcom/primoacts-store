@@ -381,16 +381,16 @@ function Home() {
                 <div className="space-y-4 max-w-2xl">
                   <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/40 bg-blue-500/10 px-3.5 py-1 text-xs font-semibold text-blue-400">
                     <Code2 className="h-3.5 w-3.5" />
-                    <span>{settings.webAgencyBadge || "Web Development Studio by Rao Wasif"}</span>
+                    <span>{settings.webAgencyBadge || "Sister Venture · Nexora Web Studio"}</span>
                   </div>
 
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-extrabold text-white tracking-tight leading-tight">
-                    {settings.webAgencyTitle || "Custom High-Converting Business Websites & Stores"}
+                    {settings.webAgencyTitle || "Nexora · Custom Websites & Online Stores by Rao Wasif"}
                   </h2>
 
                   <p className="text-sm md:text-base text-slate-300/90 leading-relaxed">
                     {settings.webAgencyDescription ||
-                      "Need a modern, ultra-fast custom website or online e-commerce store for your brand? We design, develop, and launch production-ready websites in 48 hours with lifetime direct support."}
+                      "Looking for a modern, ultra-fast custom business website or e-commerce store? Explore Nexora — Rao Wasif's dedicated web development agency. We design and launch high-converting websites in 48 hours."}
                   </p>
 
                   <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-slate-400">
@@ -407,15 +407,15 @@ function Home() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row md:flex-col gap-3 min-w-[200px]">
-                  {settings.webAgencyUrl && (
+                  {(settings.webAgencyUrl || "https://nexoraweb-store.vercel.app/") && (
                     <a
-                      href={settings.webAgencyUrl}
+                      href={settings.webAgencyUrl || "https://nexoraweb-store.vercel.app/"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3.5 text-xs sm:text-sm shadow-xl shadow-blue-950/60 transition-all hover:scale-105"
                     >
                       <Globe className="h-4 w-4" />
-                      <span>{settings.webAgencyButtonText || "Explore Web Agency"}</span>
+                      <span>{settings.webAgencyButtonText || "Visit Nexora Web Studio"}</span>
                       <ExternalLink className="h-3.5 w-3.5 ml-0.5" />
                     </a>
                   )}
