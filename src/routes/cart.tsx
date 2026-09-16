@@ -30,12 +30,12 @@ function CartPage() {
         <h1 className="text-4xl md:text-5xl">Your cart</h1>
 
         {items.length === 0 ? (
-          <div className="glass-panel mt-10 grid place-items-center gap-4 rounded-3xl px-6 py-20 text-center">
-            <ShoppingBag className="h-8 w-8 text-gold" />
-            <p className="text-sm text-muted-foreground">
+          <div className="glass-panel mt-10 grid place-items-center gap-4 rounded-3xl px-6 py-20 text-center border border-slate-800">
+            <ShoppingBag className="h-8 w-8 text-blue-400" />
+            <p className="text-sm text-slate-400">
               Your cart is empty. The library is one click away.
             </p>
-            <Button asChild>
+            <Button asChild className="btn-gold rounded-xl">
               <Link to="/store">Browse the store</Link>
             </Button>
           </div>
@@ -45,32 +45,33 @@ function CartPage() {
               {items.map((item) => (
                 <li
                   key={item.slug}
-                  className="glass-panel grid grid-cols-[64px_minmax(0,1fr)_auto] items-center gap-4 rounded-2xl p-4"
+                  className="glass-panel grid grid-cols-[64px_minmax(0,1fr)_auto] items-center gap-4 rounded-2xl p-4 border border-slate-800"
                 >
                   <img
                     src={item.cover}
                     alt={`Cover of ${item.title}`}
-                    className="aspect-2/3 w-16 rounded-lg object-cover"
+                    className="aspect-2/3 w-16 rounded-lg object-cover border border-slate-700"
                   />
                   <div className="min-w-0">
                     <Link
                       to="/store/$slug"
                       params={{ slug: item.slug }}
-                      className="block truncate text-sm hover:text-gold"
+                      className="block truncate text-sm font-semibold text-white hover:text-blue-400 transition-colors"
                     >
                       {item.title}
                     </Link>
-                    <p className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
+                    <p className="mt-1 text-xs uppercase tracking-wider text-slate-400">
                       {item.format} · digital download
                     </p>
                   </div>
                   <div className="flex shrink-0 items-center gap-3">
-                    <span className="font-display text-gold">{formatPrice(item.price)}</span>
+                    <span className="font-display font-bold text-white">{formatPrice(item.price)}</span>
                     <Button
                       variant="ghost"
                       size="icon"
                       aria-label={`Remove ${item.title}`}
                       onClick={() => remove(item.slug)}
+                      className="text-slate-400 hover:text-rose-400"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -79,14 +80,14 @@ function CartPage() {
               ))}
             </ul>
 
-            <div className="glass-panel mt-8 rounded-3xl p-6">
+            <div className="glass-panel mt-8 rounded-3xl p-6 border border-slate-800">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-slate-400">
                   {items.length} {items.length === 1 ? "title" : "titles"}
                 </span>
-                <span className="font-display text-3xl text-gold">{formatPrice(total)}</span>
+                <span className="font-display text-3xl font-bold text-white">{formatPrice(total)}</span>
               </div>
-              <Button asChild size="lg" className="mt-6 w-full">
+              <Button asChild size="lg" className="btn-gold mt-6 w-full rounded-xl">
                 <Link to="/checkout">
                   Continue to checkout <ArrowRight className="h-4 w-4" />
                 </Link>

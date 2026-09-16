@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+﻿import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Check, FileDown, MessageSquarePlus, Plus, Sparkles, Star, UserCheck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -41,11 +41,11 @@ export const Route = createFileRoute("/store/$slug")({
 function BookDetail() {
   const { book } = Route.useLoaderData();
   const { add, has } = useCart();
-  const [format, setFormat] = useState(book.formats[0] ?? "EPUB");
+  const [format, setFormat] = useState(book.formats[0] ?? "PDF");
   const inCart = has(book.slug);
 
   // Reviews Hook
-  const { reviews, totalReviews, averageRating, addReview } = useLiveReviews(book.slug);
+  const { reviews = [], totalReviews = 0, averageRating = 5, addReview } = useLiveReviews(book.slug);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [userRating, setUserRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
@@ -83,7 +83,7 @@ function BookDetail() {
       <div className="mx-auto max-w-6xl px-4 md:px-6">
         <Link
           to="/store"
-          className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white"
+          className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors"
         >
           <ArrowLeft className="h-4 w-4" /> Back to store
         </Link>
@@ -101,7 +101,7 @@ function BookDetail() {
                 {book.series}
               </p>
             )}
-            <h1 className="mt-4 text-3xl md:text-5xl font-display text-white">{book.title}</h1>
+            <h1 className="mt-4 text-3xl md:text-5xl font-display text-white font-bold">{book.title}</h1>
             {book.subtitle && (
               <p className="mt-2 font-display text-lg text-slate-400">{book.subtitle}</p>
             )}
@@ -113,7 +113,7 @@ function BookDetail() {
                   <Star
                     key={s}
                     className={`h-4 w-4 ${
-                      s <= Math.round(averageRating)
+                      s <= Math.round(Number(averageRating || 5))
                         ? "fill-amber-400 text-amber-400"
                         : "text-zinc-600"
                     }`}
@@ -223,10 +223,10 @@ function BookDetail() {
         </div>
 
         {/* READER REVIEWS & 5-STAR RATINGS SECTION */}
-        <section className="mt-20 border-t border-border/40 pt-16">
+        <section className="mt-20 border-t border-slate-800 pt-16">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <p className="font-display text-xs uppercase tracking-[0.3em] text-gold">
+              <p className="font-display text-xs uppercase tracking-[0.3em] text-blue-400 font-bold">
                 Reader Feedback
               </p>
               <h2 className="mt-2 text-2xl md:text-3xl font-display font-bold text-white">
@@ -254,7 +254,7 @@ function BookDetail() {
                     <Star
                       key={s}
                       className={`h-5 w-5 ${
-                        s <= Math.round(averageRating)
+                        s <= Math.round(Number(averageRating || 5))
                           ? "fill-amber-400 text-amber-400"
                           : "text-zinc-600"
                       }`}
@@ -306,7 +306,7 @@ function BookDetail() {
                 reviews.map((rev) => (
                   <div
                     key={rev.id}
-                    className="p-5 rounded-2xl border border-border/40 bg-[#0c1018]/80 space-y-3"
+                    className="p-5 rounded-2xl border border-slate-800 bg-[#0c1018]/80 space-y-3"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
@@ -320,44 +320,40 @@ function BookDetail() {
                             />
                           ))}
                         </div>
-                        <span className="font-bold text-white text-xs">{rev.title}</span>
+                        <span className="text-xs font-bold text-white">{rev.title}</span>
                       </div>
-
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-[10px] text-slate-400 font-mono">
                         {new Date(rev.createdAt).toLocaleDateString()}
                       </span>
                     </div>
 
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      “{rev.comment}”
-                    </p>
+                    <p className="text-xs text-slate-300 leading-relaxed">{rev.comment}</p>
 
-                    <div className="flex items-center gap-2 pt-2 border-t border-border/30 text-[11px]">
-                      <span className="font-semibold text-white">{rev.reviewerName}</span>
-                      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
-                        <UserCheck className="h-2.5 w-2.5" /> Verified Reader
-                      </span>
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-800/60 text-[11px]">
+                      <div className="flex items-center gap-1.5 text-slate-400">
+                        <UserCheck className="h-3.5 w-3.5 text-emerald-400" />
+                        <span className="font-medium text-slate-200">{rev.reviewerName}</span>
+                        <span className="text-[10px] text-emerald-400 bg-emerald-950/40 px-1.5 py-0.2 rounded border border-emerald-500/20">
+                          Verified Reader
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))
               ) : (
-                <div className="p-10 rounded-2xl border border-dashed border-border/60 bg-[#0c1018]/40 text-center space-y-3">
-                  <div className="h-12 w-12 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto border border-gold/30">
+                <div className="p-10 rounded-2xl border border-dashed border-slate-800 bg-[#0c1018]/40 text-center space-y-3">
+                  <div className="h-12 w-12 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center mx-auto border border-blue-500/30">
                     <Sparkles className="h-6 w-6" />
                   </div>
-                  <div>
-                    <h3 className="font-display text-base font-semibold text-white">
-                      No Reviews Yet
-                    </h3>
-                    <p className="text-xs text-muted-foreground max-w-md mx-auto mt-1">
-                      Have you read <strong>{book.title}</strong>? Share your thoughts and be the first verified reader to rate this title!
-                    </p>
-                  </div>
+                  <p className="text-sm font-semibold text-white">Be the first to review {book.title}</p>
+                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                    Share your reading experience with the Primo Acts community.
+                  </p>
                   <Button
                     onClick={() => setReviewDialogOpen(true)}
-                    className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+                    className="btn-gold text-xs rounded-xl"
                   >
-                    <MessageSquarePlus className="mr-1.5 h-3.5 w-3.5" /> Write the First Review
+                    Write a Review
                   </Button>
                 </div>
               )}
@@ -365,115 +361,111 @@ function BookDetail() {
           </div>
         </section>
 
-        {/* WRITE A REVIEW DIALOG */}
-        <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
-          <DialogContent className="border border-gold/30 bg-[#0d111a] text-white sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-gold flex items-center gap-2">
-                <Star className="h-4 w-4 fill-gold text-gold" />
-                <span>Review {book.title}</span>
-              </DialogTitle>
-            </DialogHeader>
-
-            <form onSubmit={handleReviewSubmit} className="space-y-4 text-xs pt-2">
-              {/* Star Selector */}
-              <div className="space-y-1.5 text-center p-4 rounded-xl bg-surface/50 border border-border/40">
-                <Label className="text-muted-foreground text-xs">Your Rating</Label>
-                <div className="flex items-center justify-center gap-2 mt-2">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onMouseEnter={() => setHoverRating(star)}
-                      onMouseLeave={() => setHoverRating(0)}
-                      onClick={() => setUserRating(star)}
-                      className="p-1 hover:scale-125 transition-transform"
-                    >
-                      <Star
-                        className={`h-7 w-7 transition-colors ${
-                          star <= (hoverRating || userRating)
-                            ? "fill-amber-400 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]"
-                            : "text-zinc-600"
-                        }`}
-                      />
-                    </button>
-                  ))}
-                </div>
-                <p className="text-[11px] font-semibold text-gold mt-1">
-                  {userRating === 5 && "★★★★★ Masterpiece / 5 Stars"}
-                  {userRating === 4 && "★★★★☆ Great Read / 4 Stars"}
-                  {userRating === 3 && "★★★☆☆ Good Book / 3 Stars"}
-                  {userRating === 2 && "★★☆☆☆ Fair / 2 Stars"}
-                  {userRating === 1 && "★☆☆☆☆ Needs Work / 1 Star"}
-                </p>
-              </div>
-
-              <div className="space-y-1.5">
-                <Label>Your Name</Label>
-                <Input
-                  value={reviewerName}
-                  onChange={(e) => setReviewerName(e.target.value)}
-                  placeholder="e.g. Tariq Khan"
-                  className="bg-surface/80 border-border/60 text-xs"
-                  required
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <Label>Review Headline (Optional)</Label>
-                <Input
-                  value={reviewTitle}
-                  onChange={(e) => setReviewTitle(e.target.value)}
-                  placeholder="e.g. Unputdownable suspense and dark lore!"
-                  className="bg-surface/80 border-border/60 text-xs"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <Label>Your Detailed Review</Label>
-                <Textarea
-                  rows={4}
-                  value={reviewComment}
-                  onChange={(e) => setReviewComment(e.target.value)}
-                  placeholder="Share what you loved about the characters, pacing, and story..."
-                  className="bg-surface/80 border-border/60 text-xs"
-                  required
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setReviewDialogOpen(false)}
-                  className="border-border/60 text-xs"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  size="sm"
-                  className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
-                >
-                  Submit Review
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
-
         {related.length > 0 && (
-          <section className="mt-20">
-            <h2 className="text-2xl">More {book.genre}</h2>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-24 border-t border-slate-800 pt-16">
+            <h2 className="text-2xl font-display font-bold text-white">More in {book.genre}</h2>
+            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((b) => (
                 <BookCard key={b.slug} book={b} />
               ))}
             </div>
-          </section>
+          </div>
         )}
       </div>
+
+      {/* Review Dialog Modal */}
+      <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
+        <DialogContent className="border border-blue-500/30 bg-[#0d111a] text-white sm:max-w-md rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2">
+              <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+              <span>Review {book.title}</span>
+            </DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleReviewSubmit} className="space-y-4 pt-2 text-xs">
+            {/* Star Rating Select */}
+            <div className="space-y-1.5">
+              <Label className="text-slate-300">Your Rating *</Label>
+              <div className="flex items-center gap-2 pt-1">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onMouseEnter={() => setHoverRating(s)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    onClick={() => setUserRating(s)}
+                    className="p-1 transition-transform hover:scale-125 focus:outline-none"
+                  >
+                    <Star
+                      className={`h-6 w-6 ${
+                        s <= (hoverRating || userRating)
+                          ? "fill-amber-400 text-amber-400"
+                          : "text-zinc-600"
+                      }`}
+                    />
+                  </button>
+                ))}
+                <span className="text-xs font-bold text-amber-400 ml-2">
+                  {userRating} / 5 Stars
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label className="text-slate-300">Your Name *</Label>
+              <Input
+                required
+                value={reviewerName}
+                onChange={(e) => setReviewerName(e.target.value)}
+                placeholder="e.g. Rao Wasif / Reader Name"
+                className="bg-slate-900 border-slate-700 text-white rounded-xl text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label className="text-slate-300">Review Headline</Label>
+              <Input
+                value={reviewTitle}
+                onChange={(e) => setReviewTitle(e.target.value)}
+                placeholder="e.g. Unputdownable Dark Fantasy!"
+                className="bg-slate-900 border-slate-700 text-white rounded-xl text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label className="text-slate-300">Your Review *</Label>
+              <Textarea
+                required
+                rows={4}
+                value={reviewComment}
+                onChange={(e) => setReviewComment(e.target.value)}
+                placeholder="What did you love about the characters, suspense, or worldbuilding?"
+                className="bg-slate-900 border-slate-700 text-white rounded-xl text-xs"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setReviewDialogOpen(false)}
+                className="text-xs text-slate-400 hover:text-white"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                size="sm"
+                className="btn-gold text-xs rounded-xl"
+              >
+                Submit Review
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

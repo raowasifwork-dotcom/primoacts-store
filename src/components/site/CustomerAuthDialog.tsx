@@ -66,7 +66,7 @@ export function CustomerAuthDialog({
         {isLoggedIn && user ? (
           <div className="space-y-6 pt-2">
             <div className="flex items-center gap-4 p-4 rounded-2xl bg-surface/60 border border-border/50">
-              <div className="h-12 w-12 rounded-full bg-gold/20 border border-gold/40 flex items-center justify-center text-gold font-bold font-display text-lg">
+              <div className="h-12 w-12 rounded-full bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold font-display text-lg">
                 {(user.name || user.email || "R").slice(0, 1).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
@@ -79,7 +79,7 @@ export function CustomerAuthDialog({
             </div>
 
             <div className="space-y-2">
-              <Button asChild className="w-full justify-start rounded-xl h-11 bg-gold hover:bg-gold-light text-black font-semibold text-xs">
+              <Button asChild className="w-full justify-start rounded-xl h-11 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs">
                 <Link to="/downloads" onClick={() => onOpenChange(false)}>
                   <BookOpen className="mr-2 h-4 w-4" /> My Digital Books & Downloads
                 </Link>
@@ -87,12 +87,12 @@ export function CustomerAuthDialog({
 
               <Button asChild variant="outline" className="w-full justify-start rounded-xl h-11 border-border/60 text-xs text-white hover:bg-surface">
                 <Link to="/store" onClick={() => onOpenChange(false)}>
-                  <BookOpen className="mr-2 h-4 w-4 text-gold" /> Browse Book Store
+                  <BookOpen className="mr-2 h-4 w-4 text-blue-400" /> Browse Book Store
                 </Link>
               </Button>
 
               {isFounder && (
-                <Button asChild variant="outline" className="w-full justify-start rounded-xl h-11 border-gold/40 bg-gold/10 text-gold hover:bg-gold/20 text-xs font-semibold">
+                <Button asChild variant="outline" className="w-full justify-start rounded-xl h-11 border-blue-500/40 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 text-xs font-semibold">
                   <Link to="/admin" onClick={() => onOpenChange(false)}>
                     <KeyRound className="mr-2 h-4 w-4" /> Open Founder Admin Portal
                   </Link>
@@ -161,7 +161,7 @@ export function CustomerAuthDialog({
               />
             </div>
 
-            <Button type="submit" className="w-full bg-gold hover:bg-gold-light text-black font-semibold rounded-xl h-10 text-xs font-display uppercase tracking-wider">
+            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl h-10 text-xs font-display uppercase tracking-wider shadow-lg shadow-blue-900/40">
               {mode === "login" ? (
                 <>
                   <LogIn className="mr-1.5 h-3.5 w-3.5" /> Sign In
@@ -180,7 +180,7 @@ export function CustomerAuthDialog({
                   <button
                     type="button"
                     onClick={() => setMode("register")}
-                    className="text-gold font-semibold hover:underline ml-1"
+                    className="text-blue-400 font-semibold hover:underline ml-1"
                   >
                     Register here
                   </button>
@@ -191,7 +191,7 @@ export function CustomerAuthDialog({
                   <button
                     type="button"
                     onClick={() => setMode("login")}
-                    className="text-gold font-semibold hover:underline ml-1"
+                    className="text-blue-400 font-semibold hover:underline ml-1"
                   >
                     Sign In
                   </button>

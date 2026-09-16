@@ -52,7 +52,7 @@ export const BOOKS: Book[] = [
   {
     slug: "shadowrealm-2-the-past-truth",
     title: "Shadowrealm 2: The Past Truth",
-    subtitle: "Season 2 Finale · Pre-Order",
+    subtitle: "Season 2 · Coming Soon",
     series: "Shadowrealm · Season 2",
     genre: "Dark Fantasy",
     price: 16.99,
@@ -62,10 +62,10 @@ export const BOOKS: Book[] = [
     pdf: "/downloads/shadowrealm-2-the-past-truth.pdf",
     tagline: "The town remembers what the children forgot.",
     description:
-      "Releasing September 10, 2026! Ravenwood is quiet again — too quiet. As fire spreads through the realm between, an old truth surfaces in the voices of the missing. Book two deepens the Shadowrealm mythos and forces every member of the group to choose a side. Pre-order now to receive the digital edition on release day.",
+      "Coming Soon 2026! Ravenwood is quiet again — too quiet. As fire spreads through the realm between, an old truth surfaces in the voices of the missing. Book two deepens the Shadowrealm mythos and forces every member of the group to choose a side.",
     featured: true,
-    status: "preorder",
-    releaseDate: "September 10, 2026",
+    status: "upcoming",
+    releaseDate: "Coming Soon 2026",
   },
   {
     slug: "a-thousand-unsaid-things",
@@ -80,9 +80,9 @@ export const BOOKS: Book[] = [
     pdf: "/downloads/a-thousand-unsaid-things.pdf",
     tagline: "Some feelings never fade, they just remain unspoken.",
     description:
-      "Written by Rao Wasif. Not all loves find a place, some live in the heart forever. A deeply emotional and poetic romance novel exploring words left unsaid, memories etched in candlelight, and love that outlasts silence. Pre-order now.",
+      "Written by Rao Wasif. Not all loves find a place, some live in the heart forever. A deeply emotional and poetic romance novel exploring words left unsaid, memories etched in candlelight, and love that outlasts silence.",
     featured: true,
-    status: "preorder",
+    status: "upcoming",
     releaseDate: "Coming Soon 2026",
   },
   {

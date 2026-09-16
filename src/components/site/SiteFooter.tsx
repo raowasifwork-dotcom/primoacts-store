@@ -18,32 +18,32 @@ export function SiteFooter() {
         </div>
 
         <div className="text-sm">
-          <p className="font-medium">Explore</p>
-          <div className="mt-3 flex flex-col gap-2 text-muted-foreground">
-            <Link to="/store" className="hover:text-gold">
+          <p className="font-medium text-white">Explore</p>
+          <div className="mt-3 flex flex-col gap-2 text-slate-400">
+            <Link to="/store" className="hover:text-blue-400 transition-colors">
               Digital Store
             </Link>
-            <Link to="/characters" className="hover:text-gold">
+            <Link to="/characters" className="hover:text-blue-400 transition-colors">
               Characters
             </Link>
-            <Link to="/about" className="hover:text-gold">
+            <Link to="/about" className="hover:text-blue-400 transition-colors">
               About the Author
             </Link>
-            <Link to="/contact" className="hover:text-gold">
+            <Link to="/contact" className="hover:text-blue-400 transition-colors">
               Contact
             </Link>
           </div>
         </div>
 
         <div className="text-sm">
-          <p className="font-medium">Get in touch</p>
-          <div className="mt-3 flex flex-col gap-2 text-muted-foreground">
-            <a href={`mailto:${SITE.email}`} className="flex items-center gap-2 hover:text-gold">
+          <p className="font-medium text-white">Get in touch</p>
+          <div className="mt-3 flex flex-col gap-2 text-slate-400">
+            <a href={`mailto:${SITE.email}`} className="flex items-center gap-2 hover:text-blue-400 transition-colors">
               <Mail className="h-4 w-4 shrink-0" /> {SITE.email}
             </a>
             <a
               href={`tel:${SITE.phone.replace(/\s/g, "")}`}
-              className="flex items-center gap-2 hover:text-gold"
+              className="flex items-center gap-2 hover:text-blue-400 transition-colors"
             >
               <Phone className="h-4 w-4 shrink-0" /> {SITE.phone}
             </a>
@@ -51,12 +51,12 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="mx-auto mt-10 max-w-6xl border-t border-border/60 px-4 pt-6 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-3 md:px-6">
+      <div className="mx-auto mt-10 max-w-6xl border-t border-border/60 px-4 pt-6 text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-3 md:px-6">
         <div>
           © {new Date().getFullYear()} {SITE.name} · Written by {SITE.founder}. All rights reserved.
         </div>
         <div>
-          <Link to="/admin" className="text-muted-foreground/60 hover:text-gold text-[11px] transition-colors">
+          <Link to="/admin" className="text-slate-500 hover:text-blue-400 text-[11px] transition-colors">
             Staff / Control Center
           </Link>
         </div>

@@ -6,6 +6,7 @@ import {
   Building2,
   CheckCircle2,
   Clock,
+  Code2,
   Copy,
   CreditCard,
   DollarSign,
@@ -14,6 +15,7 @@ import {
   ExternalLink,
   FileDown,
   Film,
+  Globe,
   KeyRound,
   LayoutDashboard,
   LogOut,
@@ -127,16 +129,16 @@ function AdminMasterPortal() {
     return (
       <div className="relative min-h-screen flex items-center justify-center p-4 bg-[#06080d] overflow-hidden">
         {/* Glows */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-gold/10 blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-blue-600/10 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 h-80 w-80 rounded-full bg-indigo-950/30 blur-[100px] pointer-events-none" />
 
-        <div className="relative w-full max-w-md rounded-3xl border border-gold/30 bg-[#0c1018]/95 p-8 shadow-2xl shadow-black/80 backdrop-blur-2xl">
+        <div className="relative w-full max-w-md rounded-3xl border border-blue-500/30 bg-[#0c1018]/95 p-8 shadow-2xl shadow-black/80 backdrop-blur-2xl">
           <div className="flex flex-col items-center text-center">
-            <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-gold/50 shadow-xl shadow-gold/20 mb-4 p-0.5 bg-black/60">
+            <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-blue-500/50 shadow-xl shadow-blue-900/20 mb-4 p-0.5 bg-black/60">
               <img src="/logo.png" alt="Primo Acts" className="h-full w-full object-cover rounded-xl" />
             </div>
 
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-[11px] font-semibold text-gold uppercase tracking-widest">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/30 bg-blue-600/10 px-3 py-1 text-[11px] font-semibold text-blue-400 uppercase tracking-widest">
               <ShieldCheck className="h-3.5 w-3.5" /> Founder Portal
             </span>
 
@@ -163,7 +165,7 @@ function AdminMasterPortal() {
                   className={`pl-10 h-12 bg-surface/80 border text-sm rounded-xl transition-all ${
                     loginError
                       ? "border-rose-500 ring-2 ring-rose-500/20"
-                      : "border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20"
+                      : "border-border/60 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                   }`}
                   autoFocus
                 />
@@ -173,7 +175,7 @@ function AdminMasterPortal() {
             <Button
               type="submit"
               disabled={loginLoading}
-              className="w-full h-12 rounded-xl bg-gold hover:bg-gold-light text-black font-semibold text-sm transition-all shadow-lg shadow-gold/20 flex items-center justify-center gap-2"
+              className="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-sm transition-all shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2"
             >
               {loginLoading ? "Verifying..." : "Enter Control Center"}
               {!loginLoading && <ArrowRight className="h-4 w-4" />}
@@ -183,7 +185,7 @@ function AdminMasterPortal() {
           <div className="mt-6 text-center">
             <Link
               to="/"
-              className="text-xs text-muted-foreground hover:text-gold transition-colors inline-flex items-center gap-1"
+              className="text-xs text-muted-foreground hover:text-blue-400 transition-colors inline-flex items-center gap-1"
             >
               ← Return to Public Store
             </Link>
@@ -211,10 +213,10 @@ function AdminMasterPortal() {
       {/* Mobile Top Bar */}
       <div className="flex md:hidden items-center justify-between px-4 py-3 border-b border-border/40 bg-surface/80 backdrop-blur-lg sticky top-0 z-50">
         <div className="flex items-center gap-2">
-          <div className="h-7 w-7 rounded-lg overflow-hidden border border-gold/40">
+          <div className="h-7 w-7 rounded-lg overflow-hidden border border-blue-500/40">
             <img src="/logo.png" alt="Logo" className="h-full w-full object-cover" />
           </div>
-          <span className="font-display text-sm tracking-wider uppercase text-gold font-bold">
+          <span className="font-display text-sm tracking-wider uppercase text-blue-400 font-bold">
             Primo Admin
           </span>
         </div>
@@ -232,14 +234,14 @@ function AdminMasterPortal() {
         <div className="space-y-6">
           {/* Brand Header */}
           <div className="flex items-center gap-3 px-2 py-1">
-            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-gold/40 shadow-lg shadow-gold/10">
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-blue-500/40 shadow-lg shadow-blue-900/10">
               <img src="/logo.png" alt="Logo" className="h-full w-full object-cover" />
             </div>
             <div>
               <p className="font-display text-sm uppercase tracking-[0.16em] font-semibold text-white">
                 {SITE.name}
               </p>
-              <span className="inline-flex items-center gap-1 text-[10px] text-gold tracking-widest uppercase font-medium">
+              <span className="inline-flex items-center gap-1 text-[10px] text-blue-400 tracking-widest uppercase font-medium">
                 <ShieldCheck className="h-3 w-3" /> Control Center
               </span>
             </div>
@@ -247,7 +249,7 @@ function AdminMasterPortal() {
 
           {/* Admin User Card */}
           <div className="rounded-xl border border-border/50 bg-surface/50 p-3 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full overflow-hidden border border-gold/50 bg-black/40">
+            <div className="h-9 w-9 rounded-full overflow-hidden border border-blue-500/50 bg-black/40">
               <img src={founderImg} alt="Rao Wasif" className="h-full w-full object-cover" />
             </div>
             <div className="min-w-0 flex-1">
@@ -273,12 +275,12 @@ function AdminMasterPortal() {
                   }}
                   className={`flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all text-left ${
                     isActive
-                      ? "bg-gold/15 text-gold border border-gold/30 shadow-sm shadow-gold/5"
+                      ? "bg-blue-500/15 text-blue-300 border border-blue-500/30 shadow-sm shadow-blue-900/5"
                       : "text-muted-foreground hover:bg-surface hover:text-white"
                   }`}
                 >
                   <span className="flex items-center gap-3">
-                    <Icon className={`h-4 w-4 ${isActive ? "text-gold" : "text-muted-foreground"}`} />
+                    <Icon className={`h-4 w-4 ${isActive ? "text-blue-400" : "text-muted-foreground"}`} />
                     {item.label}
                   </span>
                   {Boolean(badge && badge > 0) && (
@@ -299,10 +301,10 @@ function AdminMasterPortal() {
             className="flex items-center justify-between rounded-xl px-3.5 py-2 text-xs text-muted-foreground hover:bg-surface hover:text-white transition-colors"
           >
             <span className="flex items-center gap-2">
-              <ExternalLink className="h-3.5 w-3.5 text-gold" />
+              <ExternalLink className="h-3.5 w-3.5 text-blue-400" />
               View Live Store
             </span>
-            <span className="text-[10px] bg-gold/10 text-gold px-1.5 py-0.5 rounded">Live</span>
+            <span className="text-[10px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded">Live</span>
           </Link>
 
           <button
@@ -363,7 +365,7 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
             <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
               Control Dashboard
             </h1>
-            <span className="rounded-full bg-gold/15 border border-gold/30 px-2.5 py-0.5 text-[11px] font-semibold text-gold">
+            <span className="rounded-full bg-blue-600/15 border border-blue-500/30 px-2.5 py-0.5 text-[11px] font-semibold text-blue-400">
               Live
             </span>
           </div>
@@ -376,7 +378,7 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
           <Button
             size="sm"
             onClick={() => onNavigate("books")}
-            className="bg-gold hover:bg-gold-light text-black font-semibold rounded-xl text-xs"
+            className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold rounded-xl text-xs"
           >
             <Plus className="mr-1.5 h-3.5 w-3.5" /> Manage Books
           </Button>
@@ -384,9 +386,9 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
             size="sm"
             onClick={() => onNavigate("reviews")}
             variant="outline"
-            className="border-gold/40 text-gold hover:bg-gold/10 rounded-xl text-xs"
+            className="border-blue-500/40 text-blue-400 hover:bg-blue-600/10 rounded-xl text-xs"
           >
-            <Star className="mr-1.5 h-3.5 w-3.5 fill-gold text-gold" /> Reader Reviews ({allReviews.length})
+            <Star className="mr-1.5 h-3.5 w-3.5 fill-amber-400 text-amber-400" /> Reader Reviews ({allReviews.length})
           </Button>
         </div>
       </div>
@@ -398,7 +400,7 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Total Revenue
             </p>
-            <div className="h-8 w-8 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold">
+            <div className="h-8 w-8 rounded-xl bg-blue-600/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
               <DollarSign className="h-4 w-4" />
             </div>
           </div>
@@ -412,10 +414,10 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
 
         <div
           onClick={() => onNavigate("reviews")}
-          className="rounded-2xl border border-border/50 bg-[#0c1018]/80 p-5 shadow-lg relative overflow-hidden backdrop-blur-md cursor-pointer hover:border-gold/50 transition-all group"
+          className="rounded-2xl border border-border/50 bg-[#0c1018]/80 p-5 shadow-lg relative overflow-hidden backdrop-blur-md cursor-pointer hover:border-blue-500/50 transition-all group"
         >
           <div className="flex items-center justify-between">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider group-hover:text-gold transition-colors">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider group-hover:text-blue-400 transition-colors">
               Reader Reviews
             </p>
             <div className="h-8 w-8 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
@@ -426,7 +428,7 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
             <span>★ {avgRating}</span>
             <span className="text-xs text-muted-foreground font-normal">({allReviews.length})</span>
           </p>
-          <p className="mt-1 text-[11px] text-gold font-medium">
+          <p className="mt-1 text-[11px] text-blue-400 font-medium">
             Click to manage →
           </p>
         </div>
@@ -497,7 +499,7 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
               variant="ghost"
               size="sm"
               onClick={() => onNavigate("orders")}
-              className="text-xs text-gold hover:text-gold-light"
+              className="text-xs text-blue-400 hover:text-blue-400-light"
             >
               View All <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
             </Button>
@@ -507,16 +509,16 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
             {orders.slice(0, 4).map((order) => (
               <div
                 key={order.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-border/40 bg-surface/40 p-3.5 transition-all hover:border-gold/30"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-border/40 bg-surface/40 p-3.5 transition-all hover:border-blue-500/30"
               >
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-surface border border-border flex items-center justify-center font-mono text-xs font-bold text-gold">
+                  <div className="h-10 w-10 rounded-xl bg-surface border border-border flex items-center justify-center font-mono text-xs font-bold text-blue-400">
                     {order.reference.slice(0, 5)}
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-white">{order.customerName}</p>
                     <p className="text-[11px] text-muted-foreground">{order.customerEmail}</p>
-                    <p className="text-[10px] text-gold/80 font-mono mt-0.5">
+                    <p className="text-[10px] text-blue-400/80 font-mono mt-0.5">
                       {order.items.map((i) => i.title).join(", ")}
                     </p>
                   </div>
@@ -537,7 +539,7 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
                         updateOrderStatus(order.id, "verified");
                         toast.success(`Order ${order.reference} verified!`);
                       }}
-                      className="h-7 text-[10px] bg-gold hover:bg-gold-light text-black font-semibold rounded-lg"
+                      className="h-7 text-[10px] bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold rounded-lg"
                     >
                       Verify & Unlock
                     </Button>
@@ -558,15 +560,15 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
               <Button
                 variant="outline"
                 onClick={() => onNavigate("books")}
-                className="w-full justify-start text-xs border-border/60 rounded-xl h-10 hover:border-gold/40"
+                className="w-full justify-start text-xs border-border/60 rounded-xl h-10 hover:border-blue-500/40"
               >
-                <Package className="mr-2 h-4 w-4 text-gold" />
+                <Package className="mr-2 h-4 w-4 text-blue-400" />
                 Edit Book Prices & Upload PDFs
               </Button>
               <Button
                 variant="outline"
                 onClick={() => onNavigate("characters")}
-                className="w-full justify-start text-xs border-border/60 rounded-xl h-10 hover:border-gold/40"
+                className="w-full justify-start text-xs border-border/60 rounded-xl h-10 hover:border-blue-500/40"
               >
                 <Users className="mr-2 h-4 w-4 text-purple-400" />
                 Update Character Lore
@@ -574,7 +576,7 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
               <Button
                 variant="outline"
                 onClick={() => onNavigate("settings")}
-                className="w-full justify-start text-xs border-border/60 rounded-xl h-10 hover:border-gold/40"
+                className="w-full justify-start text-xs border-border/60 rounded-xl h-10 hover:border-blue-500/40"
               >
                 <Sparkles className="mr-2 h-4 w-4 text-amber-400" />
                 Announcement Banner & Password
@@ -582,8 +584,8 @@ function AdminDashboardView({ onNavigate }: { onNavigate: (tab: any) => void }) 
             </div>
           </div>
 
-          <div className="rounded-2xl border border-gold/30 bg-gradient-to-br from-gold/10 via-[#0c1018] to-[#0c1018] p-5 shadow-xl">
-            <div className="flex items-center gap-2 text-gold">
+          <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-600/10 via-[#0c1018] to-[#0c1018] p-5 shadow-xl">
+            <div className="flex items-center gap-2 text-blue-400">
               <ShieldCheck className="h-4 w-4" />
               <span className="font-display text-xs font-bold uppercase tracking-wider">
                 Store Security Active
@@ -687,7 +689,7 @@ function AdminBooksView() {
           <Button
             size="sm"
             onClick={handleCreate}
-            className="bg-gold hover:bg-gold-light text-black font-semibold rounded-xl text-xs"
+            className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold rounded-xl text-xs"
           >
             <Plus className="mr-1.5 h-3.5 w-3.5" /> Add New Book
           </Button>
@@ -699,7 +701,7 @@ function AdminBooksView() {
         {books.map((book) => (
           <div
             key={book.slug}
-            className="flex flex-col justify-between rounded-2xl border border-border/50 bg-[#0c1018]/90 overflow-hidden shadow-xl hover:border-gold/30 transition-all backdrop-blur-md"
+            className="flex flex-col justify-between rounded-2xl border border-border/50 bg-[#0c1018]/90 overflow-hidden shadow-xl hover:border-blue-500/30 transition-all backdrop-blur-md"
           >
             <div>
               <div className="relative aspect-[16/10] overflow-hidden bg-black/50 border-b border-border/40">
@@ -711,13 +713,13 @@ function AdminBooksView() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
 
                 <div className="absolute top-3 right-3 flex items-center gap-2">
-                  <span className="rounded-full bg-gold/90 text-black font-display font-bold px-2.5 py-0.5 text-xs shadow-md">
+                  <span className="rounded-full bg-blue-600/90 text-black font-display font-bold px-2.5 py-0.5 text-xs shadow-md">
                     {formatPrice(book.price)}
                   </span>
                 </div>
 
                 <div className="absolute bottom-3 left-3 right-3">
-                  <span className="text-[10px] uppercase font-semibold text-gold tracking-widest">
+                  <span className="text-[10px] uppercase font-semibold text-blue-400 tracking-widest">
                     {book.series || book.genre}
                   </span>
                   <h3 className="font-display text-sm font-bold text-white truncate">
@@ -739,7 +741,7 @@ function AdminBooksView() {
                     📄 {book.formats.join(", ")}
                   </span>
                   {book.featured && (
-                    <span className="rounded bg-gold/10 text-gold px-2 py-0.5 border border-gold/30 font-medium">
+                    <span className="rounded bg-blue-500/10 text-blue-400 px-2 py-0.5 border border-blue-500/30 font-medium">
                       ★ Featured
                     </span>
                   )}
@@ -756,9 +758,9 @@ function AdminBooksView() {
                   size="sm"
                   variant="outline"
                   onClick={() => handleEdit(book)}
-                  className="h-8 text-xs border-border/60 hover:border-gold rounded-lg"
+                  className="h-8 text-xs border-border/60 hover:border-blue-500 rounded-lg"
                 >
-                  <Edit2 className="h-3 w-3 mr-1 text-gold" /> Edit
+                  <Edit2 className="h-3 w-3 mr-1 text-blue-400" /> Edit
                 </Button>
                 {books.length > 1 && (
                   <Button
@@ -855,7 +857,7 @@ function AdminBooksView() {
                   <span className="text-[10px] text-muted-foreground">Select image from computer/phone</span>
                 </Label>
                 <div className="flex items-center gap-4">
-                  <div className="h-16 w-12 shrink-0 rounded-lg overflow-hidden border border-gold/40 bg-black/60">
+                  <div className="h-16 w-12 shrink-0 rounded-lg overflow-hidden border border-blue-500/40 bg-black/60">
                     <img
                       src={editingBook.cover}
                       alt="Cover Preview"
@@ -890,7 +892,7 @@ function AdminBooksView() {
                       variant="outline"
                       size="sm"
                       onClick={() => document.getElementById("cover-upload-portal")?.click()}
-                      className="h-8 text-xs border-gold/40 text-gold hover:bg-gold/10 rounded-lg"
+                      className="h-8 text-xs border-blue-500/40 text-blue-400 hover:bg-blue-600/10 rounded-lg"
                     >
                       Choose New Cover Image
                     </Button>
@@ -991,7 +993,7 @@ function AdminBooksView() {
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+                  className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
                 >
                   Save Changes
                 </Button>
@@ -1085,7 +1087,7 @@ function AdminCharactersView() {
           <Button
             size="sm"
             onClick={handleCreate}
-            className="bg-gold hover:bg-gold-light text-black font-semibold rounded-xl text-xs"
+            className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold rounded-xl text-xs"
           >
             <Plus className="mr-1.5 h-3.5 w-3.5" /> Add Character
           </Button>
@@ -1096,7 +1098,7 @@ function AdminCharactersView() {
         {characters.map((char) => (
           <div
             key={char.slug}
-            className="flex flex-col justify-between rounded-2xl border border-border/50 bg-[#0c1018]/90 overflow-hidden shadow-xl hover:border-gold/30 transition-all backdrop-blur-md"
+            className="flex flex-col justify-between rounded-2xl border border-border/50 bg-[#0c1018]/90 overflow-hidden shadow-xl hover:border-blue-500/30 transition-all backdrop-blur-md"
           >
             <div>
               <div className="relative aspect-[3/4] overflow-hidden bg-black/60 border-b border-border/40">
@@ -1108,13 +1110,13 @@ function AdminCharactersView() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
                 <div className="absolute top-3 left-3">
-                  <span className="rounded-full bg-black/70 border border-gold/40 text-gold px-2.5 py-0.5 text-[10px] font-bold">
+                  <span className="rounded-full bg-black/70 border border-blue-500/40 text-blue-400 px-2.5 py-0.5 text-[10px] font-bold">
                     Age {char.age}
                   </span>
                 </div>
 
                 <div className="absolute bottom-3 left-3 right-3">
-                  <span className="text-[10px] font-display uppercase tracking-widest text-gold font-bold">
+                  <span className="text-[10px] font-display uppercase tracking-widest text-blue-400 font-bold">
                     {char.role} · {char.trait}
                   </span>
                   <h3 className="font-display text-base font-bold text-white truncate">
@@ -1124,8 +1126,8 @@ function AdminCharactersView() {
               </div>
 
               <div className="p-4 space-y-3">
-                <div className="rounded-xl border border-border/40 bg-surface/40 p-2.5 text-[11px] italic text-gold/90 flex gap-2">
-                  <Quote className="h-3.5 w-3.5 shrink-0 text-gold mt-0.5" />
+                <div className="rounded-xl border border-border/40 bg-surface/40 p-2.5 text-[11px] italic text-blue-400/90 flex gap-2">
+                  <Quote className="h-3.5 w-3.5 shrink-0 text-blue-400 mt-0.5" />
                   <span>"{char.quote}"</span>
                 </div>
 
@@ -1144,9 +1146,9 @@ function AdminCharactersView() {
                   size="sm"
                   variant="outline"
                   onClick={() => handleEdit(char)}
-                  className="h-8 text-xs border-border/60 hover:border-gold rounded-lg"
+                  className="h-8 text-xs border-border/60 hover:border-blue-500 rounded-lg"
                 >
-                  <Edit2 className="h-3 w-3 mr-1 text-gold" /> Edit
+                  <Edit2 className="h-3 w-3 mr-1 text-blue-400" /> Edit
                 </Button>
                 {characters.length > 1 && (
                   <Button
@@ -1237,7 +1239,7 @@ function AdminCharactersView() {
                   <span className="text-[10px] text-muted-foreground">Select image from computer/phone</span>
                 </Label>
                 <div className="flex items-center gap-4">
-                  <div className="h-16 w-12 shrink-0 rounded-lg overflow-hidden border border-gold/40 bg-black/60">
+                  <div className="h-16 w-12 shrink-0 rounded-lg overflow-hidden border border-blue-500/40 bg-black/60">
                     <img
                       src={editingChar.image}
                       alt="Portrait Preview"
@@ -1272,7 +1274,7 @@ function AdminCharactersView() {
                       variant="outline"
                       size="sm"
                       onClick={() => document.getElementById("char-upload-portal")?.click()}
-                      className="h-8 text-xs border-gold/40 text-gold hover:bg-gold/10 rounded-lg"
+                      className="h-8 text-xs border-blue-500/40 text-blue-400 hover:bg-blue-600/10 rounded-lg"
                     >
                       Choose New Portrait
                     </Button>
@@ -1304,7 +1306,7 @@ function AdminCharactersView() {
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+                  className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
                 >
                   Save Character
                 </Button>
@@ -1370,7 +1372,7 @@ function AdminOrdersView() {
             onClick={exportOrders}
             className="border-border/60 text-xs rounded-xl"
           >
-            <Download className="mr-1.5 h-3.5 w-3.5 text-gold" /> Export JSON
+            <Download className="mr-1.5 h-3.5 w-3.5 text-blue-400" /> Export JSON
           </Button>
         </div>
       </div>
@@ -1383,7 +1385,7 @@ function AdminOrdersView() {
               onClick={() => setFilter(tab)}
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
                 filter === tab
-                  ? "border-gold/60 bg-gold/15 text-gold"
+                  ? "border-blue-500/60 bg-blue-500/15 text-blue-300"
                   : "border-border/60 text-muted-foreground hover:text-white"
               }`}
             >
@@ -1419,7 +1421,7 @@ function AdminOrdersView() {
             <tbody className="divide-y divide-border/30">
               {filteredOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-surface/30 transition-colors">
-                  <td className="px-5 py-4 font-mono font-bold text-gold">
+                  <td className="px-5 py-4 font-mono font-bold text-blue-400">
                     <button
                       onClick={() => copyRef(order.reference)}
                       className="flex items-center gap-1.5 hover:underline"
@@ -1436,7 +1438,7 @@ function AdminOrdersView() {
                     <p className="font-semibold text-white">{order.customerName}</p>
                     <a
                       href={`mailto:${order.customerEmail}`}
-                      className="text-[11px] text-muted-foreground hover:text-gold flex items-center gap-1 mt-0.5"
+                      className="text-[11px] text-muted-foreground hover:text-blue-400 flex items-center gap-1 mt-0.5"
                     >
                       <Mail className="h-3 w-3" /> {order.customerEmail}
                     </a>
@@ -1483,7 +1485,7 @@ function AdminOrdersView() {
                             updateOrderStatus(order.id, "verified");
                             toast.success(`Order ${order.reference} verified!`);
                           }}
-                          className="h-7 text-[10px] bg-gold hover:bg-gold-light text-black font-semibold rounded-lg"
+                          className="h-7 text-[10px] bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold rounded-lg"
                         >
                           Verify
                         </Button>
@@ -1566,6 +1568,30 @@ function AdminSettingsView({
       "Please transfer the exact amount and share your payment screenshot on WhatsApp or Support Live Chat along with your Order Reference ID.",
   );
 
+  // Web Agency / Sister Business Details
+  const [webAgencyEnabled, setWebAgencyEnabled] = useState(
+    settings.webAgencyEnabled !== undefined ? settings.webAgencyEnabled : true,
+  );
+  const [webAgencyTitle, setWebAgencyTitle] = useState(
+    settings.webAgencyTitle || "Custom High-Converting Business Websites & Stores",
+  );
+  const [webAgencyBadge, setWebAgencyBadge] = useState(
+    settings.webAgencyBadge || "Web Development Studio by Rao Wasif",
+  );
+  const [webAgencyDescription, setWebAgencyDescription] = useState(
+    settings.webAgencyDescription ||
+      "Need a modern, ultra-fast custom website or online e-commerce store for your brand? We design, develop, and launch production-ready websites in 48 hours with lifetime direct support.",
+  );
+  const [webAgencyUrl, setWebAgencyUrl] = useState(
+    settings.webAgencyUrl || "https://nexoraweb-store.vercel.app",
+  );
+  const [webAgencyButtonText, setWebAgencyButtonText] = useState(
+    settings.webAgencyButtonText || "Explore Web Agency",
+  );
+  const [webAgencyWhatsApp, setWebAgencyWhatsApp] = useState(
+    settings.webAgencyWhatsApp || "+92 309 296743",
+  );
+
   const [newPin, setNewPin] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -1583,8 +1609,15 @@ function AdminSettingsView({
       accountNumber,
       iban,
       paymentInstructions,
+      webAgencyEnabled,
+      webAgencyTitle,
+      webAgencyBadge,
+      webAgencyDescription,
+      webAgencyUrl,
+      webAgencyButtonText,
+      webAgencyWhatsApp,
     });
-    toast.success("Store and bank account settings saved live!");
+    toast.success("Store and website settings saved live!");
   };
 
   const handleSaveSecurity = (e: React.FormEvent) => {
@@ -1617,7 +1650,7 @@ function AdminSettingsView({
       >
         <div className="flex items-center justify-between border-b border-border/40 pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold">
+            <div className="h-8 w-8 rounded-xl bg-blue-600/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
               <Building2 className="h-4 w-4" />
             </div>
             <div>
@@ -1633,7 +1666,7 @@ function AdminSettingsView({
           <Button
             type="submit"
             size="sm"
-            className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+            className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
           >
             <Save className="h-3.5 w-3.5 mr-1.5" /> Save Bank Details
           </Button>
@@ -1699,7 +1732,7 @@ function AdminSettingsView({
         <div className="flex justify-end pt-2">
           <Button
             type="submit"
-            className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+            className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
           >
             <Save className="h-3.5 w-3.5 mr-1.5" /> Save Bank Details Live
           </Button>
@@ -1709,7 +1742,7 @@ function AdminSettingsView({
       {/* Founder Portrait & About Page Image Manager */}
       <div className="rounded-2xl border border-border/50 bg-[#0c1018]/90 p-6 shadow-xl backdrop-blur-md space-y-6">
         <div className="flex items-center gap-2.5 border-b border-border/40 pb-4">
-          <div className="h-8 w-8 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold">
+          <div className="h-8 w-8 rounded-xl bg-blue-600/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
             <Users className="h-4 w-4" />
           </div>
           <div>
@@ -1724,14 +1757,14 @@ function AdminSettingsView({
 
         <div className="grid gap-6 sm:grid-cols-[140px_1fr] items-start">
           <div className="relative group">
-            <div className="h-44 w-32 rounded-2xl overflow-hidden border-2 border-gold/50 shadow-2xl bg-black">
+            <div className="h-44 w-32 rounded-2xl overflow-hidden border-2 border-blue-500/50 shadow-2xl bg-black">
               <img
                 src={founderPhotoUrl || founderImg}
                 alt="Founder Preview"
                 className="h-full w-full object-cover"
               />
             </div>
-            <span className="absolute bottom-2 left-2 right-2 rounded-lg bg-black/80 text-[10px] text-gold font-bold text-center py-0.5 border border-gold/30 backdrop-blur-sm">
+            <span className="absolute bottom-2 left-2 right-2 rounded-lg bg-black/80 text-[10px] text-blue-400 font-bold text-center py-0.5 border border-blue-500/30 backdrop-blur-sm">
               Live Preview
             </span>
           </div>
@@ -1758,7 +1791,7 @@ function AdminSettingsView({
                   toast.error("Please drop a valid image file (PNG, JPG, WEBP).");
                 }
               }}
-              className="border-2 border-dashed border-gold/40 hover:border-gold rounded-2xl p-6 text-center bg-gold/5 hover:bg-gold/10 transition-all cursor-pointer flex flex-col items-center justify-center gap-2"
+              className="border-2 border-dashed border-blue-500/40 hover:border-blue-500 rounded-2xl p-6 text-center bg-blue-600/5 hover:bg-blue-600/10 transition-all cursor-pointer flex flex-col items-center justify-center gap-2"
               onClick={() => {
                 const input = document.getElementById("about-photo-file-input");
                 input?.click();
@@ -1785,12 +1818,12 @@ function AdminSettingsView({
                   }
                 }}
               />
-              <div className="h-10 w-10 rounded-full bg-gold/20 text-gold flex items-center justify-center">
+              <div className="h-10 w-10 rounded-full bg-blue-500/20 text-blue-300 flex items-center justify-center">
                 <UploadCloud className="h-5 w-5" />
               </div>
               <div>
                 <p className="font-bold text-white text-xs">
-                  Drag & Drop New Image Here, or <span className="text-gold underline">Click to Browse</span>
+                  Drag & Drop New Image Here, or <span className="text-blue-400 underline">Click to Browse</span>
                 </p>
                 <p className="text-[11px] text-muted-foreground mt-0.5">
                   Direct Upload from Computer (PNG, JPG, JPEG, WEBP)
@@ -1832,7 +1865,7 @@ function AdminSettingsView({
       >
         <div className="flex items-center justify-between border-b border-border/40 pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold">
+            <div className="h-8 w-8 rounded-xl bg-blue-600/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
               <Sparkles className="h-4 w-4" />
             </div>
             <div>
@@ -1905,9 +1938,118 @@ function AdminSettingsView({
         <div className="flex justify-end pt-2">
           <Button
             type="submit"
-            className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+            className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
           >
             <Save className="h-3.5 w-3.5 mr-1.5" /> Save Store Settings
+          </Button>
+        </div>
+      </form>
+
+      {/* Web Development Agency & Sister Business Manager */}
+      <form
+        onSubmit={handleSaveStore}
+        className="rounded-2xl border border-blue-500/30 bg-[#0c1018]/90 p-6 shadow-xl backdrop-blur-md space-y-6"
+      >
+        <div className="flex items-center justify-between border-b border-border/40 pb-4">
+          <div className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-xl bg-blue-600/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
+              <Code2 className="h-4 w-4" />
+            </div>
+            <div>
+              <h2 className="font-display text-base font-semibold text-white uppercase tracking-wide">
+                Web Development Agency & Sister Business Banner
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Control the promotional web studio card shown on Primo Acts homepage and customize all text and links.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">
+              {webAgencyEnabled ? "Active (Showing)" : "Hidden (Disabled)"}
+            </span>
+            <Switch
+              checked={webAgencyEnabled}
+              onCheckedChange={setWebAgencyEnabled}
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 text-xs">
+          <div className="space-y-1.5">
+            <Label>Badge Title / Top Tag</Label>
+            <Input
+              value={webAgencyBadge}
+              onChange={(e) => setWebAgencyBadge(e.target.value)}
+              placeholder="e.g. Web Development Studio by Rao Wasif"
+              className="bg-surface/80 border-border/60"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Button Text</Label>
+            <Input
+              value={webAgencyButtonText}
+              onChange={(e) => setWebAgencyButtonText(e.target.value)}
+              placeholder="e.g. Explore Web Agency"
+              className="bg-surface/80 border-border/60"
+            />
+          </div>
+
+          <div className="space-y-1.5 sm:col-span-2">
+            <Label>Headline / Main Title</Label>
+            <Input
+              value={webAgencyTitle}
+              onChange={(e) => setWebAgencyTitle(e.target.value)}
+              placeholder="e.g. Custom High-Converting Business Websites & Stores"
+              className="bg-surface/80 border-border/60"
+            />
+          </div>
+
+          <div className="space-y-1.5 sm:col-span-2">
+            <Label>Description</Label>
+            <Textarea
+              rows={3}
+              value={webAgencyDescription}
+              onChange={(e) => setWebAgencyDescription(e.target.value)}
+              placeholder="Describe your web design and development services..."
+              className="bg-surface/80 border-border/60 text-xs"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Target Website URL (Sister Website Link)</Label>
+            <Input
+              value={webAgencyUrl}
+              onChange={(e) => setWebAgencyUrl(e.target.value)}
+              placeholder="https://nexoraweb-store.vercel.app"
+              className="bg-surface/80 border-border/60 font-mono"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Agency WhatsApp Contact</Label>
+            <Input
+              value={webAgencyWhatsApp}
+              onChange={(e) => setWebAgencyWhatsApp(e.target.value)}
+              placeholder="+92 309 296743"
+              className="bg-surface/80 border-border/60 font-mono"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between pt-2 border-t border-border/40">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <Globe className="h-3.5 w-3.5 text-blue-400" />
+            <span>Link opens securely in a new tab when clicked by visitors</span>
+          </div>
+
+          <Button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
+          >
+            <Save className="h-3.5 w-3.5 mr-1.5" /> Save Web Agency Settings
           </Button>
         </div>
       </form>
@@ -2051,7 +2193,7 @@ function AdminTrailersView() {
           <Button
             onClick={handleCreate}
             size="sm"
-            className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+            className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
           >
             <Plus className="mr-1.5 h-3.5 w-3.5" /> Add New Trailer
           </Button>
@@ -2088,7 +2230,7 @@ function AdminTrailersView() {
                 <p className="text-xs text-muted-foreground line-clamp-2">
                   {video.description}
                 </p>
-                <p className="text-[10px] font-mono text-gold truncate">
+                <p className="text-[10px] font-mono text-blue-400 truncate">
                   ID: {video.videoId || extractYoutubeId(video.youtubeUrl)}
                 </p>
               </div>
@@ -2197,7 +2339,7 @@ function AdminTrailersView() {
                   <Input
                     value={editingVideo.videoId || extractYoutubeId(editingVideo.youtubeUrl)}
                     readOnly
-                    className="bg-black/50 border-border/60 font-mono text-gold"
+                    className="bg-black/50 border-border/60 font-mono text-blue-400"
                   />
                 </div>
               </div>
@@ -2217,7 +2359,7 @@ function AdminTrailersView() {
 
               {editingVideo.youtubeUrl && (
                 <div className="p-3 rounded-2xl bg-black/60 border border-border/40 space-y-2">
-                  <Label className="text-gold font-semibold">Live Embedded Preview:</Label>
+                  <Label className="text-blue-400 font-semibold">Live Embedded Preview:</Label>
                   <div className="aspect-video w-full rounded-xl overflow-hidden bg-black">
                     <iframe
                       src={getYoutubeEmbedUrl(editingVideo.youtubeUrl)}
@@ -2240,7 +2382,7 @@ function AdminTrailersView() {
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+                  className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
                 >
                   Save Trailer
                 </Button>
@@ -2345,7 +2487,7 @@ function AdminMessagesView() {
               onClick={() => setFilter(tab)}
               className={`rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
                 filter === tab
-                  ? "border-gold/60 bg-gold/15 text-gold"
+                  ? "border-blue-500/60 bg-blue-500/15 text-blue-300"
                   : "border-border/60 text-muted-foreground hover:text-white"
               }`}
             >
@@ -2372,14 +2514,14 @@ function AdminMessagesView() {
             <div
               key={agent.id}
               onClick={() => setEditingAgent({ ...agent })}
-              className="p-3.5 rounded-xl bg-surface/50 hover:bg-surface/80 border border-border/40 hover:border-gold/50 flex items-center justify-between gap-3 text-xs cursor-pointer transition-all group"
+              className="p-3.5 rounded-xl bg-surface/50 hover:bg-surface/80 border border-border/40 hover:border-blue-500/50 flex items-center justify-between gap-3 text-xs cursor-pointer transition-all group"
             >
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="font-bold text-white truncate group-hover:text-gold transition-colors">
+                  <p className="font-bold text-white truncate group-hover:text-blue-400 transition-colors">
                     {agent.name}
                   </p>
-                  <Edit2 className="h-3 w-3 text-muted-foreground group-hover:text-gold shrink-0 opacity-60" />
+                  <Edit2 className="h-3 w-3 text-muted-foreground group-hover:text-blue-400 shrink-0 opacity-60" />
                 </div>
                 <p className="text-[11px] text-muted-foreground truncate">{agent.role}</p>
               </div>
@@ -2398,9 +2540,9 @@ function AdminMessagesView() {
 
       {/* Edit Agent Modal Dialog */}
       <Dialog open={!!editingAgent} onOpenChange={(open) => !open && setEditingAgent(null)}>
-        <DialogContent className="border border-gold/30 bg-[#0d111a] text-white sm:max-w-md">
+        <DialogContent className="border border-blue-500/30 bg-[#0d111a] text-white sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-gold flex items-center gap-2">
+            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2">
               <Users className="h-4 w-4" />
               <span>Edit Support Agent Slot</span>
             </DialogTitle>
@@ -2456,7 +2598,7 @@ function AdminMessagesView() {
                 <Button
                   type="submit"
                   size="sm"
-                  className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
+                  className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs"
                 >
                   <Save className="h-3.5 w-3.5 mr-1" /> Save Agent Slot
                 </Button>
@@ -2482,7 +2624,7 @@ function AdminMessagesView() {
                 }}
                 className={`p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-3 ${
                   isSelected
-                    ? "border-gold bg-gold/10 shadow-lg shadow-gold/10"
+                    ? "border-blue-500 bg-blue-600/10 shadow-lg shadow-blue-900/10"
                     : isUnread
                     ? "border-amber-500/50 bg-[#121622]"
                     : "border-border/40 bg-[#0c1018]/80 hover:border-border"
@@ -2490,7 +2632,7 @@ function AdminMessagesView() {
               >
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="h-8 w-8 rounded-full bg-gold/20 text-gold flex items-center justify-center font-bold text-xs uppercase shrink-0">
+                    <div className="h-8 w-8 rounded-full bg-blue-500/20 text-blue-300 flex items-center justify-center font-bold text-xs uppercase shrink-0">
                       {msg.senderName.slice(0, 1)}
                     </div>
                     <div className="min-w-0">
@@ -2521,7 +2663,7 @@ function AdminMessagesView() {
 
                 {msg.replyText && (
                   <div className="p-2.5 rounded-xl bg-purple-950/30 border border-purple-500/30 text-[11px] text-purple-200">
-                    <strong className="text-gold">{msg.agentName || "Support Desk"}:</strong> {msg.replyText}
+                    <strong className="text-blue-400">{msg.agentName || "Support Desk"}:</strong> {msg.replyText}
                   </div>
                 )}
               </div>
@@ -2539,7 +2681,7 @@ function AdminMessagesView() {
         <div className="rounded-2xl border border-border/50 bg-[#0c1018]/95 p-5 shadow-xl h-fit sticky top-24 space-y-4">
           <div className="border-b border-border/40 pb-3 flex items-center justify-between">
             <h2 className="font-display text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
-              <Send className="h-4 w-4 text-gold" />
+              <Send className="h-4 w-4 text-blue-400" />
               <span>Reply as Support Agent</span>
             </h2>
             {selectedMsg && (
@@ -2598,7 +2740,7 @@ function AdminMessagesView() {
 
               <Button
                 type="submit"
-                className="w-full bg-gold hover:bg-gold-light text-black font-semibold rounded-xl text-xs"
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold rounded-xl text-xs"
               >
                 <Send className="mr-1.5 h-3.5 w-3.5" /> Send Agent Reply
               </Button>
@@ -2676,7 +2818,7 @@ function AdminReviewsView() {
             <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
               Reader Reviews & Ratings
             </h1>
-            <span className="rounded-full bg-gold/15 border border-gold/30 px-2.5 py-0.5 text-xs font-bold text-gold">
+            <span className="rounded-full bg-blue-600/15 border border-blue-500/30 px-2.5 py-0.5 text-xs font-bold text-blue-400">
               ★ {averageRating} Avg Rating
             </span>
           </div>
@@ -2687,7 +2829,7 @@ function AdminReviewsView() {
 
         <Button
           onClick={() => setNewReviewOpen(true)}
-          className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+          className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
         >
           <Plus className="h-4 w-4 mr-1.5" /> Add Official Review
         </Button>
@@ -2742,11 +2884,11 @@ function AdminReviewsView() {
           return (
             <div
               key={rev.id}
-              className="p-5 rounded-2xl border border-border/40 bg-[#0c1018]/90 flex flex-col justify-between gap-4 hover:border-gold/30 transition-all shadow-lg"
+              className="p-5 rounded-2xl border border-border/40 bg-[#0c1018]/90 flex flex-col justify-between gap-4 hover:border-blue-500/30 transition-all shadow-lg"
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-gold bg-gold/10 px-2 py-0.5 rounded-md truncate max-w-[180px]">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-blue-400 bg-blue-600/10 px-2 py-0.5 rounded-md truncate max-w-[180px]">
                     {book ? book.title : rev.bookSlug}
                   </span>
 
@@ -2795,7 +2937,7 @@ function AdminReviewsView() {
 
         {filteredReviews.length === 0 && (
           <div className="sm:col-span-2 lg:col-span-3 p-12 text-center rounded-2xl border border-dashed border-border/60 bg-[#0c1018]/40 space-y-3">
-            <div className="h-10 w-10 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto">
+            <div className="h-10 w-10 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center mx-auto">
               <Star className="h-5 w-5" />
             </div>
             <p className="text-xs text-muted-foreground">
@@ -2807,10 +2949,10 @@ function AdminReviewsView() {
 
       {/* Add Review Dialog */}
       <Dialog open={newReviewOpen} onOpenChange={setNewReviewOpen}>
-        <DialogContent className="border border-gold/30 bg-[#0d111a] text-white sm:max-w-md">
+        <DialogContent className="border border-blue-500/30 bg-[#0d111a] text-white sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-gold flex items-center gap-2">
-              <Star className="h-4 w-4 fill-gold text-gold" />
+            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2">
+              <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
               <span>Add Official Reader Review</span>
             </DialogTitle>
           </DialogHeader>
@@ -2848,7 +2990,7 @@ function AdminReviewsView() {
                     />
                   </button>
                 ))}
-                <span className="text-xs font-semibold text-gold ml-2">
+                <span className="text-xs font-semibold text-blue-400 ml-2">
                   {formRating} Stars
                 </span>
               </div>
@@ -2900,7 +3042,7 @@ function AdminReviewsView() {
               <Button
                 type="submit"
                 size="sm"
-                className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
+                className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs"
               >
                 Publish Review
               </Button>
@@ -3041,7 +3183,7 @@ function AdminHeroSlideshowView() {
             <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
               Hero Billboard & Slideshow
             </h1>
-            <span className="rounded-full bg-gold/15 border border-gold/30 px-2.5 py-0.5 text-xs font-bold text-gold">
+            <span className="rounded-full bg-blue-600/15 border border-blue-500/30 px-2.5 py-0.5 text-xs font-bold text-blue-400">
               Live On Homepage
             </span>
           </div>
@@ -3052,7 +3194,7 @@ function AdminHeroSlideshowView() {
 
         <Button
           onClick={openNewModal}
-          className="bg-gold hover:bg-gold-light text-black font-semibold text-xs rounded-xl"
+          className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs rounded-xl"
         >
           <Plus className="h-4 w-4 mr-1.5" /> Add New Slide
         </Button>
@@ -3063,7 +3205,7 @@ function AdminHeroSlideshowView() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-sm font-display font-bold uppercase tracking-wider text-white flex items-center gap-2">
-              <Clock className="h-4 w-4 text-gold" />
+              <Clock className="h-4 w-4 text-blue-400" />
               <span>Slideshow Transition Interval</span>
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
@@ -3083,7 +3225,7 @@ function AdminHeroSlideshowView() {
                 }}
                 className={`text-xs rounded-xl font-medium ${
                   autoplayDuration === duration
-                    ? "bg-gold text-black font-bold"
+                    ? "bg-blue-600 text-black font-bold"
                     : "border-border/60 text-muted-foreground hover:text-white"
                 }`}
               >
@@ -3100,7 +3242,7 @@ function AdminHeroSlideshowView() {
           <div
             key={slide.id}
             className={`rounded-2xl border overflow-hidden transition-all shadow-xl bg-[#0c1018]/80 ${
-              slide.active ? "border-gold/30 hover:border-gold/60" : "border-border/40 opacity-60"
+              slide.active ? "border-blue-500/30 hover:border-blue-500/60" : "border-border/40 opacity-60"
             }`}
           >
             {/* Image Preview Banner */}
@@ -3113,7 +3255,7 @@ function AdminHeroSlideshowView() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
 
               <div className="absolute top-3 left-3 flex items-center gap-2">
-                <span className="rounded-full bg-black/70 border border-gold/40 px-2.5 py-0.5 text-[10px] font-bold text-gold backdrop-blur-md">
+                <span className="rounded-full bg-black/70 border border-blue-500/40 px-2.5 py-0.5 text-[10px] font-bold text-blue-400 backdrop-blur-md">
                   Slide {idx + 1}
                 </span>
                 <span className="rounded-full bg-black/70 border border-white/20 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-md">
@@ -3186,7 +3328,7 @@ function AdminHeroSlideshowView() {
                   <Button
                     size="sm"
                     onClick={() => openEditModal(slide)}
-                    className="bg-gold/15 text-gold hover:bg-gold/25 border border-gold/30 h-8 px-3 text-xs rounded-lg font-medium"
+                    className="bg-blue-500/15 text-blue-300 hover:bg-blue-600/25 border border-blue-500/30 h-8 px-3 text-xs rounded-lg font-medium"
                   >
                     <Edit2 className="h-3.5 w-3.5 mr-1.5" /> Edit Slide & Image
                   </Button>
@@ -3199,10 +3341,10 @@ function AdminHeroSlideshowView() {
 
       {/* EDIT SLIDE DIALOG */}
       <Dialog open={editSlideOpen} onOpenChange={setEditSlideOpen}>
-        <DialogContent className="border border-gold/30 bg-[#0d111a] text-white sm:max-w-xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="border border-blue-500/30 bg-[#0d111a] text-white sm:max-w-xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-gold flex items-center gap-2">
-              <Film className="h-4 w-4 text-gold" />
+            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2">
+              <Film className="h-4 w-4 text-blue-400" />
               <span>Edit Hero Billboard Slide</span>
             </DialogTitle>
           </DialogHeader>
@@ -3214,7 +3356,7 @@ function AdminHeroSlideshowView() {
               <div className="relative aspect-16/9 w-full rounded-xl overflow-hidden border border-border/60 bg-black/60 group">
                 <img src={formImage} alt="Preview" className="h-full w-full object-cover" />
                 <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity text-white text-xs font-semibold gap-1">
-                  <UploadCloud className="h-6 w-6 text-gold" />
+                  <UploadCloud className="h-6 w-6 text-blue-400" />
                   <span>Click or Drag New Image to Replace</span>
                   <input
                     type="file"
@@ -3226,7 +3368,7 @@ function AdminHeroSlideshowView() {
               </div>
               <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1">
                 <span>Upload high-res JPG/PNG from your computer.</span>
-                <label className="text-gold hover:underline cursor-pointer font-semibold">
+                <label className="text-blue-400 hover:underline cursor-pointer font-semibold">
                   Browse File
                   <input
                     type="file"
@@ -3275,7 +3417,7 @@ function AdminHeroSlideshowView() {
               </div>
 
               <div className="space-y-1.5">
-                <Label>Title Highlight (Part 2 - Gold)</Label>
+                <Label>Title Highlight (Part 2 - Accent)</Label>
                 <Input
                   value={formHighlight}
                   onChange={(e) => setFormHighlight(e.target.value)}
@@ -3363,7 +3505,7 @@ function AdminHeroSlideshowView() {
                 <Button
                   type="submit"
                   size="sm"
-                  className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
+                  className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs"
                 >
                   Save Changes
                 </Button>
@@ -3375,10 +3517,10 @@ function AdminHeroSlideshowView() {
 
       {/* ADD NEW SLIDE DIALOG */}
       <Dialog open={newSlideOpen} onOpenChange={setNewSlideOpen}>
-        <DialogContent className="border border-gold/30 bg-[#0d111a] text-white sm:max-w-xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="border border-blue-500/30 bg-[#0d111a] text-white sm:max-w-xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-gold flex items-center gap-2">
-              <Plus className="h-4 w-4 text-gold" />
+            <DialogTitle className="font-display text-base font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2">
+              <Plus className="h-4 w-4 text-blue-400" />
               <span>Create New Billboard Slide</span>
             </DialogTitle>
           </DialogHeader>
@@ -3390,7 +3532,7 @@ function AdminHeroSlideshowView() {
               <div className="relative aspect-16/9 w-full rounded-xl overflow-hidden border border-border/60 bg-black/60 group">
                 <img src={formImage} alt="Preview" className="h-full w-full object-cover" />
                 <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity text-white text-xs font-semibold gap-1">
-                  <UploadCloud className="h-6 w-6 text-gold" />
+                  <UploadCloud className="h-6 w-6 text-blue-400" />
                   <span>Click or Drag New Image</span>
                   <input
                     type="file"
@@ -3402,7 +3544,7 @@ function AdminHeroSlideshowView() {
               </div>
               <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1">
                 <span>Upload high-res JPG/PNG from your computer.</span>
-                <label className="text-gold hover:underline cursor-pointer font-semibold">
+                <label className="text-blue-400 hover:underline cursor-pointer font-semibold">
                   Browse File
                   <input
                     type="file"
@@ -3533,7 +3675,7 @@ function AdminHeroSlideshowView() {
               <Button
                 type="submit"
                 size="sm"
-                className="bg-gold hover:bg-gold-light text-black font-semibold text-xs"
+                className="bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/40 font-semibold text-xs"
               >
                 Create Slide
               </Button>

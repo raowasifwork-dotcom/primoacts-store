@@ -112,7 +112,7 @@ function CheckoutPage() {
     return (
       <div className="section-pad">
         <div className="mx-auto max-w-2xl px-4 text-center md:px-6">
-          <BadgeCheck className="mx-auto h-16 w-16 text-gold animate-bounce" />
+          <BadgeCheck className="mx-auto h-16 w-16 text-blue-400 animate-bounce" />
           <h1 className="mt-6 text-3xl md:text-4xl font-display uppercase tracking-wide text-white">
             Order Placed Successfully!
           </h1>
@@ -252,35 +252,35 @@ function CheckoutPage() {
 
             {/* Bank Transfer Display */}
             {paymentMethod === "bank" && (
-              <div className="rounded-2xl border border-gold/40 bg-[#0c1018]/90 p-5 space-y-4 shadow-lg">
-                <div className="flex items-center gap-2 border-b border-border/40 pb-3">
-                  <div className="h-7 w-7 rounded-lg bg-gold/10 border border-gold/30 flex items-center justify-center text-gold">
+              <div className="rounded-2xl border border-blue-500/40 bg-[#0c1018]/90 p-5 space-y-4 shadow-lg">
+                <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+                  <div className="h-7 w-7 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
                     <Building2 className="h-3.5 w-3.5" />
                   </div>
                   <span className="text-xs font-display font-bold uppercase tracking-wider text-white">Bank / Wallet Transfer Details</span>
-                  <span className="ml-auto text-[10px] text-gold font-bold bg-gold/10 px-2 py-0.5 rounded-full border border-gold/30">Verified</span>
+                  <span className="ml-auto text-[10px] text-blue-400 font-bold bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/30">Verified</span>
                 </div>
-                <div className="grid gap-0 text-xs divide-y divide-border/30">
+                <div className="grid gap-0 text-xs divide-y divide-slate-800">
                   <div className="flex justify-between items-center py-2.5">
-                    <span className="text-muted-foreground">Bank / Provider</span>
+                    <span className="text-slate-400">Bank / Provider</span>
                     <span className="font-semibold text-white text-right max-w-[55%]">{bankName}</span>
                   </div>
                   <div className="flex justify-between items-center py-2.5">
-                    <span className="text-muted-foreground">Account Title</span>
+                    <span className="text-slate-400">Account Title</span>
                     <span className="font-semibold text-white">{accountTitle}</span>
                   </div>
                   <div className="flex justify-between items-center py-2.5">
-                    <span className="text-muted-foreground">Account / Wallet No.</span>
-                    <span className="font-mono font-bold text-gold">{accountNumber}</span>
+                    <span className="text-slate-400">Account / Wallet No.</span>
+                    <span className="font-mono font-bold text-blue-400">{accountNumber}</span>
                   </div>
                   {iban && (
                     <div className="flex justify-between items-center py-2.5">
-                      <span className="text-muted-foreground">IBAN</span>
+                      <span className="text-slate-400">IBAN</span>
                       <span className="font-mono text-white text-[11px]">{iban}</span>
                     </div>
                   )}
                 </div>
-                <p className="text-[11px] text-zinc-400 leading-relaxed">
+                <p className="text-[11px] text-slate-400 leading-relaxed">
                   {settings.paymentInstructions || "Transfer the exact order amount and send your payment screenshot with Order Reference on WhatsApp or Support Chat."}
                 </p>
               </div>
@@ -334,34 +334,34 @@ function CheckoutPage() {
             )}
 
             <Button type="submit" size="lg"
-              className="w-full bg-gold hover:bg-gold-light text-black font-semibold rounded-xl h-12 text-sm shadow-lg shadow-gold/20">
+              className="btn-gold w-full rounded-xl h-12 text-sm">
               Place Order & Unlock Books · {formatPrice(total)}
             </Button>
           </form>
 
-          <aside className="glass-panel h-fit rounded-3xl p-6 space-y-6">
+          <aside className="glass-panel h-fit rounded-3xl p-6 space-y-6 border border-slate-800">
             <div>
-              <p className="font-display text-lg uppercase tracking-wider text-white">Order Summary</p>
+              <p className="font-display text-lg uppercase tracking-wider text-white font-bold">Order Summary</p>
               <ul className="mt-5 grid gap-4">
                 {items.map((item) => (
                   <li key={item.slug} className="grid grid-cols-[40px_minmax(0,1fr)_auto] gap-3 items-center">
-                    <img src={item.cover} alt="" className="aspect-2/3 w-10 rounded object-cover" />
+                    <img src={item.cover} alt="" className="aspect-2/3 w-10 rounded object-cover border border-slate-700" />
                     <div className="min-w-0">
                       <p className="truncate text-sm text-white font-medium">{item.title}</p>
-                      <p className="text-xs text-muted-foreground">{item.format || "PDF Edition"}</p>
+                      <p className="text-xs text-slate-400">{item.format || "PDF Edition"}</p>
                     </div>
-                    <span className="shrink-0 text-sm font-semibold text-gold">{formatPrice(item.price)}</span>
+                    <span className="shrink-0 text-sm font-semibold text-white">{formatPrice(item.price)}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="border-t border-border/60 pt-4 space-y-2">
+            <div className="border-t border-slate-800 pt-4 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Total Amount</span>
-                <span className="font-display text-2xl text-gold font-bold">{formatPrice(total)}</span>
+                <span className="text-sm text-slate-400">Total Amount</span>
+                <span className="font-display text-2xl text-white font-bold">{formatPrice(total)}</span>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Order Reference: <span className="text-gold font-mono font-bold">{reference}</span>
+              <p className="text-xs text-slate-400">
+                Order Reference: <span className="text-blue-400 font-mono font-bold">{reference}</span>
               </p>
             </div>
             <div className="border-t border-border/40 pt-4">

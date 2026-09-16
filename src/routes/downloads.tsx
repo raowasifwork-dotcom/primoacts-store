@@ -34,20 +34,20 @@ function DownloadsPage() {
   return (
     <div className="section-pad">
       <div className="mx-auto max-w-3xl px-4 md:px-6">
-        <p className="font-display text-xs uppercase tracking-[0.35em] text-gold">Your library</p>
-        <h1 className="mt-4 text-4xl md:text-5xl">PDF downloads</h1>
-        <p className="mt-3 text-sm text-muted-foreground">
+        <p className="font-display text-xs uppercase tracking-[0.35em] text-blue-400 font-bold">Your library</p>
+        <h1 className="mt-4 text-4xl md:text-5xl font-display text-white">PDF downloads</h1>
+        <p className="mt-3 text-sm text-slate-400">
           Every PDF you have purchased is listed here, DRM-free and unlimited. Bundle orders unlock
           both books plus the combined edition.
         </p>
 
         {entries.length === 0 ? (
-          <div className="glass-panel mt-10 rounded-3xl p-8 text-center">
-            <Library className="mx-auto h-10 w-10 text-gold" />
-            <p className="mt-4 text-sm text-muted-foreground">
+          <div className="glass-panel mt-10 rounded-3xl p-8 text-center border border-slate-800">
+            <Library className="mx-auto h-10 w-10 text-blue-400" />
+            <p className="mt-4 text-sm text-slate-400">
               No downloads yet on this device. Once an order is placed, your PDFs appear here.
             </p>
-            <Button asChild className="mt-6">
+            <Button asChild className="btn-gold mt-6 rounded-xl">
               <Link to="/store">Browse the store</Link>
             </Button>
           </div>
@@ -56,15 +56,15 @@ function DownloadsPage() {
             {entries.map((entry) => (
               <li
                 key={entry.slug}
-                className="glass-panel flex items-center justify-between gap-4 rounded-2xl p-5"
+                className="glass-panel flex items-center justify-between gap-4 rounded-2xl p-5 border border-slate-800"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm">{entry.title}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="truncate text-sm font-semibold text-white">{entry.title}</p>
+                  <p className="text-xs text-slate-400">
                     PDF · order {entry.reference}
                   </p>
                 </div>
-                <Button asChild variant="secondary" className="shrink-0">
+                <Button asChild variant="secondary" className="btn-gold shrink-0 rounded-xl">
                   <a href={entry.pdf} download>
                     <FileDown className="h-4 w-4" /> Download
                   </a>

@@ -42,15 +42,15 @@ function AboutPage() {
           </div>
 
           <div>
-            <p className="font-display text-xs uppercase tracking-[0.35em] text-gold">
+            <p className="font-display text-xs uppercase tracking-[0.35em] text-blue-400 font-bold">
               The author
             </p>
-            <h1 className="mt-4 text-4xl md:text-5xl">{SITE.founder}</h1>
-            <p className="mt-3 font-display text-lg text-muted-foreground">
+            <h1 className="mt-4 text-4xl md:text-5xl font-display text-white">{SITE.founder}</h1>
+            <p className="mt-3 font-display text-lg text-slate-400">
               Writer · Founder of {SITE.name}
             </p>
 
-            <div className="mt-8 space-y-5 text-sm leading-relaxed text-muted-foreground">
+            <div className="mt-8 space-y-5 text-sm leading-relaxed text-slate-400">
               <p>
                 {SITE.name} began with a single question: what would happen if a small, ordinary
                 town had been quietly paying for its peace? That question became the Shadowrealm
@@ -73,27 +73,27 @@ function AboutPage() {
             <div className="mt-10 grid gap-4 sm:grid-cols-2">
               <a
                 href={`mailto:${SITE.email}`}
-                className="glass-panel flex min-w-0 items-center gap-3 rounded-2xl p-4 text-sm transition-colors hover:text-gold"
+                className="glass-panel flex min-w-0 items-center gap-3 rounded-2xl p-4 text-sm transition-colors hover:text-blue-400 border border-slate-800"
               >
-                <Mail className="h-5 w-5 shrink-0 text-gold" />
-                <span className="truncate">{SITE.email}</span>
+                <Mail className="h-5 w-5 shrink-0 text-blue-400" />
+                <span className="truncate text-slate-200">{SITE.email}</span>
               </a>
               <a
                 href={`tel:${SITE.phone.replace(/\s/g, "")}`}
-                className="glass-panel flex min-w-0 items-center gap-3 rounded-2xl p-4 text-sm transition-colors hover:text-gold"
+                className="glass-panel flex min-w-0 items-center gap-3 rounded-2xl p-4 text-sm transition-colors hover:text-blue-400 border border-slate-800"
               >
-                <Phone className="h-5 w-5 shrink-0 text-gold" />
-                <span className="truncate">{SITE.phone}</span>
+                <Phone className="h-5 w-5 shrink-0 text-blue-400" />
+                <span className="truncate text-slate-200">{SITE.phone}</span>
               </a>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <Button asChild size="lg" className="bg-gold hover:bg-gold-light text-black font-semibold rounded-xl">
+              <Button asChild size="lg" className="btn-gold rounded-xl">
                 <Link to="/store">
                   Read the books <ArrowRight className="h-4 w-4 ml-1.5" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-border/60 text-white hover:bg-surface rounded-xl">
+              <Button asChild size="lg" variant="outline" className="border-slate-800 text-white hover:bg-slate-800 rounded-xl">
                 <Link to="/contact">
                   Get in touch
                 </Link>

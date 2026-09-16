@@ -140,7 +140,7 @@ export function SiteHeader() {
                   to={item.to}
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 py-3 text-sm text-muted-foreground"
-                  activeProps={{ className: "text-gold font-semibold" }}
+                  activeProps={{ className: "text-blue-400 font-semibold" }}
                   activeOptions={{ exact: item.to === "/" }}
                 >
                   <Icon className="h-4 w-4" />
@@ -154,7 +154,7 @@ export function SiteHeader() {
                   setOpen(false);
                   setAuthDialogOpen(true);
                 }}
-                className="flex items-center gap-3 py-3 text-sm text-gold font-semibold w-full text-left"
+                className="flex items-center gap-3 py-3 text-sm text-blue-400 font-semibold w-full text-left"
               >
                 <User className="h-4 w-4" />
                 {isLoggedIn ? `Account (${user?.name || user?.email || "Reader"})` : "Sign In / Register"}

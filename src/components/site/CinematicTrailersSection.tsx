@@ -81,7 +81,7 @@ export function CinematicTrailersSection() {
                 </div>
 
                 <div className="p-4 space-y-2">
-                  <h3 className="font-display text-sm font-bold text-white group-hover:text-gold transition-colors line-clamp-2">
+                  <h3 className="font-display text-sm font-bold text-white group-hover:text-blue-400 transition-colors line-clamp-2">
                     {video.title}
                   </h3>
                   <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
@@ -127,7 +127,7 @@ export function CinematicTrailersSection() {
                 href={selectedVideo.youtubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-gold hover:underline shrink-0 font-medium"
+                className="text-xs text-blue-400 hover:underline shrink-0 font-medium"
               >
                 Watch on YouTube →
               </a>

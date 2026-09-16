@@ -106,11 +106,18 @@ export type SiteSettings = {
   accountNumber?: string;
   iban?: string;
   paymentInstructions?: string;
+  webAgencyEnabled?: boolean;
+  webAgencyTitle?: string;
+  webAgencyBadge?: string;
+  webAgencyDescription?: string;
+  webAgencyUrl?: string;
+  webAgencyButtonText?: string;
+  webAgencyWhatsApp?: string;
 };
 
 const DEFAULT_SETTINGS: SiteSettings = {
   announcementEnabled: true,
-  announcementText: "🔥 Shadowrealm Season 2: The Past Truth · Pre-Order Now!",
+  announcementText: "🔥 Shadowrealm: A Darkness Awakens (Season 1) Available Now!",
   announcementLink: "/store",
   contactEmail: SITE.email,
   contactPhone: SITE.phone,
@@ -124,6 +131,14 @@ const DEFAULT_SETTINGS: SiteSettings = {
   iban: "PK00MEZN0000000000000000",
   paymentInstructions:
     "Please transfer the exact amount and share your payment screenshot on WhatsApp or Support Live Chat along with your Order Reference ID.",
+  webAgencyEnabled: true,
+  webAgencyTitle: "Custom High-Converting Business Websites & Stores",
+  webAgencyBadge: "Web Development Studio by Rao Wasif",
+  webAgencyDescription:
+    "Need a modern, ultra-fast custom website or online e-commerce store for your brand? We design, develop, and launch production-ready websites in 48 hours with lifetime direct support.",
+  webAgencyUrl: "https://nexoraweb-store.vercel.app",
+  webAgencyButtonText: "Explore Web Agency",
+  webAgencyWhatsApp: "+92 309 296743",
 };
 
 const DEFAULT_PIN = "7788";

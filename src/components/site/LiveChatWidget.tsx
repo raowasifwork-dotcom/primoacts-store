@@ -71,18 +71,18 @@ export function LiveChatWidget() {
 
       {/* Floating Chat Modal */}
       {open && (
-        <div className="flex flex-col w-[92vw] sm:w-96 max-h-[580px] h-[520px] rounded-3xl border border-gold/30 bg-[#0c1018]/98 shadow-2xl shadow-black/90 backdrop-blur-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300">
+        <div className="flex flex-col w-[92vw] sm:w-96 max-h-[580px] h-[520px] rounded-3xl border border-blue-500/30 bg-[#0c1018]/98 shadow-2xl shadow-black/90 backdrop-blur-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300">
           {/* Header */}
-          <div className="bg-gradient-to-r from-gold/20 via-[#121622] to-purple-950/30 p-4 border-b border-border/50 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-blue-900/30 via-[#121622] to-slate-900/40 p-4 border-b border-border/50 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative h-10 w-10 rounded-xl overflow-hidden border border-gold/50 bg-black/60 shrink-0 p-1">
+              <div className="relative h-10 w-10 rounded-xl overflow-hidden border border-blue-500/50 bg-black/60 shrink-0 p-1">
                 <img src="/logo.png" alt="Primo Acts Support" className="h-full w-full object-contain" />
                 <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-black" />
               </div>
               <div className="min-w-0">
                 <p className="font-display text-sm font-bold text-white truncate flex items-center gap-1.5">
                   <span>{SITE.name} Support</span>
-                  <Sparkles className="h-3 w-3 text-gold" />
+                  <Sparkles className="h-3 w-3 text-blue-400" />
                 </p>
                 <p className="text-[11px] text-emerald-400 font-medium">
                   Active Helpdesk
@@ -112,7 +112,7 @@ export function LiveChatWidget() {
           {/* Messages Body */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
             <div className="rounded-2xl bg-surface/60 border border-border/40 p-3.5 space-y-2">
-              <p className="font-semibold text-gold text-xs">Welcome to {SITE.name} Support! 👋</p>
+              <p className="font-semibold text-blue-400 text-xs">Welcome to {SITE.name} Support! 👋</p>
               <p className="text-muted-foreground leading-relaxed text-[11px]">
                 Ask any question regarding <strong>Shadowrealm</strong>, pre-orders, digital PDF downloads, or bank transfer verification.
               </p>
@@ -132,9 +132,9 @@ export function LiveChatWidget() {
               <div key={msg.id} className="space-y-2">
                 {/* Customer Message */}
                 <div className="flex justify-end">
-                  <div className="max-w-[85%] rounded-2xl rounded-tr-none bg-gold/15 border border-gold/30 p-3 text-white">
+                  <div className="max-w-[85%] rounded-2xl rounded-tr-none bg-blue-600/20 border border-blue-500/40 p-3 text-white">
                     <p className="text-xs">{msg.message}</p>
-                    <span className="text-[9px] text-gold/70 block text-right mt-1">
+                    <span className="text-[9px] text-blue-300 block text-right mt-1">
                       {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   </div>
@@ -143,8 +143,8 @@ export function LiveChatWidget() {
                 {/* Support Agent Reply (if replied) */}
                 {msg.replyText && (
                   <div className="flex justify-start">
-                    <div className="max-w-[85%] rounded-2xl rounded-tl-none bg-[#161c28] border border-purple-500/30 p-3 text-purple-100 space-y-1">
-                      <div className="flex items-center gap-1.5 text-gold text-[10px] font-bold uppercase">
+                    <div className="max-w-[85%] rounded-2xl rounded-tl-none bg-[#161c28] border border-blue-500/30 p-3 text-slate-100 space-y-1">
+                      <div className="flex items-center gap-1.5 text-blue-400 text-[10px] font-bold uppercase">
                         <CheckCircle2 className="h-3 w-3 text-emerald-400" />
                         <span>{msg.agentName || "Support Agent (Verified)"}</span>
                       </div>
@@ -188,13 +188,13 @@ export function LiveChatWidget() {
                 placeholder="Type your message..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="h-10 text-xs bg-surface/80 border-border/60 rounded-xl flex-1 focus:border-gold"
+                className="h-10 text-xs bg-surface/80 border-border/60 rounded-xl flex-1 focus:border-blue-500"
                 required
               />
               <Button
                 type="submit"
                 size="icon"
-                className="h-10 w-10 shrink-0 bg-gold hover:bg-gold-light text-black rounded-xl shadow-md shadow-gold/20"
+                className="h-10 w-10 shrink-0 bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-md shadow-blue-900/40"
               >
                 <Send className="h-4 w-4" />
               </Button>

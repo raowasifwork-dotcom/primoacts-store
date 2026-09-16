@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, Download, MessageCircle, Quote, ShieldCheck, Sparkles, Star, UserCheck } from "lucide-react";
+import { ArrowRight, BookOpen, Code2, Download, ExternalLink, Globe, Laptop, MessageCircle, Quote, ShieldCheck, Sparkles, Star, UserCheck } from "lucide-react";
 import { toast } from "sonner";
 
 import { BookCard } from "@/components/site/BookCard";
 import { CinematicTrailersSection } from "@/components/site/CinematicTrailersSection";
 import { Button } from "@/components/ui/button";
-import { useLiveReviews } from "@/lib/admin-store";
+import { useLiveReviews, useLiveSettings } from "@/lib/admin-store";
 import { BOOKS, BUNDLE, formatPrice, getBook } from "@/lib/books";
 import { useCart } from "@/lib/cart";
 import { CHARACTERS } from "@/lib/characters";
@@ -34,6 +34,7 @@ export const Route = createFileRoute("/")({
 function Home() {
   const { add, has } = useCart();
   const { allReviews = [] } = useLiveReviews();
+  const { settings } = useLiveSettings();
   const bundleInCart = has(BUNDLE.slug);
   const featured = BOOKS.filter((b) => b.featured);
   const bundleBooks = BUNDLE.includes.map(getBook).filter(Boolean);
@@ -366,6 +367,74 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Sister Business / Web Agency Showcase Section */}
+      {settings.webAgencyEnabled !== false && (
+        <section className="section-pad border-t border-slate-800 bg-gradient-to-b from-[#070a12] via-[#0b101d] to-[#070a12] relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(59,130,246,0.12),rgba(255,255,255,0))] pointer-events-none" />
+          
+          <div className="relative z-10 mx-auto max-w-5xl px-4 md:px-6">
+            <div className="rounded-3xl border border-blue-500/30 bg-[#0c1018]/90 p-8 md:p-12 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+              <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div className="space-y-4 max-w-2xl">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/40 bg-blue-500/10 px-3.5 py-1 text-xs font-semibold text-blue-400">
+                    <Code2 className="h-3.5 w-3.5" />
+                    <span>{settings.webAgencyBadge || "Web Development Studio by Rao Wasif"}</span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-extrabold text-white tracking-tight leading-tight">
+                    {settings.webAgencyTitle || "Custom High-Converting Business Websites & Stores"}
+                  </h2>
+
+                  <p className="text-sm md:text-base text-slate-300/90 leading-relaxed">
+                    {settings.webAgencyDescription ||
+                      "Need a modern, ultra-fast custom website or online e-commerce store for your brand? We design, develop, and launch production-ready websites in 48 hours with lifetime direct support."}
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-slate-400">
+                    <span className="inline-flex items-center gap-1.5 text-slate-300">
+                      <ShieldCheck className="h-4 w-4 text-emerald-400" /> 100% Custom Design
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-slate-300">
+                      <Sparkles className="h-4 w-4 text-blue-400" /> Fast 48h Delivery
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-slate-300">
+                      <UserCheck className="h-4 w-4 text-purple-400" /> Built by Rao Wasif
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row md:flex-col gap-3 min-w-[200px]">
+                  {settings.webAgencyUrl && (
+                    <a
+                      href={settings.webAgencyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3.5 text-xs sm:text-sm shadow-xl shadow-blue-950/60 transition-all hover:scale-105"
+                    >
+                      <Globe className="h-4 w-4" />
+                      <span>{settings.webAgencyButtonText || "Explore Web Agency"}</span>
+                      <ExternalLink className="h-3.5 w-3.5 ml-0.5" />
+                    </a>
+                  )}
+
+                  <a
+                    href={`https://wa.me/${(settings.webAgencyWhatsApp || "+92309296743").replace(/[^0-9]/g, "")}?text=Hi%20Rao%20Wasif,%20I%20am%20interested%20in%20building%20a%20website.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25d366]/20 hover:bg-[#25d366]/30 border border-[#25d366]/40 text-[#25d366] font-semibold px-5 py-3 text-xs sm:text-sm transition-all"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    <span>WhatsApp Developer</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Direct Author Guarantee Note */}
       <section className="section-pad border-t border-slate-800">
