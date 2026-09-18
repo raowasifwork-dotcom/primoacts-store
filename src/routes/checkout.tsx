@@ -179,8 +179,8 @@ function CheckoutPage() {
 
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild className="btn-gold rounded-xl">
-              <Link to="/downloads">
-                <FileDown className="h-4 w-4 mr-1.5" /> Access & Download PDFs
+              <Link to="/downloads" search={{ ref: placed }}>
+                <FileDown className="h-4 w-4 mr-1.5" /> Client Portal & Live Order Tracking
               </Link>
             </Button>
             <a

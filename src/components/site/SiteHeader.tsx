@@ -26,7 +26,7 @@ import { SITE } from "@/lib/site";
 const NAV = [
   { to: "/", label: "Home", icon: Home },
   { to: "/store", label: "Store", icon: Store },
-  { to: "/downloads", label: "Downloads", icon: Download },
+  { to: "/downloads", label: "Client Portal", icon: Download },
   { to: "/characters", label: "Characters", icon: BookOpen },
   { to: "/about", label: "About", icon: Info },
   { to: "/contact", label: "Contact", icon: Mail },

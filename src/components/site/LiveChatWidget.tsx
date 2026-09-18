@@ -40,11 +40,11 @@ export function LiveChatWidget() {
     }
 
     const textToSend = message.trim();
-    sendMessage(senderName, senderEmail, textToSend);
+    sendMessage(senderName, senderEmail, textToSend, `Live Chat Widget (Float)`);
     setActiveThreadEmail(senderEmail);
     setLastSentText(textToSend);
     setMessage("");
-    toast.success("Message sent! Rao Wasif has been notified.");
+    toast.success("Message sent! Delivered directly to Rao Wasif's Admin Portal.");
   };
 
   const cleanPhone = SITE.phone.replace(/[^0-9]/g, "");

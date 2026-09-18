@@ -13,6 +13,7 @@ export type Order = {
   total: number;
   status: "pending" | "verified" | "cancelled";
   createdAt: string;
+  verifiedAt?: string;
   note?: string;
   paymentMethod?: string;
   billingCountry?: string;
@@ -57,6 +58,7 @@ export type SupportMessage = {
   replyText?: string;
   repliedAt?: string;
   agentName?: string;
+  orderReference?: string;
 };
 
 export type BookReview = {
@@ -331,6 +333,73 @@ export function useLiveVideos() {
   return { videos, addVideo, updateVideo, deleteVideo, resetVideos };
 }
 
+// --- CLOUD SYNC ENGINE (Instant Cross-Device Sync between Mobile & Admin PC) ---
+export const CLOUD_BIN_ID = "ff808181a09d98f701a0b48fdee934c3";
+export const CLOUD_ENDPOINT = `https://api.restful-api.dev/objects/${CLOUD_BIN_ID}`;
+
+export async function fetchCloudData(): Promise<{ orders: Order[]; messages: SupportMessage[] } | null> {
+  if (typeof window === "undefined") return null;
+  try {
+    const res = await fetch(CLOUD_ENDPOINT, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const data = json?.data || {};
+    return {
+      orders: Array.isArray(data.orders) ? data.orders : [],
+      messages: Array.isArray(data.messages) ? data.messages : [],
+    };
+  } catch (err) {
+    console.warn("PrimoActs Cloud fetch error:", err);
+    return null;
+  }
+}
+
+export async function pushCloudData(
+  newOrders?: Order[],
+  newMessages?: SupportMessage[],
+): Promise<boolean> {
+  if (typeof window === "undefined") return false;
+  try {
+    const current = await fetchCloudData();
+    const currentOrders: Order[] = current?.orders || getStorage<Order[]>("primo_orders_list", []);
+    const currentMessages: SupportMessage[] =
+      current?.messages || getStorage<SupportMessage[]>("primo_support_messages", []);
+
+    // Merge orders (by reference or id)
+    const mergedOrdersMap = new Map<string, Order>();
+    currentOrders.forEach((o) => mergedOrdersMap.set(o.reference || o.id, o));
+    (newOrders || []).forEach((o) => mergedOrdersMap.set(o.reference || o.id, o));
+    const mergedOrders = Array.from(mergedOrdersMap.values());
+
+    // Merge messages (by id)
+    const mergedMessagesMap = new Map<string, SupportMessage>();
+    currentMessages.forEach((m) => mergedMessagesMap.set(m.id, m));
+    (newMessages || []).forEach((m) => mergedMessagesMap.set(m.id, m));
+    const mergedMessages = Array.from(mergedMessagesMap.values());
+
+    const res = await fetch(CLOUD_ENDPOINT, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "primoacts_official_cloud_sync_v1",
+        data: {
+          orders: mergedOrders,
+          messages: mergedMessages,
+          lastSync: new Date().toISOString(),
+        },
+      }),
+    });
+    return res.ok;
+  } catch (err) {
+    console.warn("PrimoActs Cloud push error:", err);
+    return false;
+  }
+}
+
 // --- SUPPORT MESSAGES & LIVE CHAT HOOK ---
 export function useLiveMessages() {
   const [messages, setMessages] = useState<SupportMessage[]>(() => {
@@ -341,7 +410,29 @@ export function useLiveMessages() {
     return getStorage<SupportAgent[]>("primo_support_agents", DEFAULT_AGENTS);
   });
 
+  const syncMessagesFromCloud = async () => {
+    try {
+      const cloud = await fetchCloudData();
+      if (cloud && Array.isArray(cloud.messages)) {
+        const local = getStorage<SupportMessage[]>("primo_support_messages", []);
+        const msgMap = new Map<string, SupportMessage>();
+        local.forEach((m) => msgMap.set(m.id, m));
+        cloud.messages.forEach((m) => msgMap.set(m.id, m));
+        const merged = Array.from(msgMap.values()).sort(
+          (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+        );
+        setMessages(merged);
+        setStorage("primo_support_messages", merged);
+      }
+    } catch (e) {
+      console.warn("Message cloud sync error:", e);
+    }
+  };
+
   useEffect(() => {
+    syncMessagesFromCloud();
+    const interval = setInterval(syncMessagesFromCloud, 8000);
+
     const handleUpdate = () => {
       setMessages(getStorage<SupportMessage[]>("primo_support_messages", []));
       setAgents(getStorage<SupportAgent[]>("primo_support_agents", DEFAULT_AGENTS));
@@ -349,12 +440,18 @@ export function useLiveMessages() {
     window.addEventListener("primoacts_store_update", handleUpdate);
     window.addEventListener("storage", handleUpdate);
     return () => {
+      clearInterval(interval);
       window.removeEventListener("primoacts_store_update", handleUpdate);
       window.removeEventListener("storage", handleUpdate);
     };
   }, []);
 
-  const sendMessage = (senderName: string, senderEmail: string, messageText: string) => {
+  const sendMessage = (
+    senderName: string,
+    senderEmail: string,
+    messageText: string,
+    orderRef?: string,
+  ) => {
     const newMsg: SupportMessage = {
       id: `msg-${Date.now()}`,
       senderName,
@@ -362,17 +459,19 @@ export function useLiveMessages() {
       message: messageText,
       timestamp: new Date().toISOString(),
       status: "unread",
+      orderReference: orderRef,
     };
     const updated = [newMsg, ...messages];
     setMessages(updated);
     setStorage("primo_support_messages", updated);
+    pushCloudData(undefined, updated);
     return newMsg;
   };
 
   const replyMessage = (
     id: string,
     replyText: string,
-    agentName: string = "Primo Acts Support Desk",
+    agentName: string = "Rao Wasif (Founder)",
   ) => {
     const updated = messages.map((m) =>
       m.id === id
@@ -387,12 +486,14 @@ export function useLiveMessages() {
     );
     setMessages(updated);
     setStorage("primo_support_messages", updated);
+    pushCloudData(undefined, updated);
   };
 
   const deleteMessage = (id: string) => {
     const updated = messages.filter((m) => m.id !== id);
     setMessages(updated);
     setStorage("primo_support_messages", updated);
+    pushCloudData(undefined, updated);
   };
 
   const updateAgent = (updatedAgent: SupportAgent) => {
@@ -418,6 +519,7 @@ export function useLiveMessages() {
     deleteMessage,
     updateAgent,
     addAgent,
+    syncNow: syncMessagesFromCloud,
   };
 }
 
@@ -426,23 +528,54 @@ export function useLiveOrders() {
   const [orders, setOrders] = useState<Order[]>(() => {
     return getStorage<Order[]>("primo_orders_list", SAMPLE_ORDERS);
   });
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const syncFromCloud = async () => {
+    try {
+      setIsSyncing(true);
+      const cloud = await fetchCloudData();
+      if (cloud && Array.isArray(cloud.orders)) {
+        const local = getStorage<Order[]>("primo_orders_list", []);
+        const orderMap = new Map<string, Order>();
+        local.forEach((o) => orderMap.set(o.reference || o.id, o));
+        cloud.orders.forEach((o) => orderMap.set(o.reference || o.id, o));
+        const merged = Array.from(orderMap.values()).sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
+        setOrders(merged);
+        setStorage("primo_orders_list", merged);
+      }
+    } catch (e) {
+      console.warn("Order cloud sync error:", e);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   useEffect(() => {
+    syncFromCloud();
+    // Auto-poll cloud every 8 seconds so Rao Wasif on PC sees mobile orders live!
+    const interval = setInterval(() => {
+      syncFromCloud();
+    }, 8000);
+
     const handleUpdate = () => {
       setOrders(getStorage<Order[]>("primo_orders_list", SAMPLE_ORDERS));
     };
     window.addEventListener("primoacts_store_update", handleUpdate);
     window.addEventListener("storage", handleUpdate);
     return () => {
+      clearInterval(interval);
       window.removeEventListener("primoacts_store_update", handleUpdate);
       window.removeEventListener("storage", handleUpdate);
     };
   }, []);
 
   const addOrder = (order: Order) => {
-    const newOrders = [order, ...orders];
+    const newOrders = [order, ...orders.filter((o) => o.reference !== order.reference)];
     setOrders(newOrders);
     setStorage("primo_orders_list", newOrders);
+    pushCloudData(newOrders);
   };
 
   const createOrder = (orderData: {
@@ -466,25 +599,50 @@ export function useLiveOrders() {
       billingCountry: orderData.billingCountry || "Pakistan",
       createdAt: new Date().toISOString(),
     };
-    const newOrders = [newOrder, ...orders];
+    const newOrders = [newOrder, ...orders.filter((o) => o.reference !== newOrder.reference)];
     setOrders(newOrders);
     setStorage("primo_orders_list", newOrders);
+    // Push immediately to cloud so Rao Wasif on PC sees it in real-time!
+    pushCloudData(newOrders);
     return newOrder;
   };
 
-  const updateOrderStatus = (id: string, status: Order["status"]) => {
-    const newOrders = orders.map((o) => (o.id === id ? { ...o, status } : o));
-    setOrders(newOrders);
-    setStorage("primo_orders_list", newOrders);
+  const updateOrderStatus = (
+    referenceOrId: string,
+    status: Order["status"],
+    notes?: string,
+  ) => {
+    const updated = orders.map((o) =>
+      o.reference === referenceOrId || o.id === referenceOrId
+        ? {
+            ...o,
+            status,
+            verifiedAt: status === "verified" ? new Date().toISOString() : o.verifiedAt,
+            note: notes !== undefined ? notes : o.note,
+          }
+        : o,
+    );
+    setOrders(updated);
+    setStorage("primo_orders_list", updated);
+    pushCloudData(updated);
   };
 
-  const deleteOrder = (id: string) => {
-    const newOrders = orders.filter((o) => o.id !== id);
-    setOrders(newOrders);
-    setStorage("primo_orders_list", newOrders);
+  const deleteOrder = (referenceOrId: string) => {
+    const updated = orders.filter((o) => o.reference !== referenceOrId && o.id !== referenceOrId);
+    setOrders(updated);
+    setStorage("primo_orders_list", updated);
+    pushCloudData(updated);
   };
 
-  return { orders, addOrder, createOrder, updateOrderStatus, deleteOrder };
+  return {
+    orders,
+    isSyncing,
+    syncFromCloud,
+    addOrder,
+    createOrder,
+    updateOrderStatus,
+    deleteOrder,
+  };
 }
 
 // --- SETTINGS HOOK ---

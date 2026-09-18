@@ -81,9 +81,9 @@ export function SiteFooter() {
           © {new Date().getFullYear()} {SITE.name} · Written by {SITE.founder}. All rights reserved.
         </div>
         <div>
-          <Link to="/admin" className="text-slate-500 hover:text-blue-400 text-[11px] transition-colors">
-            Staff / Control Center
-          </Link>
+          <span className="text-slate-500 text-[11px]">
+            Direct Author DRM-Free Edition · Official Store
+          </span>
         </div>
       </div>
     </footer>

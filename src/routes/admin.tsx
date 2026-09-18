@@ -27,6 +27,7 @@ import {
   Play,
   Plus,
   Quote,
+  RefreshCw,
   RotateCcw,
   Save,
   Search,
@@ -1323,7 +1324,7 @@ function AdminCharactersView() {
 // TAB 4: CUSTOMER ORDERS VIEW
 // -------------------------------------------------------------
 function AdminOrdersView() {
-  const { orders, updateOrderStatus, deleteOrder } = useLiveOrders();
+  const { orders, updateOrderStatus, deleteOrder, syncFromCloud, isSyncing } = useLiveOrders();
   const [filter, setFilter] = useState<"all" | "pending" | "verified" | "cancelled">("all");
   const [search, setSearch] = useState("");
 
@@ -1357,15 +1358,33 @@ function AdminOrdersView() {
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
         <div>
-          <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
-            Customer Orders Hub
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="font-display text-2xl md:text-3xl font-bold uppercase tracking-wide text-white">
+              Customer Orders Hub
+            </h1>
+            <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-2 py-0.5 text-[10px] font-mono font-bold">
+              Cloud Sync Active
+            </span>
+          </div>
           <p className="mt-1 text-xs md:text-sm text-muted-foreground">
-            Track customer digital book purchases, verify orders, and unlock download access.
+            Track customer digital book purchases from mobile and desktop, verify orders, and unlock download access.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={isSyncing}
+            onClick={() => {
+              syncFromCloud();
+              toast.info("Syncing latest orders from Cloud Bin...");
+            }}
+            className="border-blue-500/40 text-blue-400 hover:bg-blue-600/10 text-xs rounded-xl"
+          >
+            <RefreshCw className={`mr-1.5 h-3.5 w-3.5 ${isSyncing ? "animate-spin" : ""}`} />
+            <span>{isSyncing ? "Syncing..." : "Sync Cloud Orders"}</span>
+          </Button>
           <Button
             variant="outline"
             size="sm"
@@ -2406,6 +2425,7 @@ function AdminMessagesView() {
     replyMessage,
     deleteMessage,
     updateAgent,
+    syncNow,
   } = useLiveMessages();
   const [selectedMsg, setSelectedMsg] = useState<SupportMessage | null>(null);
   const [replyText, setReplyText] = useState("");
@@ -2480,20 +2500,35 @@ function AdminMessagesView() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          {(["all", "unread", "replied"] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setFilter(tab)}
-              className={`rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
-                filter === tab
-                  ? "border-blue-500/60 bg-blue-500/15 text-blue-300"
-                  : "border-border/60 text-muted-foreground hover:text-white"
-              }`}
-            >
-              {tab} ({tab === "all" ? messages.length : messages.filter((m) => m.status === tab).length})
-            </button>
-          ))}
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              syncNow();
+              toast.info("Cloud messages refreshed.");
+            }}
+            className="border-blue-500/40 text-blue-400 hover:bg-blue-600/10 text-xs rounded-xl"
+          >
+            <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
+            <span>Sync Cloud Messages</span>
+          </Button>
+
+          <div className="flex items-center gap-1.5">
+            {(["all", "unread", "replied"] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setFilter(tab)}
+                className={`rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
+                  filter === tab
+                    ? "border-blue-500/60 bg-blue-500/15 text-blue-300"
+                    : "border-border/60 text-muted-foreground hover:text-white"
+                }`}
+              >
+                {tab} ({tab === "all" ? messages.length : messages.filter((m) => m.status === tab).length})
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -2660,6 +2695,13 @@ function AdminMessagesView() {
                 <div className="p-3 rounded-xl bg-black/40 border border-border/30 text-xs text-white/90 leading-relaxed">
                   “{msg.message}”
                 </div>
+
+                {msg.orderReference && (
+                  <div className="flex items-center gap-1.5 text-[10px] text-blue-400/90 font-mono bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 rounded-lg w-fit">
+                    <span>Source / Ref:</span>
+                    <strong className="text-white">{msg.orderReference}</strong>
+                  </div>
+                )}
 
                 {msg.replyText && (
                   <div className="p-2.5 rounded-xl bg-purple-950/30 border border-purple-500/30 text-[11px] text-purple-200">
